@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Directorios como URLs</title>
+    <style>
+        body {
+            font-family: sans-serif;
+            margin: 20px;
+            background-color: #f4f4f4;
+        }
+
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+        }
+
+        .directory-list {
+            list-style: none;
+            padding: 0;
+        }
+
+        .directory-item {
+            background-color: #fff;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            margin-bottom: 10px;
+            padding: 15px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        }
+
+        .directory-link {
+            text-decoration: none;
+            color: #007bff;
+            font-weight: bold;
+        }
+
+        .directory-link:hover {
+            text-decoration: underline;
+        }
+
+        .directory-description {
+            margin-top: 5px;
+            color: #555;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Mis Directorios</h1>
+        <ul class="directory-list">
+            <li class="directory-item">
+                <a href="https://ejemplo.com/documentos" class="directory-link">Documentos Importantes</a>
+                <p class="directory-description">Aquí encontrarás todos mis documentos personales.</p>
+            </li>
+            <li class="directory-item">
+                <a href="https://ejemplo.com/imagenes" class="directory-link">Galería de Imágenes</a>
+                <p class="directory-description">Todas mis fotos favoritas están aquí.</p>
+            </li>
+            <li class="directory-item">
+                <a href="https://ejemplo.com/proyectos" class="directory-link">Proyectos Personales</a>
+                <p class="directory-description">Proyectos de desarrollo web y otras cosas.</p>
+            </li>
+        </ul>
+    </div>
+</body>
+</html>
