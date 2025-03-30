@@ -4,14 +4,69 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Mi Índice Personalizado</title>
-    <link rel="stylesheet" href="style.css">
+    <style>
+        body {
+            font-family: 'Montserrat', sans-serif;
+            margin: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            background: linear-gradient(135deg, #e0eafc, #cfe2f3);
+            color: #333;
+        }
+
+        .index-container {
+            background-color: rgba(255, 255, 255, 0.85);
+            padding: 40px;
+            border-radius: 15px;
+            box-shadow: 0 8px 16px rgba(0, 0, 0, 0.1);
+            text-align: center;
+            width: 80%;
+            max-width: 600px;
+        }
+
+        .index-container h1 {
+            color: #6c757d;
+            margin-bottom: 30px;
+            font-size: 2.5em;
+            letter-spacing: 1px;
+        }
+
+        .link-list {
+            list-style: none;
+            padding: 0;
+        }
+
+        .link-item {
+            margin: 20px 0;
+        }
+
+        .link-item a {
+            display: inline-block;
+            padding: 15px 30px;
+            background-color: #f8f9fa;
+            color: #007bff;
+            text-decoration: none;
+            border-radius: 25px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            transition: all 0.3s ease;
+            font-weight: 600;
+        }
+
+        .link-item a:hover {
+            background-color: #e9ecef;
+            transform: translateY(-3px);
+            box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15);
+        }
+    </style>
 </head>
 <body>
     <div class="index-container">
         <h1>Mi Índice Personal</h1>
         <ul class="link-list">
             <li class="link-item">
-                <a href="https://github.com/davidtenerife04/Roms.git">ROMS</a>
+                <a href="roms.html">ROMS</a>
             </li>
             <li class="link-item">
                 <a href="https://tu-enlace-2.com">Enlace 2</a>
