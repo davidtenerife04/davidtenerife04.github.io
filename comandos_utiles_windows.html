@@ -31,6 +31,7 @@
         }
         nav a:hover {
             text-decoration: underline;
+            
         }
         main {
             padding: 20px;
@@ -48,6 +49,9 @@
             text-align: center;
             padding: 15px;
             margin-top: 20px;
+        }
+        a::after{
+            content: ":)";
         }
     </style>
 </head>
@@ -79,14 +83,6 @@
                 <li><strong>cd</strong> — Cambiar de directorio.</li>
                 <li><strong>cls</strong> — Limpiar la pantalla.</li>
                 <li><strong>exit</strong> — Salir del terminal.</li>
-                <li><details><summary>Borrar Directorios o Archivos con propietario TrustedInstaller</summary>
-                    <p>takeown /f "C:\ruta\a\la\carpeta" /r /d y <b>Tomar propiedad del directorio o archivo</b><br>
-                       icacls "C:\ruta\a\la\carpeta" /grant Administradores:F /t <b>Dar todos los permisos al grupo Administradores (Ajustar)</b> <br>
-                       rmdir /s /q "C:\ruta\a\la\carpeta" o archivo
-                    </p>
-
-                    </details>
-                </li>
             </ul>
         </section>
 
@@ -120,6 +116,13 @@
                 <li><strong>taskkill /IM [nombre].exe</strong> — Terminar procesos.</li>
                 <li><strong>shutdown /s /t 0</strong> — Apagar el equipo.</li>
                 <li><strong>systeminfo</strong> — Mostrar información del sistema.</li>
+                <li><details><summary>Borrar Directorios o Archivos con propietario TrustedInstaller</summary>
+                    <p>takeown /f "C:\ruta\a\la\carpeta" /r /d y <b>Tomar propiedad del directorio o archivo</b><br>
+                       icacls "C:\ruta\a\la\carpeta" /grant Administradores:F /t <b>Dar todos los permisos al grupo Administradores (Ajustar)</b> <br>
+                       rmdir /s /q "C:\ruta\a\la\carpeta" o archivo <b>Eliminar directorio o archivo</b>
+                    </p>
+                    </details>
+                </li>
             </ul>
         </section>
 
@@ -127,7 +130,7 @@
 
     <!-- Pie de página -->
     <footer>
-        <p>&copy; 2025 - Tu nombre o proyecto aquí</p>
+        <p>&copy; 2025 - J.David</p>
     </footer>
 
 </body>
