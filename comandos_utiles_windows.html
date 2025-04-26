@@ -79,7 +79,14 @@
                 <li><strong>cd</strong> — Cambiar de directorio.</li>
                 <li><strong>cls</strong> — Limpiar la pantalla.</li>
                 <li><strong>exit</strong> — Salir del terminal.</li>
-                <li><details><summary>Borrar Elementos TrustedInstaller</summary><p>el comando pene</p></details></li>
+                <li><details><summary>Borrar Directorios o Archivos con propietario TrustedInstaller</summary>
+                    <p>takeown /f "C:\ruta\a\la\carpeta" /r /d y <b>Tomar propiedad del directorio o archivo</b><br>
+                       icacls "C:\ruta\a\la\carpeta" /grant Administradores:F /t <b>Dar todos los permisos al grupo Administradores (Ajustar)</b> <br>
+                       rmdir /s /q "C:\ruta\a\la\carpeta" o archivo
+                    </p>
+
+                    </details>
+                </li>
             </ul>
         </section>
 
