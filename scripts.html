@@ -9,9 +9,10 @@
             --bg-color: #0d1117;
             --card-bg: #161b22;
             --text-main: #c9d1d9;
-            --accent-linux: #f7df1e; /* Amarillo Penguin */
-            --accent-windows: #00a4ef; /* Azul Windows */
+            --accent-linux: #f7df1e;
+            --accent-windows: #00a4ef;
             --border-color: #30363d;
+            --admin-red: #ef4444;
         }
 
         body {
@@ -33,7 +34,6 @@
             text-shadow: 0 0 10px rgba(255,255,255,0.1);
         }
 
-        /* Contenedor del Menú Principal */
         .menu-container {
             display: flex;
             gap: 20px;
@@ -57,75 +57,68 @@
             justify-content: center;
         }
 
-        /* Estilos específicos y Hover */
-        .os-card.linux:hover {
-            border-color: var(--accent-linux);
-            box-shadow: 0 0 20px rgba(247, 223, 30, 0.2);
-            transform: translateY(-5px);
-        }
-
-        .os-card.windows:hover {
-            border-color: var(--accent-windows);
-            box-shadow: 0 0 20px rgba(0, 164, 239, 0.2);
-            transform: translateY(-5px);
-        }
-
+        .os-card.linux:hover { border-color: var(--accent-linux); box-shadow: 0 0 20px rgba(247, 223, 30, 0.2); transform: translateY(-5px); }
+        .os-card.windows:hover { border-color: var(--accent-windows); box-shadow: 0 0 20px rgba(0, 164, 239, 0.2); transform: translateY(-5px); }
         .os-card.active.linux { border-color: var(--accent-linux); background: #1c1c10; }
         .os-card.active.windows { border-color: var(--accent-windows); background: #0d1626; }
 
-        .os-card svg {
-            width: 60px;
-            height: 60px;
-            margin-bottom: 15px;
-        }
+        .os-card svg { width: 60px; height: 60px; margin-bottom: 15px; }
+        .os-card span { font-size: 1.5rem; font-weight: bold; letter-spacing: 1px; }
 
-        .os-card span {
-            font-size: 1.5rem;
-            font-weight: bold;
-            letter-spacing: 1px;
-        }
+        .script-list { display: none; width: 100%; max-width: 800px; animation: fadeIn 0.5s ease; }
+        .script-list.active { display: block; }
 
-        /* Listados de Scripts */
-        .script-list {
-            display: none; /* Oculto por defecto */
-            width: 100%;
-            max-width: 800px;
-            animation: fadeIn 0.5s ease;
-        }
+        .list-header { border-bottom: 1px solid var(--border-color); padding-bottom: 10px; margin-bottom: 20px; display: flex; align-items: center; gap: 10px; }
 
-        .script-list.active {
-            display: block;
-        }
-
-        .list-header {
-            border-bottom: 1px solid var(--border-color);
-            padding-bottom: 10px;
-            margin-bottom: 20px;
-            display: flex;
-            align-items: center;
-            gap: 10px;
-        }
-
+        /* --- ESTILO DE LOS ITEMS --- */
         .script-item {
             background: var(--card-bg);
             border: 1px solid var(--border-color);
-            border-radius: 6px;
-            padding: 15px;
-            margin-bottom: 10px;
+            border-radius: 10px;
+            padding: 15px 20px;
+            margin-bottom: 12px;
             display: flex;
             justify-content: space-between;
             align-items: center;
+            transition: 0.2s;
+        }
+        .script-item:hover { background: #1c2128; border-color: #444c56; }
+
+        .script-info { display: flex; align-items: center; gap: 12px; }
+        .script-name { font-weight: 600; color: #58a6ff; font-size: 1rem; }
+
+        /* --- ETIQUETA ADMIN --- */
+        .tag-admin {
+            background-color: var(--admin-red);
+            color: white;
+            font-size: 0.65rem;
+            font-weight: 800;
+            padding: 2px 8px;
+            border-radius: 4px;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
         }
 
-        .script-name {
-            font-weight: 500;
-            color: #58a6ff;
+        /* --- BOTÓN DESCARGAR --- */
+        .download-btn {
+            background: rgba(255, 255, 255, 0.05);
+            color: #fff;
+            text-decoration: none;
+            padding: 8px 16px;
+            border-radius: 8px;
+            font-size: 0.85rem;
+            font-weight: 600;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            transition: all 0.3s ease;
+        }
+        .download-btn:hover {
+            background: #fff;
+            color: #0d1117;
+            transform: scale(1.05);
+            box-shadow: 0 4px 12px rgba(255, 255, 255, 0.1);
         }
 
-        @keyframes fadeIn {
-            from { opacity: 0; transform: translateY(10px); }
-            to { opacity: 1; transform: translateY(0); }
-        }
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
     </style>
 </head>
 <body>
@@ -149,12 +142,17 @@
             <h2 style="color: var(--accent-linux);">_ bash_scripts/</h2>
         </div>
         <div class="script-item">
-            <span class="script-name">backup_server.sh</span>
-            <small>v1.2</small>
+            <div class="script-info">
+                <span class="script-name">backup_server.sh</span>
+                <span class="tag-admin">Admin</span>
+            </div>
+            <a href="Scripts/backup_server.sh" download class="download-btn">Descargar</a>
         </div>
         <div class="script-item">
-            <span class="script-name">docker_deploy.sh</span>
-            <small>v2.0</small>
+            <div class="script-info">
+                <span class="script-name">docker_deploy.sh</span>
+            </div>
+            <a href="Scripts/docker_deploy.sh" download class="download-btn">Descargar</a>
         </div>
     </div>
 
@@ -163,29 +161,27 @@
             <h2 style="color: var(--accent-windows);">_ powershell_scripts/</h2>
         </div>
         <div class="script-item">
-            <span class="script-name">LimpiezaWindows.ps1</span>
-            <small>v3.5</small>
-            <a href="Scripts/limpiezawindows.ps1" download="limpiezawindows.ps1">Descargar Script</a>
+            <div class="script-info">
+                <span class="script-name">LimpiezaWindows.ps1</span>
+                <span class="tag-admin">Admin</span>
+            </div>
+            <a href="Scripts/limpiezawindows.ps1" download="limpiezawindows.ps1" class="download-btn">Descargar</a>
         </div>
         <div class="script-item">
-            <span class="script-name">AD-User-Bulk.ps1</span>
-            <small>v1.0</small>
+            <div class="script-info">
+                <span class="script-name">AD-User-Bulk.ps1</span>
+                <span class="tag-admin">Admin</span>
+            </div>
+            <a href="Scripts/ad-user-bulk.ps1" download class="download-btn">Descargar</a>
         </div>
     </div>
 
+    <a href="index.html" style="margin-top: 40px; color: #8b949e; text-decoration: none; font-size: 0.9rem;">← Volver al inicio</a>
+
     <script>
         function showList(os, element) {
-            // Ocultar todas las listas
-            document.querySelectorAll('.script-list').forEach(list => {
-                list.classList.remove('active');
-            });
-
-            // Quitar clase activa de las tarjetas
-            document.querySelectorAll('.os-card').forEach(card => {
-                card.classList.remove('active');
-            });
-
-            // Mostrar la lista seleccionada y marcar tarjeta
+            document.querySelectorAll('.script-list').forEach(list => list.classList.remove('active'));
+            document.querySelectorAll('.os-card').forEach(card => card.classList.remove('active'));
             document.getElementById(os + '-list').classList.add('active');
             element.classList.add('active');
         }
