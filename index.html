@@ -3,81 +3,178 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Mi Índice Personalizado</title>
+    <title>Mi Portal Personal | Dashboard</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
     <style>
+        :root {
+            /* Definimos una paleta de colores moderna (Dark Mode) */
+            --bg-color: #0f172a; /* Fondo muy oscuro */
+            --card-bg: #1e293b;  /* Fondo de las tarjetas */
+            --text-main: #f1f5f9; /* Texto principal claro */
+            --text-muted: #94a3b8; /* Texto secundario apagado */
+            --accent: #38bdf8;    /* Color de acento (Azul neón suave) */
+            --accent-glow: rgba(56, 189, 248, 0.15);
+            --border: #334155;
+        }
+
         body {
-            font-family: 'Montserrat', sans-serif;
+            font-family: 'Inter', sans-serif; /* Usamos la nueva fuente */
             margin: 0;
             display: flex;
-            justify-content: center;
+            flex-direction: column;
             align-items: center;
+            justify-content: center;
             min-height: 100vh;
-            background: linear-gradient(135deg, #e0eafc, #cfe2f3);
-            color: #333;
+            background-color: var(--bg-color);
+            color: var(--text-main);
+            /* Un sutil patrón de fondo para dar textura */
+            background-image: radial-gradient(#1e293b 1px, transparent 1px);
+            background-size: 30px 30px;
         }
 
-        .index-container {
-            background-color: rgba(255, 255, 255, 0.85);
-            padding: 40px;
-            border-radius: 15px;
-            box-shadow: 0 8px 16px rgba(0, 0, 0, 0.1);
+        .main-container {
+            width: 90%;
+            max-width: 1000px;
+            padding: 40px 20px;
             text-align: center;
-            width: 80%;
-            max-width: 600px;
         }
 
-        .index-container h1 {
-            color: #6c757d;
-            margin-bottom: 30px;
-            font-size: 2.5em;
-            letter-spacing: 1px;
+        header {
+            margin-bottom: 60px;
         }
 
-        .link-list {
+        header h1 {
+            font-size: 3rem;
+            font-weight: 800;
+            letter-spacing: -1px;
+            margin: 0 0 10px 0;
+            background: linear-gradient(to right, #ffffff, #94a3b8);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        header p {
+            color: var(--text-muted);
+            font-size: 1.1rem;
+            margin: 0;
+        }
+
+        /* Grid de enlaces: ahora son tarjetas, no una lista simple */
+        .link-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 25px;
             list-style: none;
             padding: 0;
+            margin: 0;
         }
 
         .link-item {
-            margin: 20px 0;
+            /* Las tarjetas no tienen estilos, los tiene el enlace <a> */
+            margin: 0;
         }
 
         .link-item a {
-            display: inline-block;
-            padding: 15px 30px;
-            background-color: #f8f9fa;
-            color: #007bff;
+            display: flex;
+            flex-direction: column;
+            align-items: flex-start;
+            justify-content: center;
+            padding: 30px;
+            height: 100%; /* Para que todas midan lo mismo en el grid */
+            background-color: var(--card-bg);
+            color: var(--text-main);
             text-decoration: none;
-            border-radius: 25px;
-            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-            transition: all 0.3s ease;
-            font-weight: 600;
+            border-radius: 16px;
+            border: 1px solid var(--border);
+            transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275); /* Animación suave */
+            position: relative;
+            overflow: hidden;
+            box-sizing: border-box; /* Importante para el padding */
         }
 
+        /* Efecto Hover Moderno */
         .link-item a:hover {
-            background-color: #e9ecef;
-            transform: translateY(-3px);
-            box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15);
+            transform: translateY(-8px) scale(1.02);
+            border-color: var(--accent);
+            box-shadow: 0 20px 40px rgba(0,0,0,0.4), 0 0 15px var(--accent-glow);
+        }
+
+        /* Estilo para el título del enlace */
+        .link-title {
+            font-size: 1.4rem;
+            font-weight: 700;
+            margin-bottom: 8px;
+            position: relative;
+            z-index: 2;
+        }
+
+        /* Un pequeño subtítulo simulado para dar contexto (opcional) */
+        .link-desc {
+            font-size: 0.9rem;
+            color: var(--text-muted);
+            font-weight: 400;
+            position: relative;
+            z-index: 2;
+        }
+
+        /* Efecto de brillo interior en hover */
+        .link-item a::after {
+            content: '';
+            position: absolute;
+            top: 0; left: 0; width: 100%; height: 100%;
+            background: radial-gradient(circle at top right, var(--accent-glow), transparent 70%);
+            opacity: 0;
+            transition: opacity 0.4s;
+        }
+
+        .link-item a:hover::after {
+            opacity: 1;
+        }
+
+        /* Responsividad: Título más pequeño en móviles */
+        @media (max-width: 600px) {
+            header h1 {
+                font-size: 2.2rem;
+            }
+            .main-container {
+                padding: 20px 10px;
+            }
         }
     </style>
 </head>
 <body>
-    <div class="index-container">
-        <h1>Mi Índice Personal</h1>
-        <ul class="link-list">
-            <li class="link-item">
-                <a href="roms.html">ROMS</a>
-            </li>
-            <li class="link-item">
-                <a href="comandos_utiles_windows.html">Comandos Útiles</a>
-            </li>
-            <li class="link-item">
-                <a href="scripts.html">Scripts</a>
-            </li>
-            <li class="link-item">
-                <a href="https://tu-enlace-4.com">Enlace 4</a>
-            </li>
-        </ul>
+    <div class="main-container">
+        <header>
+            <h1>Mi Dashboard Personal</h1>
+            <p>Acceso rápido a mis recursos y herramientas</p>
+        </header>
+        
+        <div class="link-grid">
+            <div class="link-item">
+                <a href="roms.html">
+                    <span class="link-title">ROMS</span>
+                    <span class="link-desc">Librería de juegos y emuladores</span>
+                </a>
+            </div>
+            <div class="link-item">
+                <a href="comandos_utiles_windows.html">
+                    <span class="link-title">Comandos Útiles</span>
+                    <span class="link-desc">Chuleta de CMD, PowerShell y Sysadmin</span>
+                </a>
+            </div>
+            <div class="link-item">
+                <a href="scripts.html">
+                    <span class="link-title">Scripts</span>
+                    <span class="link-desc">Automatización Linux y Windows</span>
+                </a>
+            </div>
+            <div class="link-item">
+                <a href="https://tu-enlace-4.com">
+                    <span class="link-title">Enlace 4</span>
+                    <span class="link-desc">Descripción personalizada del enlace</span>
+                </a>
+            </div>
+        </div>
     </div>
 </body>
 </html>
