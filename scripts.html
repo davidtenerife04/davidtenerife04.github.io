@@ -1,0 +1,193 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Script Repository Hub</title>
+    <style>
+        :root {
+            --bg-color: #0d1117;
+            --card-bg: #161b22;
+            --text-main: #c9d1d9;
+            --accent-linux: #f7df1e; /* Amarillo Penguin */
+            --accent-windows: #00a4ef; /* Azul Windows */
+            --border-color: #30363d;
+        }
+
+        body {
+            font-family: 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+            background-color: var(--bg-color);
+            color: var(--text-main);
+            margin: 0;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            min-height: 100vh;
+            padding: 2rem;
+        }
+
+        h1 {
+            font-size: 2.5rem;
+            margin-bottom: 2rem;
+            color: #ffffff;
+            text-shadow: 0 0 10px rgba(255,255,255,0.1);
+        }
+
+        /* Contenedor del Menú Principal */
+        .menu-container {
+            display: flex;
+            gap: 20px;
+            width: 100%;
+            max-width: 800px;
+            margin-bottom: 3rem;
+        }
+
+        .os-card {
+            flex: 1;
+            background: var(--card-bg);
+            border: 2px solid var(--border-color);
+            border-radius: 12px;
+            padding: 40px 20px;
+            text-align: center;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+        }
+
+        /* Estilos específicos y Hover */
+        .os-card.linux:hover {
+            border-color: var(--accent-linux);
+            box-shadow: 0 0 20px rgba(247, 223, 30, 0.2);
+            transform: translateY(-5px);
+        }
+
+        .os-card.windows:hover {
+            border-color: var(--accent-windows);
+            box-shadow: 0 0 20px rgba(0, 164, 239, 0.2);
+            transform: translateY(-5px);
+        }
+
+        .os-card.active.linux { border-color: var(--accent-linux); background: #1c1c10; }
+        .os-card.active.windows { border-color: var(--accent-windows); background: #0d1626; }
+
+        .os-card svg {
+            width: 60px;
+            height: 60px;
+            margin-bottom: 15px;
+        }
+
+        .os-card span {
+            font-size: 1.5rem;
+            font-weight: bold;
+            letter-spacing: 1px;
+        }
+
+        /* Listados de Scripts */
+        .script-list {
+            display: none; /* Oculto por defecto */
+            width: 100%;
+            max-width: 800px;
+            animation: fadeIn 0.5s ease;
+        }
+
+        .script-list.active {
+            display: block;
+        }
+
+        .list-header {
+            border-bottom: 1px solid var(--border-color);
+            padding-bottom: 10px;
+            margin-bottom: 20px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .script-item {
+            background: var(--card-bg);
+            border: 1px solid var(--border-color);
+            border-radius: 6px;
+            padding: 15px;
+            margin-bottom: 10px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .script-name {
+            font-weight: 500;
+            color: #58a6ff;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+    </style>
+</head>
+<body>
+
+    <h1>Script Repository</h1>
+
+    <div class="menu-container">
+        <div class="os-card linux" onclick="showList('linux', this)">
+            <svg viewBox="0 0 24 24" fill="#f7df1e"><path d="M12,2A10,10 0 0,1 22,12A10,10 0 0,1 12,22A10,10 0 0,1 2,12A10,10 0 0,1 12,2M12,4A8,8 0 0,0 4,12C4,14.39 5.05,16.54 6.69,18L7.69,16.5C7.25,15.77 7,14.92 7,14A5,5 0 0,1 12,9A5,5 0 0,1 17,14C17,14.92 16.75,15.77 16.31,16.5L17.31,18C18.95,16.54 20,14.39 20,12A8,8 0 0,0 12,4Z"/></svg>
+            <span>LINUX</span>
+        </div>
+
+        <div class="os-card windows" onclick="showList('windows', this)">
+            <svg viewBox="0 0 24 24" fill="#00a4ef"><path d="M3,12V6.75L9,5.43V11.69M20,3V11.75L10,11.9V5.21M3,13.1L9,13.1V19.39L3,18.12M20,13.1V21L10,19.6V13.1"/></svg>
+            <span>WINDOWS</span>
+        </div>
+    </div>
+
+    <div id="linux-list" class="script-list">
+        <div class="list-header">
+            <h2 style="color: var(--accent-linux);">_ bash_scripts/</h2>
+        </div>
+        <div class="script-item">
+            <span class="script-name">backup_server.sh</span>
+            <small>v1.2</small>
+        </div>
+        <div class="script-item">
+            <span class="script-name">docker_deploy.sh</span>
+            <small>v2.0</small>
+        </div>
+    </div>
+
+    <div id="windows-list" class="script-list">
+        <div class="list-header">
+            <h2 style="color: var(--accent-windows);">_ powershell_scripts/</h2>
+        </div>
+        <div class="script-item">
+            <span class="script-name">Optimize-System.ps1</span>
+            <small>v3.5</small>
+        </div>
+        <div class="script-item">
+            <span class="script-name">AD-User-Bulk.ps1</span>
+            <small>v1.0</small>
+        </div>
+    </div>
+
+    <script>
+        function showList(os, element) {
+            // Ocultar todas las listas
+            document.querySelectorAll('.script-list').forEach(list => {
+                list.classList.remove('active');
+            });
+
+            // Quitar clase activa de las tarjetas
+            document.querySelectorAll('.os-card').forEach(card => {
+                card.classList.remove('active');
+            });
+
+            // Mostrar la lista seleccionada y marcar tarjeta
+            document.getElementById(os + '-list').classList.add('active');
+            element.classList.add('active');
+        }
+    </script>
+</body>
+</html>
