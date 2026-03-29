@@ -3,137 +3,323 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Comandos Útiles en Windows</title>
+    <title>Terminal Hub Pro | Full Master Edition</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;800&family=Fira+Code:wght@400;500&display=swap" rel="stylesheet">
     <style>
-        /* Estilos básicos de la página */
+        :root {
+            --bg-color: #080c14;
+            --card-bg: #111827;
+            --text-main: #f1f5f9;
+            --text-muted: #94a3b8;
+            --accent-win: #0ea5e9;
+            --accent-lin: #fbbf24;
+            --border: #1f2937;
+            --cmd-bg: #000000;
+        }
+
         body {
-            font-family: Arial, sans-serif;
+            font-family: 'Inter', sans-serif;
             margin: 0;
-            padding: 0;
-            background-color: #f0f2f5;
+            background-color: var(--bg-color);
+            color: var(--text-main);
+            background-image: radial-gradient(circle at 50% 50%, #1e293b 1px, transparent 1px);
+            background-size: 40px 40px;
+            scroll-behavior: smooth;
         }
-        header {
-            background-color: #343a40;
-            color: #fff;
-            padding: 20px;
-            text-align: center;
+
+        header { text-align: center; padding: 50px 20px 10px; }
+        header h1 { font-size: 3rem; font-weight: 800; margin: 0; letter-spacing: -2px; background: linear-gradient(to right, #fff, #64748b); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
+
+        .os-selector {
+            display: flex;
+            justify-content: center;
+            gap: 30px;
+            max-width: 1000px;
+            margin: 30px auto;
+            padding: 0 20px;
         }
+
+        .os-card {
+            flex: 1;
+            position: relative;
+            height: 160px;
+            background: var(--card-bg);
+            border-radius: 24px;
+            overflow: hidden;
+            cursor: pointer;
+            transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            border: 1px solid var(--border);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .os-card.win { background: linear-gradient(145deg, #111827, #075985); }
+        .os-card.win.active { border-color: var(--accent-win); box-shadow: 0 0 40px rgba(14, 165, 233, 0.3); transform: scale(1.05); }
+        .os-card.lin { background: linear-gradient(145deg, #111827, #854d0e); }
+        .os-card.lin.active { border-color: var(--accent-lin); box-shadow: 0 0 40px rgba(251, 191, 36, 0.3); transform: scale(1.05); }
+
+        .os-card span { font-size: 1.8rem; font-weight: 800; letter-spacing: 2px; z-index: 1; pointer-events: none; }
+        .os-card i { position: absolute; font-size: 100px; opacity: 0.1; right: -10px; bottom: -10px; font-style: normal; }
+
         nav {
-            background-color: #495057;
-            padding: 10px;
-            text-align: center;
-        }
-        nav a {
-            color: #fff;
-            margin: 0 15px;
-            text-decoration: none;
-            font-weight: bold;
-        }
-        nav a:hover {
-            text-decoration: underline;
-            
-        }
-        main {
-            padding: 20px;
-        }
-        section {
-            background-color: #fff;
-            padding: 20px;
-            margin-bottom: 20px;
-            border-radius: 8px;
-            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
-        }
-        footer {
-            background-color: #343a40;
-            color: #fff;
-            text-align: center;
+            position: sticky;
+            top: 0;
+            background: rgba(8, 12, 20, 0.9);
+            backdrop-filter: blur(12px);
             padding: 15px;
-            margin-top: 20px;
+            display: none;
+            justify-content: center;
+            gap: 15px;
+            border-bottom: 1px solid var(--border);
+            z-index: 1000;
+            flex-wrap: wrap;
         }
-        .volver_inicio{
-            text-align: center;
+
+        nav a { color: var(--text-muted); text-decoration: none; font-weight: 600; font-size: 0.8rem; padding: 6px 12px; border-radius: 20px; transition: 0.3s; border: 1px solid transparent; }
+        nav a:hover { border-color: #334155; color: #fff; }
+
+        main { max-width: 1100px; margin: 40px auto; padding: 0 20px; }
+        .os-content { display: none; }
+        .os-content.active { display: block; animation: fadeInUp 0.6s ease; }
+
+        section { background: var(--card-bg); border-radius: 24px; padding: 35px; margin-bottom: 60px; border: 1px solid var(--border); }
+        
+        h2 { font-size: 1.8rem; margin-top: 0; margin-bottom: 30px; display: flex; align-items: center; gap: 15px; text-transform: uppercase; letter-spacing: 1px; }
+        .win h2 { color: var(--accent-win); }
+        .lin h2 { color: var(--accent-lin); }
+
+        .grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(450px, 1fr)); gap: 15px; }
+
+        .cmd-box {
+            background: rgba(0,0,0,0.3);
+            padding: 18px;
+            border-radius: 12px;
+            border: 1px solid var(--border);
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+            transition: 0.3s;
         }
+
+        .cmd-line { display: flex; justify-content: space-between; align-items: center; gap: 10px; }
+
+        code {
+            font-family: 'Fira Code', monospace;
+            background: var(--cmd-bg);
+            padding: 6px 10px;
+            border-radius: 6px;
+            font-size: 0.85rem;
+            border: 1px solid #2d3748;
+            flex-grow: 1;
+        }
+        .win code { color: var(--accent-win); }
+        .lin code { color: var(--accent-lin); }
+
+        .copy-btn {
+            background: #1f2937;
+            color: #94a3b8;
+            border: 1px solid #374151;
+            padding: 5px 10px;
+            border-radius: 6px;
+            font-size: 0.65rem;
+            cursor: pointer;
+            font-weight: bold;
+            flex-shrink: 0;
+        }
+        .copy-btn:hover { background: #374151; color: #fff; }
+        .copy-btn.copied { background: #059669; color: #fff; border-color: #10b981; }
+
+        .desc { color: var(--text-muted); font-size: 0.8rem; line-height: 1.4; }
+        .tag { background: #ef4444; color: #fff; font-size: 0.6rem; padding: 2px 5px; border-radius: 4px; font-weight: 900; margin-right: 5px; }
+
+        @keyframes fadeInUp { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
     </style>
 </head>
-
 <body>
 
-    <!-- Encabezado principal -->
-    <header>
-        <h1>Comandos Útiles en Windows</h1>
-        <p>Guía de Comandos Windows</p>
-    </header>
+<header>
+    <h1>Terminal Hub Pro</h1>
+</header>
 
-    <!-- Navegación entre secciones -->
-    <nav>
-        <a href="#comandos-basicos">Básicos</a>
-        <a href="#comandos-redes">Redes</a>
-        <a href="#comandos-archivos">Archivos</a>
-        <a href="#comandos-sistema">Sistema</a>
-    </nav>
+<div class="os-selector">
+    <div class="os-card win" onclick="showOS('windows', this)">
+        <i>🪟</i><span>WINDOWS</span>
+    </div>
+    <div class="os-card lin" onclick="showOS('linux', this)">
+        <i>🐧</i><span>LINUX</span>
+    </div>
+</div>
 
-    <!-- Contenido principal -->
-    <main>
+<nav id="nav-windows">
+    <a href="#w-sys">Sistema</a><a href="#w-net">Redes</a><a href="#w-disk">Discos</a><a href="#w-user">Usuarios</a>
+</nav>
 
-        <!-- Sección de Comandos Básicos -->
-        <section id="comandos-basicos">
-            <h2>Comandos Básicos</h2>
-            <ul>
-                <li><strong>dir</strong> — Listar archivos y carpetas.</li>
-                <li><strong>cd</strong> — Cambiar de directorio.</li>
-                <li><strong>cls</strong> — Limpiar la pantalla.</li>
-                <li><strong>exit</strong> — Salir del terminal.</li>
-            </ul>
+<nav id="nav-linux">
+    <a href="#l-file">Archivos</a><a href="#l-adm">Admin</a><a href="#l-net">Redes</a><a href="#l-hw">Hardware</a>
+</nav>
+
+<main>
+    <div id="windows" class="os-content win">
+        <section id="w-sys">
+            <h2>Mantenimiento de Sistema</h2>
+            <div class="grid">
+                <div class="cmd-box"><div class="cmd-line"><code>sfc /scannow</code><button class="copy-btn" onclick="copy(this)">COPIAR</button></div><span class="desc"><span class="tag">ADMIN</span>Repara archivos dañados del núcleo.</span></div>
+                <div class="cmd-box"><div class="cmd-line"><code>dism /online /cleanup-image /restorehealth</code><button class="copy-btn" onclick="copy(this)">COPIAR</button></div><span class="desc">Repara imagen usando Windows Update.</span></div>
+                <div class="cmd-box"><div class="cmd-line"><code>powercfg /batteryreport</code><button class="copy-btn" onclick="copy(this)">COPIAR</button></div><span class="desc">Genera salud de batería en HTML.</span></div>
+                <div class="cmd-box"><div class="cmd-line"><code>shutdown /r /fw /t 0</code><button class="copy-btn" onclick="copy(this)">COPIAR</button></div><span class="desc">Reinicia directo en la BIOS/UEFI.</span></div>
+                <div class="cmd-box"><div class="cmd-line"><code>systeminfo</code><button class="copy-btn" onclick="copy(this)">COPIAR</button></div><span class="desc">Resumen técnico completo del equipo.</span></div>
+                <div class="cmd-box"><div class="cmd-line"><code>tasklist /v</code><button class="copy-btn" onclick="copy(this)">COPIAR</button></div><span class="desc">Lista procesos con usuario y memoria.</span></div>
+                <div class="cmd-box"><div class="cmd-line"><code>gpupdate /force</code><button class="copy-btn" onclick="copy(this)">COPIAR</button></div><span class="desc">Fuerza actualización de políticas GPO.</span></div>
+                <div class="cmd-box"><div class="cmd-line"><code>driverquery /fo table</code><button class="copy-btn" onclick="copy(this)">COPIAR</button></div><span class="desc">Tabla de todos los drivers instalados.</span></div>
+                <div class="cmd-box"><div class="cmd-line"><code>taskkill /F /FI "STATUS eq NOT RESPONDING"</code><button class="copy-btn" onclick="copy(this)">COPIAR</button></div><span class="desc">Cierra programas bloqueados de golpe.</span></div>
+                <div class="cmd-box"><div class="cmd-line"><code>dxdiag</code><button class="copy-btn" onclick="copy(this)">COPIAR</button></div><span class="desc">Herramienta de diagnóstico de DirectX.</span></div>
+            </div>
         </section>
 
-        <!-- Sección de Comandos de Redes -->
-        <section id="comandos-redes">
-            <h2>Comandos de Redes</h2>
-            <ul>
-                <li><strong>ipconfig</strong> — Mostrar configuración IP.</li>
-                <li><strong>ping [dirección]</strong> — Comprobar conexión.</li>
-                <li><strong>tracert [dirección]</strong> — Rastrear ruta de paquetes.</li>
-                <li><strong>netstat</strong> — Ver conexiones de red activas.</li>
-            </ul>
+        <section id="w-net">
+            <h2>Redes y Conectividad</h2>
+            <div class="grid">
+                <div class="cmd-box"><div class="cmd-line"><code>ipconfig /flushdns</code><button class="copy-btn" onclick="copy(this)">COPIAR</button></div><span class="desc">Limpia la caché de resolución DNS.</span></div>
+                <div class="cmd-box"><div class="cmd-line"><code>netstat -ano</code><button class="copy-btn" onclick="copy(this)">COPIAR</button></div><span class="desc">Puertos abiertos y PIDs vinculados.</span></div>
+                <div class="cmd-box"><div class="cmd-line"><code>netsh wlan show profile name="*" key=clear</code><button class="copy-btn" onclick="copy(this)">COPIAR</button></div><span class="desc">Muestra claves WiFi guardadas.</span></div>
+                <div class="cmd-box"><div class="cmd-line"><code>pathping google.com</code><button class="copy-btn" onclick="copy(this)">COPIAR</button></div><span class="desc">Traza ruta detectando pérdida de paquetes.</span></div>
+                <div class="cmd-box"><div class="cmd-line"><code>getmac /v</code><button class="copy-btn" onclick="copy(this)">COPIAR</button></div><span class="desc">Dirección física detallada de red.</span></div>
+                <div class="cmd-box"><div class="cmd-line"><code>arp -a</code><button class="copy-btn" onclick="copy(this)">COPIAR</button></div><span class="desc">Tabla de IPs y MACs en la red local.</span></div>
+                <div class="cmd-box"><div class="cmd-line"><code>nslookup [dominio]</code><button class="copy-btn" onclick="copy(this)">COPIAR</button></div><span class="desc">Consulta registros DNS de un dominio.</span></div>
+                <div class="cmd-box"><div class="cmd-line"><code>netsh advfirewall set allprofiles state off</code><button class="copy-btn" onclick="copy(this)">COPIAR</button></div><span class="desc"><span class="tag">ADMIN</span>Apaga el Firewall por completo.</span></div>
+                <div class="cmd-box"><div class="cmd-line"><code>ipconfig /all</code><button class="copy-btn" onclick="copy(this)">COPIAR</button></div><span class="desc">Configuración detallada de adaptadores.</span></div>
+                <div class="cmd-box"><div class="cmd-line"><code>ping -t [IP]</code><button class="copy-btn" onclick="copy(this)">COPIAR</button></div><span class="desc">Ping infinito hasta pulsar Ctrl+C.</span></div>
+            </div>
         </section>
 
-        <!-- Sección de Comandos de Archivos -->
-        <section id="comandos-archivos">
-            <h2>Comandos de Archivos y Carpetas</h2>
-            <ul>
-                <li><strong>mkdir [nombre]</strong> — Crear nueva carpeta.</li>
-                <li><strong>del [archivo]</strong> — Eliminar un archivo.</li>
-                <li><strong>rmdir [carpeta]</strong> — Borrar carpeta vacía.</li>
-                <li><strong>copy [origen] [destino]</strong> — Copiar archivos.</li>
-            </ul>
+        <section id="w-disk">
+            <h2>Discos y Archivos</h2>
+            <div class="grid">
+                <div class="cmd-box"><div class="cmd-line"><code>diskpart</code><button class="copy-btn" onclick="copy(this)">COPIAR</button></div><span class="desc"><span class="tag">ADMIN</span>Gestor de particiones avanzado.</span></div>
+                <div class="cmd-box"><div class="cmd-line"><code>chkdsk C: /f /r</code><button class="copy-btn" onclick="copy(this)">COPIAR</button></div><span class="desc">Repara sectores defectuosos en disco.</span></div>
+                <div class="cmd-box"><div class="cmd-line"><code>robocopy [origen] [dest] /mir</code><button class="copy-btn" onclick="copy(this)">COPIAR</button></div><span class="desc">Espejo exacto entre dos carpetas.</span></div>
+                <div class="cmd-box"><div class="cmd-line"><code>cipher /w:C:</code><button class="copy-btn" onclick="copy(this)">COPIAR</button></div><span class="desc">Borra permanentemente datos eliminados.</span></div>
+                <div class="cmd-box"><div class="cmd-line"><code>compact /c /s:C:\Ruta</code><button class="copy-btn" onclick="copy(this)">COPIAR</button></div><span class="desc">Comprime archivos para ganar espacio.</span></div>
+                <div class="cmd-box"><div class="cmd-line"><code>tree /f</code><button class="copy-btn" onclick="copy(this)">COPIAR</button></div><span class="desc">Gráfico de carpetas y archivos.</span></div>
+                <div class="cmd-box"><div class="cmd-line"><code>format D: /fs:ntfs /q</code><button class="copy-btn" onclick="copy(this)">COPIAR</button></div><span class="desc">Formateo rápido de la unidad D:.</span></div>
+                <div class="cmd-box"><div class="cmd-line"><code>defrag C: /O</code><button class="copy-btn" onclick="copy(this)">COPIAR</button></div><span class="desc">Optimiza y desfragmenta el disco C:.</span></div>
+                <div class="cmd-box"><div class="cmd-line"><code>vol C:</code><button class="copy-btn" onclick="copy(this)">COPIAR</button></div><span class="desc">Ver etiqueta y serie de la unidad.</span></div>
+                <div class="cmd-box"><div class="cmd-line"><code>attrib +h +s +r [archivo]</code><button class="copy-btn" onclick="copy(this)">COPIAR</button></div><span class="desc">Oculta archivo como súper protegido.</span></div>
+            </div>
         </section>
 
-        <!-- Sección de Comandos del Sistema -->
-        <section id="comandos-sistema">
-            <h2>Comandos del Sistema</h2>
-            <ul>
-                <li><strong>tasklist</strong> — Ver procesos activos.</li>
-                <li><strong>taskkill /IM [nombre].exe</strong> — Terminar procesos.</li>
-                <li><strong>shutdown /s /t 0</strong> — Apagar el equipo.</li>
-                <li><strong>systeminfo</strong> — Mostrar información del sistema.</li>
-                <li><details><summary>Borrar Directorios o Archivos con propietario TrustedInstaller</summary>
-                    <p>takeown /f "C:\ruta\a\la\carpeta" /r /d y <b>Tomar propiedad del directorio o archivo</b><br>
-                       icacls "C:\ruta\a\la\carpeta" /grant Administradores:F /t <b>Dar todos los permisos al grupo Administradores (Ajustar)</b> <br>
-                       rmdir /s /q "C:\ruta\a\la\carpeta" o archivo <b>Eliminar directorio o archivo</b>
-                    </p>
-                    </details>
-                </li>
-            </ul>
-        </section class="volver_inicio">
-        <section>
-            <a href="index.html">Volver a Inicio</a>
+        <section id="w-user">
+            <h2>Gestión de Usuarios</h2>
+            <div class="grid">
+                <div class="cmd-box"><div class="cmd-line"><code>net user</code><button class="copy-btn" onclick="copy(this)">COPIAR</button></div><span class="desc">Lista todos los usuarios locales.</span></div>
+                <div class="cmd-box"><div class="cmd-line"><code>net user [nombre] [password] /add</code><button class="copy-btn" onclick="copy(this)">COPIAR</button></div><span class="desc"><span class="tag">ADMIN</span>Crea un nuevo usuario.</span></div>
+                <div class="cmd-box"><div class="cmd-line"><code>net localgroup Administradores [user] /add</code><button class="copy-btn" onclick="copy(this)">COPIAR</button></div><span class="desc">Sube un usuario a Administrador.</span></div>
+                <div class="cmd-box"><div class="cmd-line"><code>net user [nombre] /delete</code><button class="copy-btn" onclick="copy(this)">COPIAR</button></div><span class="desc">Elimina una cuenta de usuario.</span></div>
+                <div class="cmd-box"><div class="cmd-line"><code>whoami /priv</code><button class="copy-btn" onclick="copy(this)">COPIAR</button></div><span class="desc">Muestra tus privilegios actuales.</span></div>
+                <div class="cmd-box"><div class="cmd-line"><code>net user [nombre] *</code><button class="copy-btn" onclick="copy(this)">COPIAR</button></div><span class="desc">Cambia la contraseña de un usuario.</span></div>
+                <div class="cmd-box"><div class="cmd-line"><code>quser</code><button class="copy-btn" onclick="copy(this)">COPIAR</button></div><span class="desc">Ver sesiones de usuario activas.</span></div>
+                <div class="cmd-box"><div class="cmd-line"><code>net accounts</code><button class="copy-btn" onclick="copy(this)">COPIAR</button></div><span class="desc">Políticas de contraseñas y login.</span></div>
+                <div class="cmd-box"><div class="cmd-line"><code>control userpasswords2</code><button class="copy-btn" onclick="copy(this)">COPIAR</button></div><span class="desc">Interfaz avanzada de gestión de usuarios.</span></div>
+                <div class="cmd-box"><div class="cmd-line"><code>msg [user] "mensaje"</code><button class="copy-btn" onclick="copy(this)">COPIAR</button></div><span class="desc">Envía un mensaje a otro usuario en red.</span></div>
+            </div>
         </section>
-    </main>
+    </div>
 
-    <!-- Pie de página -->
-    <footer>
-        <p>&copy; 2025 - J.David</p>
-    </footer>
+    <div id="linux" class="os-content lin">
+        <section id="l-file">
+            <h2>Archivos y Búsqueda</h2>
+            <div class="grid">
+                <div class="cmd-box"><div class="cmd-line"><code>ls -lahS</code><button class="copy-btn" onclick="copy(this)">COPIAR</button></div><span class="desc">Lista por tamaño (grandes primero).</span></div>
+                <div class="cmd-box"><div class="cmd-line"><code>find / -name "*.conf"</code><button class="copy-btn" onclick="copy(this)">COPIAR</button></div><span class="desc">Busca configuraciones en todo el disco.</span></div>
+                <div class="cmd-box"><div class="cmd-line"><code>grep -ri "error" /var/log/</code><button class="copy-btn" onclick="copy(this)">COPIAR</button></div><span class="desc">Busca "error" en todos los logs.</span></div>
+                <div class="cmd-box"><div class="cmd-line"><code>tar -czvf backup.tar.gz [dir]</code><button class="copy-btn" onclick="copy(this)">COPIAR</button></div><span class="desc">Comprime una carpeta en tar.gz.</span></div>
+                <div class="cmd-box"><div class="cmd-line"><code>du -sh * | sort -h</code><button class="copy-btn" onclick="copy(this)">COPIAR</button></div><span class="desc">Espacio usado por carpeta ordenado.</span></div>
+                <div class="cmd-box"><div class="cmd-line"><code>chmod 755 [archivo]</code><button class="copy-btn" onclick="copy(this)">COPIAR</button></div><span class="desc">Permisos de lectura/ejecución estándar.</span></div>
+                <div class="cmd-box"><div class="cmd-line"><code>chown user:group [archivo]</code><button class="copy-btn" onclick="copy(this)">COPIAR</button></div><span class="desc">Cambia dueño y grupo del archivo.</span></div>
+                <div class="cmd-box"><div class="cmd-line"><code>cp -rv [orig] [dest]</code><button class="copy-btn" onclick="copy(this)">COPIAR</button></div><span class="desc">Copia detallada de directorios.</span></div>
+                <div class="cmd-box"><div class="cmd-line"><code>ln -s [ruta] [enlace]</code><button class="copy-btn" onclick="copy(this)">COPIAR</button></div><span class="desc">Crea un acceso directo (simlink).</span></div>
+                <div class="cmd-box"><div class="cmd-line"><code>locate [nombre]</code><button class="copy-btn" onclick="copy(this)">COPIAR</button></div><span class="desc">Búsqueda instantánea en base de datos.</span></div>
+            </div>
+        </section>
+
+        <section id="l-adm">
+            <h2>Gestión y Administración</h2>
+            <div class="grid">
+                <div class="cmd-box"><div class="cmd-line"><code>sudo apt update && sudo apt upgrade</code><button class="copy-btn" onclick="copy(this)">COPIAR</button></div><span class="desc">Actualiza repositorios y paquetes.</span></div>
+                <div class="cmd-box"><div class="cmd-line"><code>htop</code><button class="copy-btn" onclick="copy(this)">COPIAR</button></div><span class="desc">Monitor de procesos interactivo.</span></div>
+                <div class="cmd-box"><div class="cmd-line"><code>journalctl -p 3 -xb</code><button class="copy-btn" onclick="copy(this)">COPIAR</button></div><span class="desc">Muestra errores críticos del sistema.</span></div>
+                <div class="cmd-box"><div class="cmd-line"><code>systemctl status [servicio]</code><button class="copy-btn" onclick="copy(this)">COPIAR</button></div><span class="desc">Verifica el estado de un servicio.</span></div>
+                <div class="cmd-box"><div class="cmd-line"><code>crontab -l</code><button class="copy-btn" onclick="copy(this)">COPIAR</button></div><span class="desc">Lista las tareas programadas.</span></div>
+                <div class="cmd-box"><div class="cmd-line"><code>sudo su -</code><button class="copy-btn" onclick="copy(this)">COPIAR</button></div><span class="desc"><span class="tag">ROOT</span>Entra como Superusuario.</span></div>
+                <div class="cmd-box"><div class="cmd-line"><code>ps aux --sort=-%mem</code><button class="copy-btn" onclick="copy(this)">COPIAR</button></div><span class="desc">Procesos ordenados por uso de RAM.</span></div>
+                <div class="cmd-box"><div class="cmd-line"><code>df -h</code><button class="copy-btn" onclick="copy(this)">COPIAR</button></div><span class="desc">Espacio libre en discos (humano).</span></div>
+                <div class="cmd-box"><div class="cmd-line"><code>uptime -p</code><button class="copy-btn" onclick="copy(this)">COPIAR</button></div><span class="desc">Tiempo que lleva encendido el PC.</span></div>
+                <div class="cmd-box"><div class="cmd-line"><code>history -c</code><button class="copy-btn" onclick="copy(this)">COPIAR</button></div><span class="desc">Borra el historial de comandos.</span></div>
+            </div>
+        </section>
+
+        <section id="l-net">
+            <h2>Redes Linux</h2>
+            <div class="grid">
+                <div class="cmd-box"><div class="cmd-line"><code>ip a</code><button class="copy-btn" onclick="copy(this)">COPIAR</button></div><span class="desc">Muestra todas las interfaces e IPs.</span></div>
+                <div class="cmd-box"><div class="cmd-line"><code>nmcli device wifi list</code><button class="copy-btn" onclick="copy(this)">COPIAR</button></div><span class="desc">Escanea redes WiFi disponibles.</span></div>
+                <div class="cmd-box"><div class="cmd-line"><code>ss -tunlp</code><button class="copy-btn" onclick="copy(this)">COPIAR</button></div><span class="desc">Puertos a la escucha y procesos.</span></div>
+                <div class="cmd-box"><div class="cmd-line"><code>ufw status numbered</code><button class="copy-btn" onclick="copy(this)">COPIAR</button></div><span class="desc">Estado del Firewall con índices.</span></div>
+                <div class="cmd-box"><div class="cmd-line"><code>traceroute [IP/Dom]</code><button class="copy-btn" onclick="copy(this)">COPIAR</button></div><span class="desc">Muestra los saltos hasta el destino.</span></div>
+                <div class="cmd-box"><div class="cmd-line"><code>dig [dominio] ANY</code><button class="copy-btn" onclick="copy(this)">COPIAR</button></div><span class="desc">Información DNS completa de un dominio.</span></div>
+                <div class="cmd-box"><div class="cmd-line"><code>curl -I [url]</code><button class="copy-btn" onclick="copy(this)">COPIAR</button></div><span class="desc">Obtiene solo las cabeceras HTTP.</span></div>
+                <div class="cmd-box"><div class="cmd-line"><code>wget -c [url]</code><button class="copy-btn" onclick="copy(this)">COPIAR</button></div><span class="desc">Descarga archivo permitiendo reanudar.</span></div>
+                <div class="cmd-box"><div class="cmd-line"><code>ssh-keygen -t ed25519</code><button class="copy-btn" onclick="copy(this)">COPIAR</button></div><span class="desc">Genera llaves SSH seguras.</span></div>
+                <div class="cmd-box"><div class="cmd-line"><code>mtr google.com</code><button class="copy-btn" onclick="copy(this)">COPIAR</button></div><span class="desc">Diagnóstico de red dinámico (Ping+Trace).</span></div>
+            </div>
+        </section>
+
+        <section id="l-hw">
+            <h2>Hardware y Sensores</h2>
+            <div class="grid">
+                <div class="cmd-box"><div class="cmd-line"><code>lsblk</code><button class="copy-btn" onclick="copy(this)">COPIAR</button></div><span class="desc">Lista discos y particiones en árbol.</span></div>
+                <div class="cmd-box"><div class="cmd-line"><code>lscpu</code><button class="copy-btn" onclick="copy(this)">COPIAR</button></div><span class="desc">Detalles completos del procesador.</span></div>
+                <div class="cmd-box"><div class="cmd-line"><code>lspci -nnk</code><button class="copy-btn" onclick="copy(this)">COPIAR</button></div><span class="desc">Dispositivos PCI y drivers en uso.</span></div>
+                <div class="cmd-box"><div class="cmd-line"><code>lsusb</code><button class="copy-btn" onclick="copy(this)">COPIAR</button></div><span class="desc">Lista todos los dispositivos USB.</span></div>
+                <div class="cmd-box"><div class="cmd-line"><code>free -h</code><button class="copy-btn" onclick="copy(this)">COPIAR</button></div><span class="desc">Uso de RAM y Swap en tiempo real.</span></div>
+                <div class="cmd-box"><div class="cmd-line"><code>sudo dmidecode -t memory</code><button class="copy-btn" onclick="copy(this)">COPIAR</button></div><span class="desc">Detalles físicos de los slots de RAM.</span></div>
+                <div class="cmd-box"><div class="cmd-line"><code>sensors</code><button class="copy-btn" onclick="copy(this)">COPIAR</button></div><span class="desc">Temperaturas de CPU y ventiladores.</span></div>
+                <div class="cmd-box"><div class="cmd-line"><code>nvidia-smi</code><button class="copy-btn" onclick="copy(this)">COPIAR</button></div><span class="desc">Estado y carga de la GPU (si es NVIDIA).</span></div>
+                <div class="cmd-box"><div class="cmd-line"><code>sudo smartctl -a /dev/sda</code><button class="copy-btn" onclick="copy(this)">COPIAR</button></div><span class="desc">Salud y vida útil del disco SSD/HDD.</span></div>
+                <div class="cmd-box"><div class="cmd-line"><code>inxi -F</code><button class="copy-btn" onclick="copy(this)">COPIAR</button></div><span class="desc">Reporte completo de hardware (requiere inxi).</span></div>
+            </div>
+        </section>
+    </div>
+
+    <a href="index.html" style="display: block; text-align: center; color: var(--text-muted); text-decoration: none; margin: 40px; font-weight: 600;">← Volver al Inicio</a>
+</main>
+
+<script>
+    function showOS(os, element) {
+        document.querySelectorAll('.os-content').forEach(c => c.classList.remove('active'));
+        document.querySelectorAll('.os-card').forEach(c => c.classList.remove('active'));
+        document.querySelectorAll('nav').forEach(n => n.style.display = 'none');
+
+        document.getElementById(os).classList.add('active');
+        document.getElementById('nav-' + os).style.display = 'flex';
+        element.classList.add('active');
+    }
+
+    function copy(btn) {
+        const code = btn.previousElementSibling.innerText;
+        navigator.clipboard.writeText(code).then(() => {
+            const originalText = btn.innerText;
+            btn.innerText = "¡COPIADO!";
+            btn.classList.add('copied');
+            setTimeout(() => {
+                btn.innerText = originalText;
+                btn.classList.remove('copied');
+            }, 1500);
+        });
+    }
+</script>
 
 </body>
 </html>
