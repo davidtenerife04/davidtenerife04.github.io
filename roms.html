@@ -3,66 +3,162 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Directorios como URLs</title>
+    <title>ROMS | Mi Portal Personal</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
     <style>
+        :root {
+            --bg-color: #0f172a;
+            --card-bg: #1e293b;
+            --text-main: #f1f5f9;
+            --text-muted: #94a3b8;
+            --accent: #38bdf8;
+            --accent-glow: rgba(56, 189, 248, 0.15);
+            --border: #334155;
+        }
+
         body {
-            font-family: sans-serif;
-            margin: 20px;
-            background-color: #f4f4f4;
+            font-family: 'Inter', sans-serif;
+            margin: 0;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            min-height: 100vh;
+            background-color: var(--bg-color);
+            color: var(--text-main);
+            background-image: radial-gradient(#1e293b 1px, transparent 1px);
+            background-size: 30px 30px;
         }
 
-        .container {
-            max-width: 800px;
-            margin: 0 auto;
+        .main-container {
+            width: 90%;
+            max-width: 1000px;
+            padding: 40px 20px;
+            text-align: center;
         }
 
-        .directory-list {
+        header {
+            margin-bottom: 50px;
+            text-align: left;
+        }
+
+        /* Botón para volver al inicio */
+        .back-link {
+            display: inline-block;
+            color: var(--accent);
+            text-decoration: none;
+            font-size: 0.9rem;
+            margin-bottom: 20px;
+            transition: opacity 0.3s;
+        }
+
+        .back-link:hover {
+            opacity: 0.8;
+        }
+
+        header h1 {
+            font-size: 2.5rem;
+            font-weight: 800;
+            letter-spacing: -1px;
+            margin: 0 0 10px 0;
+            background: linear-gradient(to right, #ffffff, #94a3b8);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        /* Grid de directorios */
+        .directory-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 20px;
             list-style: none;
             padding: 0;
+            margin: 0;
+            text-align: left;
         }
 
-        .directory-item {
-            background-color: #fff;
-            border: 1px solid #ddd;
-            border-radius: 5px;
-            margin-bottom: 10px;
-            padding: 15px;
-            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-        }
-
-        .directory-link {
+        .directory-item a {
+            display: block;
+            padding: 25px;
+            background-color: var(--card-bg);
+            color: var(--text-main);
             text-decoration: none;
-            color: #007bff;
-            font-weight: bold;
+            border-radius: 16px;
+            border: 1px solid var(--border);
+            transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            position: relative;
+            overflow: hidden;
         }
 
-        .directory-link:hover {
-            text-decoration: underline;
+        .directory-item a:hover {
+            transform: translateY(-5px);
+            border-color: var(--accent);
+            box-shadow: 0 15px 30px rgba(0,0,0,0.3), 0 0 10px var(--accent-glow);
+        }
+
+        .directory-title {
+            display: block;
+            font-size: 1.25rem;
+            font-weight: 700;
+            margin-bottom: 8px;
+            color: var(--accent);
         }
 
         .directory-description {
-            margin-top: 5px;
-            color: #555;
+            font-size: 0.95rem;
+            color: var(--text-muted);
+            line-height: 1.5;
+            margin: 0;
+        }
+
+        /* Brillo decorativo */
+        .directory-item a::after {
+            content: '';
+            position: absolute;
+            top: 0; left: 0; width: 100%; height: 100%;
+            background: radial-gradient(circle at top right, var(--accent-glow), transparent 70%);
+            opacity: 0;
+            transition: opacity 0.4s;
+        }
+
+        .directory-item a:hover::after {
+            opacity: 1;
+        }
+
+        @media (max-width: 600px) {
+            header h1 { font-size: 2rem; }
         }
     </style>
 </head>
 <body>
-    <div class="container">
-        <h1>Mis Directorios</h1>
-        <ul class="directory-list">
-            <li class="directory-item">
-                <a href="https://bunkr.cr/a/5wmEaxi6" class="directory-link">ROMS NDS</a>
-                <p class="directory-description">ROMS de Nintendo DS en Español.</p>
-            </li>
-            <li class="directory-item">
-                <a href="https://ejemplo.com/imagenes" class="directory-link">Galería de Imágenes</a>
-                <p class="directory-description">Todas mis fotos favoritas están aquí.</p>
-            </li>
-            <li class="directory-item">
-                <a href="https://ejemplo.com/proyectos" class="directory-link">Proyectos Personales</a>
-                <p class="directory-description">Proyectos de desarrollo web y otras cosas.</p>
-            </li>
-        </ul>
+    <div class="main-container">
+        <header>
+            <a href="index.html" class="back-link">← Volver al Dashboard</a>
+            <h1>Mis Directorios</h1>
+            <p style="color: var(--text-muted);">Repositorios de ROMS y archivos personales</p>
+        </header>
+        
+        <div class="directory-grid">
+            <div class="directory-item">
+                <a href="https://bunkr.cr/a/5wmEaxi6">
+                    <span class="directory-title">ROMS NDS</span>
+                    <p class="directory-description">Librería de juegos de Nintendo DS completamente en español.</p>
+                </a>
+            </div>
+
+            <div class="directory-item">
+                <a href="https://ejemplo.com/imagenes">
+                    <span class="directory-title">Galería de Imágenes</span>
+                    <p class="directory-description">Almacenamiento de fotos favoritas y recursos visuales.</p>
+                </a>
+            </div>
+
+            <div class="directory-item">
+                <a href="https://ejemplo.com/proyectos">
+                    <span class="directory-title">Proyectos Personales</span>
+                    <p class="directory-description">Repositorio de desarrollos web y experimentos de código.</p>
+                </a>
+            </div>
+        </div>
     </div>
 </body>
 </html>
