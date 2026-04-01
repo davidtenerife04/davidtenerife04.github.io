@@ -1,0 +1,258 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CV | José David Morales Álvarez</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;800&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --bg-color: #0f172a;
+            --card-bg: #1e293b;
+            --text-main: #f1f5f9;
+            --text-muted: #94a3b8;
+            --accent: #38bdf8;
+            --accent-glow: rgba(56, 189, 248, 0.15);
+            --border: #334155;
+        }
+
+        * { box-sizing: border-box; }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            margin: 0;
+            background-color: var(--bg-color);
+            color: var(--text-main);
+            line-height: 1.6;
+            background-image: radial-gradient(#1e293b 1px, transparent 1px);
+            background-size: 30px 30px;
+        }
+
+        .container {
+            max-width: 900px;
+            margin: 0 auto;
+            padding: 40px 20px;
+        }
+
+        /* --- HEADER & CONTACT --- */
+        header {
+            text-align: center;
+            margin-bottom: 60px;
+            padding-top: 20px;
+        }
+
+        .profile-badge {
+            display: inline-block;
+            padding: 6px 16px;
+            background: var(--accent-glow);
+            color: var(--accent);
+            border-radius: 20px;
+            font-size: 0.8rem;
+            font-weight: 600;
+            margin-bottom: 15px;
+            border: 1px solid var(--accent);
+        }
+
+        h1 {
+            font-size: 3rem;
+            margin: 0;
+            font-weight: 800;
+            background: linear-gradient(to right, #ffffff, var(--accent));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .contact-info {
+            display: flex;
+            justify-content: center;
+            gap: 20px;
+            flex-wrap: wrap;
+            margin-top: 15px;
+            color: var(--text-muted);
+            font-size: 0.9rem;
+        }
+
+        .contact-info span { display: flex; align-items: center; gap: 5px; }
+
+        /* --- SECCIONES --- */
+        section { margin-bottom: 50px; }
+
+        h2 {
+            font-size: 1.4rem;
+            color: var(--accent);
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            border-bottom: 1px solid var(--border);
+            padding-bottom: 10px;
+            margin-bottom: 25px;
+        }
+
+        /* --- TIMELINE (Experiencia y Educación) --- */
+        .card {
+            background: var(--card-bg);
+            border: 1px solid var(--border);
+            padding: 25px;
+            border-radius: 16px;
+            margin-bottom: 20px;
+            transition: all 0.3s ease;
+        }
+
+        .card:hover {
+            border-color: var(--accent);
+            transform: translateY(-3px);
+            box-shadow: 0 10px 30px rgba(0,0,0,0.3);
+        }
+
+        .card-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            margin-bottom: 10px;
+        }
+
+        .title { font-weight: 700; font-size: 1.15rem; color: #fff; }
+        .date { font-size: 0.85rem; color: var(--accent); font-weight: 600; }
+        .subtitle { display: block; color: var(--text-muted); font-size: 0.95rem; margin-bottom: 12px; }
+
+        .card-content { font-size: 0.9rem; color: var(--text-muted); }
+        .card-content ul { padding-left: 18px; margin: 0; }
+        .card-content li { margin-bottom: 5px; }
+
+        /* --- SKILLS & IDIOMAS --- */
+        .grid-2col {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 20px;
+        }
+
+        .skills-list {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+        }
+
+        .tag {
+            background: var(--border);
+            padding: 6px 12px;
+            border-radius: 6px;
+            font-size: 0.85rem;
+            color: var(--text-main);
+        }
+
+        .lang-item {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 8px;
+            font-size: 0.9rem;
+        }
+
+        .nav-back {
+            position: absolute;
+            top: 20px;
+            left: 20px;
+            color: var(--text-muted);
+            text-decoration: none;
+            font-size: 0.85rem;
+        }
+
+        @media (max-width: 650px) {
+            .grid-2col { grid-template-columns: 1fr; }
+            .card-header { flex-direction: column; }
+            h1 { font-size: 2.2rem; }
+        }
+    </style>
+</head>
+<body>
+
+    <a href="index.html" class="nav-back">← Dashboard</a>
+
+    <div class="container">
+        <header>
+            <div class="profile-badge">Técnico Superior en ASIR</div>
+            <h1>José David Morales Álvarez</h1>
+            <div class="contact-info">
+                <span>📍 El Tanque, Tenerife</span>
+                <span>📧 davidtanque2004@gmail.com</span>
+                <span>📞 +34 675 414 531</span>
+            </div>
+        </header>
+
+        <section id="experiencia">
+            <h2>Experiencia Laboral</h2>
+            
+            <div class="card">
+                <div class="card-header">
+                    <span class="title">Servicio Técnico (Autónomo)</span>
+                    <span class="date">2022 — Actual</span>
+                </div>
+                <div class="card-content">
+                    <ul>
+                        <li>Mantenimiento preventivo/correctivo y reparación de hardware/software[cite: 9, 10].</li>
+                        <li>Implementación de servidores NAS (TrueNAS Core) y virtualización (Proxmox, VMware).</li>
+                        <li>Gestión de bases de datos MySQL/MariaDB y redes LAN/Wi-Fi[cite: 16, 17].</li>
+                        <li>Instalaciones eléctricas y sistemas multimedia en vehículos[cite: 14].</li>
+                    </ul>
+                </div>
+            </div>
+
+            <div class="card">
+                <div class="card-header">
+                    <span class="title">Administrador de Sistemas</span>
+                    <span class="date">Mar 2024 — May 2024</span>
+                </div>
+                <span class="subtitle">Ordenatech - La Orotava</span>
+                <div class="card-content">
+                    Gestión de servidores web, creación de sitios con WordPress/HTML/CSS y mantenimiento de copias de seguridad[cite: 24, 25, 26].
+                </div>
+            </div>
+
+            <div class="card">
+                <div class="card-header">
+                    <span class="title">Becario Administrador de Sistemas</span>
+                    <span class="date">Mar 2022 — May 2022</span>
+                </div>
+                <span class="subtitle">OXJNO - Folingo, Italia</span>
+                <div class="card-content">
+                    Administración de sistemas operativos y asesoramiento en desarrollo web durante estancia internacional[cite: 20, 22].
+                </div>
+            </div>
+        </section>
+
+        <div class="grid-2col">
+            <section id="educacion">
+                <h2>Formación</h2>
+                <div class="card">
+                    <span class="date">Actualidad</span>
+                    <span class="title">TS en Administración de Sistemas Informáticos en Red</span>
+                    <span class="subtitle">IES Puerto de la Cruz - Nota: 9.07 (Matrícula de Honor) [cite: 35, 38]</span>
+                </div>
+                <div class="card">
+                    <span class="date">2020 — 2022</span>
+                    <span class="title">Grado Medio en Sistemas Microinformáticos y Redes</span>
+                    <span class="subtitle">IES San Juan de la Rambla - Nota: 8.18 [cite: 31, 32]</span>
+                </div>
+            </section>
+
+            <section id="habilidades">
+                <h2>Habilidades</h2>
+                <div class="skills-list">
+                    <span class="tag">Java</span>
+                    <span class="tag">Python</span>
+                    <span class="tag">C</span>
+                    <span class="tag">MySQL / MariaDB</span>
+                    <span class="tag">TrueNAS</span>
+                    <span class="tag">Virtualización</span>
+                    <span class="tag">WordPress</span>
+                    <span class="tag">HTML / CSS</span>
+                </div>
+                
+                <h2 style="margin-top: 30px;">Idiomas</h2>
+                <div class="lang-item"><span>Español</span> <span>Materno [cite: 40]</span></div>
+                <div class="lang-item"><span>Inglés</span> <span>B1 [cite: 43]</span></div>
+                <div class="lang-item"><span>Italiano</span> <span>A1 [cite: 43]</span></div>
+            </section>
+        </div>
+    </div>
+
+</body>
+</html>
