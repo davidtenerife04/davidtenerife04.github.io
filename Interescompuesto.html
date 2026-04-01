@@ -1,0 +1,273 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Simulador de Interés Compuesto | José David Morales</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;800&display=swap" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <style>
+        :root {
+            --bg-color: #0f172a;
+            --card-bg: #1e293b;
+            --text-main: #f1f5f9;
+            --text-muted: #94a3b8;
+            --accent: #38bdf8;
+            --border: #334155;
+        }
+
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: var(--bg-color);
+            color: var(--text-main);
+            line-height: 1.6;
+            padding: 40px 20px;
+            min-height: 100vh;
+        }
+
+        .container { max-width: 1100px; margin: 0 auto; }
+
+        header { text-align: center; margin-bottom: 40px; }
+
+        h1 {
+            font-size: 2.5rem;
+            font-weight: 800;
+            background: linear-gradient(to right, #fff, var(--accent));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            margin-bottom: 10px;
+        }
+
+        .description { color: var(--text-muted); max-width: 650px; margin: 0 auto; }
+
+        .calculator-grid {
+            display: grid;
+            grid-template-columns: 350px 1fr;
+            gap: 30px;
+            margin-top: 20px;
+        }
+
+        /* Tarjeta de Controles */
+        .controls-card {
+            background: var(--card-bg);
+            padding: 30px;
+            border-radius: 24px;
+            border: 1px solid var(--border);
+            height: fit-content;
+        }
+
+        .control-group { margin-bottom: 25px; }
+
+        .control-group label {
+            display: flex;
+            justify-content: space-between;
+            font-size: 0.9rem;
+            margin-bottom: 10px;
+            color: var(--text-main);
+        }
+
+        .control-group label span { color: var(--accent); font-weight: 700; }
+
+        input[type=range] {
+            width: 100%;
+            cursor: pointer;
+            accent-color: var(--accent);
+        }
+
+        /* Tarjeta del Gráfico - Solución al bug de estiramiento */
+        .chart-card {
+            background: var(--card-bg);
+            padding: 30px;
+            border-radius: 24px;
+            border: 1px solid var(--border);
+            display: flex;
+            flex-direction: column;
+            height: 550px; /* Altura fija para el contenedor padre */
+            overflow: hidden;
+        }
+
+        .chart-container {
+            position: relative;
+            flex-grow: 1; /* El gráfico ocupa el espacio restante */
+            width: 100%;
+        }
+
+        .result-box {
+            display: flex;
+            justify-content: space-around;
+            margin-bottom: 25px;
+            text-align: center;
+        }
+
+        .result-item span { display: block; font-size: 0.8rem; color: var(--text-muted); text-transform: uppercase; letter-spacing: 1px; }
+        .result-item strong { font-size: 1.8rem; color: var(--accent); }
+
+        @media (max-width: 900px) {
+            .calculator-grid { grid-template-columns: 1fr; }
+            .chart-card { height: 450px; }
+        }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <header>
+        <h1>Calculadora de Interés Compuesto</h1>
+        <p class="description">
+            Visualiza el crecimiento de tu inversión a lo largo del tiempo. Ajusta los parámetros para ver el efecto multiplicador de la rentabilidad y el tiempo.
+        </p>
+    </header>
+
+    <div class="calculator-grid">
+        <div class="controls-card">
+            <div class="control-group">
+                <label>Inversión Inicial: <span id="val-inicial">5000</span>€</label>
+                <input type="range" id="inicial" min="0" max="100000" step="500" value="5000">
+            </div>
+
+            <div class="control-group">
+                <label>Aportación Mensual: <span id="val-mensual">200</span>€</label>
+                <input type="range" id="mensual" min="0" max="5000" step="50" value="200">
+            </div>
+
+            <div class="control-group">
+                <label>Interés Anual: <span id="val-interes">8</span>%</label>
+                <input type="range" id="interes" min="1" max="50" step="0.5" value="8">
+            </div>
+
+            <div class="control-group">
+                <label>Tiempo: <span id="val-tiempo">10</span> años</label>
+                <input type="range" id="tiempo" min="1" max="30" step="1" value="10">
+            </div>
+        </div>
+
+        <div class="chart-card">
+            <div class="result-box">
+                <div class="result-item">
+                    <span>Balance Final</span>
+                    <strong id="res-total">0€</strong>
+                </div>
+                <div class="result-item">
+                    <span>Beneficios Netos</span>
+                    <strong id="res-interes">0€</strong>
+                </div>
+            </div>
+            
+            <div class="chart-container">
+                <canvas id="balanceChart"></canvas>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    const ctx = document.getElementById('balanceChart').getContext('2d');
+    let chart;
+
+    function calcular() {
+        const capitalInicial = parseFloat(document.getElementById('inicial').value);
+        const aportacionMensual = parseFloat(document.getElementById('mensual').value);
+        const tasaAnual = parseFloat(document.getElementById('interes').value);
+        const años = parseInt(document.getElementById('tiempo').value);
+        
+        // Actualizar textos de la interfaz
+        document.getElementById('val-inicial').innerText = capitalInicial.toLocaleString();
+        document.getElementById('val-mensual').innerText = aportacionMensual.toLocaleString();
+        document.getElementById('val-interes').innerText = tasaAnual;
+        document.getElementById('val-tiempo').innerText = años;
+
+        const r = (tasaAnual / 100) / 12; // Interés mensual
+        let labels = [];
+        let dataBalance = [];
+        
+        let saldoActual = capitalInicial;
+        let totalAportado = capitalInicial;
+
+        // Año 0
+        labels.push('Año 0');
+        dataBalance.push(Math.round(saldoActual));
+
+        // Cálculo por cada año
+        for (let i = 1; i <= años; i++) {
+            for (let m = 0; m < 12; m++) {
+                saldoActual = (saldoActual + aportacionMensual) * (1 + r);
+                totalAportado += aportacionMensual;
+            }
+            labels.push('Año ' + i);
+            dataBalance.push(Math.round(saldoActual));
+        }
+
+        // Mostrar resultados finales
+        document.getElementById('res-total').innerText = Math.round(saldoActual).toLocaleString() + '€';
+        document.getElementById('res-interes').innerText = Math.round(saldoActual - totalAportado).toLocaleString() + '€';
+
+        dibujarGrafica(labels, dataBalance);
+    }
+
+    function dibujarGrafica(labels, data) {
+        if (chart) chart.destroy();
+
+        chart = new Chart(ctx, {
+            type: 'bar',
+            data: {
+                labels: labels,
+                datasets: [{
+                    label: 'Capital Total (€)',
+                    data: data,
+                    backgroundColor: '#38bdf8',
+                    borderRadius: 5,
+                    hoverBackgroundColor: '#ffffff',
+                    borderWidth: 0
+                }]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false, // Fundamental para evitar el bug de estiramiento
+                plugins: {
+                    legend: { display: false },
+                    tooltip: {
+                        backgroundColor: '#1e293b',
+                        titleColor: '#38bdf8',
+                        bodyColor: '#f1f5f9',
+                        borderColor: '#334155',
+                        borderWidth: 1,
+                        padding: 12,
+                        displayColors: false,
+                        callbacks: {
+                            label: function(context) {
+                                return 'Saldo: ' + context.parsed.y.toLocaleString() + ' €';
+                            }
+                        }
+                    }
+                },
+                scales: {
+                    y: {
+                        beginAtZero: true,
+                        grid: { color: 'rgba(255, 255, 255, 0.05)' },
+                        ticks: { 
+                            color: '#94a3b8',
+                            callback: value => value.toLocaleString() + '€'
+                        }
+                    },
+                    x: {
+                        grid: { display: false },
+                        ticks: { color: '#94a3b8' }
+                    }
+                }
+            }
+        });
+    }
+
+    // Escuchar cambios en todos los inputs
+    document.querySelectorAll('input[type=range]').forEach(input => {
+        input.addEventListener('input', calcular);
+    });
+
+    // Ejecución inicial
+    calcular();
+</script>
+
+</body>
+</html>
