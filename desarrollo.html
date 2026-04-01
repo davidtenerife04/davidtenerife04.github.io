@@ -1,0 +1,527 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Proyectos | José David Morales</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <script src="https://unpkg.com/scrollreveal"></script>
+    <style>
+        :root {
+            --bg-color: #0f172a;
+            --card-bg: #1e293b;
+            --text-main: #f1f5f9;
+            --text-muted: #94a3b8;
+            --accent: #38bdf8;
+            --accent-glow: rgba(56, 189, 248, 0.2);
+            --border: #334155;
+        }
+
+        *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: var(--bg-color);
+            color: var(--text-main);
+            line-height: 1.6;
+            overflow-x: hidden;
+            background-image:
+                radial-gradient(circle at 0% 0%, rgba(56, 189, 248, 0.05) 0%, transparent 50%),
+                radial-gradient(circle at 100% 100%, rgba(56, 189, 248, 0.05) 0%, transparent 50%);
+        }
+
+        .container {
+            max-width: 1100px;
+            margin: 0 auto;
+            padding: 0 40px;
+        }
+
+        /* NAV */
+        nav {
+            padding: 22px 0;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .back-link {
+            color: var(--accent);
+            text-decoration: none;
+            font-weight: 500;
+            font-size: 0.9rem;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            transition: gap 0.3s ease;
+        }
+        .back-link:hover { gap: 10px; }
+
+        .nav-count {
+            font-size: 0.8rem;
+            color: var(--text-muted);
+            background: var(--card-bg);
+            border: 1px solid var(--border);
+            padding: 5px 14px;
+            border-radius: 50px;
+        }
+        .nav-count span { color: var(--accent); font-weight: 700; }
+
+        /* HERO */
+        .hero {
+            padding: 70px 0 50px;
+            border-bottom: 1px solid var(--border);
+            margin-bottom: 60px;
+        }
+
+        .hero-eyebrow {
+            font-size: 0.75rem;
+            font-weight: 700;
+            letter-spacing: 3px;
+            text-transform: uppercase;
+            color: var(--accent);
+            margin-bottom: 18px;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .hero-eyebrow::before {
+            content: '';
+            display: block;
+            width: 30px;
+            height: 1px;
+            background: var(--accent);
+        }
+
+        h1 {
+            font-size: clamp(2.5rem, 6vw, 4rem);
+            font-weight: 800;
+            letter-spacing: -2px;
+            line-height: 1.05;
+            background: linear-gradient(to bottom right, #fff 30%, var(--accent));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            margin-bottom: 18px;
+        }
+
+        .hero-sub {
+            color: var(--text-muted);
+            font-size: 1.1rem;
+            max-width: 560px;
+            font-weight: 400;
+        }
+
+        /* FILTER TABS */
+        .filter-bar {
+            display: flex;
+            gap: 10px;
+            flex-wrap: wrap;
+            margin-bottom: 50px;
+        }
+
+        .filter-btn {
+            padding: 7px 18px;
+            border-radius: 50px;
+            border: 1px solid var(--border);
+            background: transparent;
+            color: var(--text-muted);
+            font-size: 0.8rem;
+            font-weight: 600;
+            font-family: 'Inter', sans-serif;
+            cursor: pointer;
+            transition: all 0.25s ease;
+            letter-spacing: 0.03em;
+        }
+
+        .filter-btn:hover {
+            border-color: var(--accent);
+            color: var(--accent);
+        }
+
+        .filter-btn.active {
+            background: var(--accent-glow);
+            border-color: var(--accent);
+            color: var(--accent);
+        }
+
+        /* GRID */
+        .projects-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+            gap: 28px;
+            margin-bottom: 100px;
+        }
+
+        /* CARD */
+        .project-card {
+            background: var(--card-bg);
+            border: 1px solid var(--border);
+            border-radius: 24px;
+            overflow: hidden;
+            text-decoration: none;
+            color: inherit;
+            display: flex;
+            flex-direction: column;
+            transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            position: relative;
+        }
+
+        .project-card::before {
+            content: '';
+            position: absolute;
+            inset: 0;
+            border-radius: 24px;
+            background: linear-gradient(135deg, var(--accent-glow) 0%, transparent 60%);
+            opacity: 0;
+            transition: opacity 0.4s ease;
+            pointer-events: none;
+            z-index: 0;
+        }
+
+        .project-card:hover {
+            border-color: var(--accent);
+            transform: translateY(-6px);
+            box-shadow: 0 20px 50px rgba(0,0,0,0.4), 0 0 30px var(--accent-glow);
+        }
+
+        .project-card:hover::before { opacity: 1; }
+
+        /* IMAGE AREA */
+        .card-image {
+            width: 100%;
+            aspect-ratio: 16/9;
+            position: relative;
+            overflow: hidden;
+            background: #0d1829;
+        }
+
+        .card-image img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: transform 0.5s ease;
+            display: block;
+        }
+
+        .project-card:hover .card-image img {
+            transform: scale(1.05);
+        }
+
+        /* Placeholder cuando no hay imagen */
+        .card-image-placeholder {
+            width: 100%;
+            height: 100%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 3.5rem;
+            background: linear-gradient(135deg, #0d1829 0%, #1a2740 100%);
+        }
+
+        /* Overlay con botón en hover */
+        .card-overlay {
+            position: absolute;
+            inset: 0;
+            background: rgba(15, 23, 42, 0.75);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            opacity: 0;
+            transition: opacity 0.3s ease;
+            backdrop-filter: blur(2px);
+        }
+
+        .project-card:hover .card-overlay { opacity: 1; }
+
+        .overlay-btn {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            background: var(--accent);
+            color: var(--bg-color);
+            padding: 10px 22px;
+            border-radius: 50px;
+            font-weight: 700;
+            font-size: 0.85rem;
+            transform: translateY(8px);
+            transition: transform 0.3s cubic-bezier(0.22, 1, 0.36, 1);
+        }
+
+        .project-card:hover .overlay-btn {
+            transform: translateY(0);
+        }
+
+        /* CARD BODY */
+        .card-body {
+            padding: 26px 28px 28px;
+            display: flex;
+            flex-direction: column;
+            flex: 1;
+            position: relative;
+            z-index: 1;
+        }
+
+        .card-meta {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 12px;
+        }
+
+        .card-year {
+            font-size: 0.75rem;
+            color: var(--accent);
+            font-weight: 700;
+            background: var(--accent-glow);
+            padding: 3px 10px;
+            border-radius: 8px;
+        }
+
+        .card-status {
+            font-size: 0.7rem;
+            font-weight: 600;
+            letter-spacing: 1px;
+            text-transform: uppercase;
+        }
+
+        .status-active { color: #4ade80; }
+        .status-wip { color: #fbbf24; }
+        .status-archived { color: var(--text-muted); }
+
+        .card-title {
+            font-size: 1.25rem;
+            font-weight: 700;
+            color: #fff;
+            margin-bottom: 10px;
+            line-height: 1.2;
+        }
+
+        .card-desc {
+            font-size: 0.9rem;
+            color: var(--text-muted);
+            line-height: 1.65;
+            flex: 1;
+            margin-bottom: 20px;
+        }
+
+        /* TECH TAGS */
+        .card-tags {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+        }
+
+        .tag {
+            font-size: 0.7rem;
+            font-weight: 600;
+            padding: 4px 10px;
+            border-radius: 6px;
+            border: 1px solid var(--border);
+            color: var(--text-muted);
+            background: rgba(255,255,255,0.03);
+            letter-spacing: 0.02em;
+            transition: all 0.2s ease;
+        }
+
+        .project-card:hover .tag {
+            border-color: rgba(56, 189, 248, 0.3);
+            color: var(--text-main);
+        }
+
+        /* GITHUB ICON SVG inline */
+        .gh-icon {
+            width: 16px;
+            height: 16px;
+            fill: currentColor;
+        }
+
+        /* EMPTY STATE */
+        .empty-state {
+            grid-column: 1 / -1;
+            text-align: center;
+            padding: 80px 0;
+            color: var(--text-muted);
+            display: none;
+        }
+
+        .empty-state .icon { font-size: 3rem; margin-bottom: 16px; }
+        .empty-state p { font-size: 1rem; }
+
+        @media (max-width: 700px) {
+            .container { padding: 0 20px; }
+            .projects-grid { grid-template-columns: 1fr; gap: 20px; }
+            h1 { letter-spacing: -1px; }
+        }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <nav>
+        <a href="index.html" class="back-link">← Volver al Dashboard</a>
+        <div class="nav-count">Total: <span id="total-count">0</span> proyectos</div>
+    </nav>
+
+    <header class="hero reveal-top">
+        <p class="hero-eyebrow">José David Morales Álvarez</p>
+        <h1>Mis Proyectos</h1>
+        <p class="hero-sub">Aplicaciones, herramientas y experimentos que he desarrollado. Haz clic en cualquier tarjeta para ver el repositorio.</p>
+    </header>
+
+    <div class="filter-bar reveal-top">
+        <button class="filter-btn active" data-filter="all">Todos</button>
+        <button class="filter-btn" data-filter="Python">Python</button>
+        <button class="filter-btn" data-filter="Web">Web</button>
+        <button class="filter-btn" data-filter="Linux">Linux</button>
+        <button class="filter-btn" data-filter="Java">Java</button>
+        <button class="filter-btn" data-filter="C++">C++</button>
+        <button class="filter-btn" data-filter="HTML/JS">HTML / JS</button>
+        <button class="filter-btn" data-filter="Chrome Extension">Crome Extension</button>
+    </div>
+
+    <div class="projects-grid" id="projects-grid">
+        <!-- Las tarjetas se generan desde el array de abajo -->
+    </div>
+</div>
+
+<script>
+    // ============================================================
+    // EDITA ESTE ARRAY PARA AÑADIR O MODIFICAR TUS PROYECTOS
+    // ============================================================
+    const projects = [
+        {
+            title: "Snake Game",
+            description: "Juego Snake clásico desarrollado en JavaScript y HTML. Incluye sistema de puntuación, niveles de dificultad y pantallas de estado con overlays semitransparentes.",
+            image: "imagenpromocional.png",           // Ruta a la imagen, ej: "img/snake.png"
+            emoji: "🐍",         // Se muestra si no hay imagen
+            year: "2026",
+            status: "active",    // active | wip | archived
+            tags: ["HTML/JS", "Chrome Extension"],
+            github: "https://github.com/davidtenerife04/-snake-game"
+        },
+        {
+            title: "Monitor de Servidores",
+            description: "Script de monitorización para servidores Proxmox y TrueNAS. Genera alertas por email cuando los recursos superan umbrales configurables.",
+            image: "",
+            emoji: "📡",
+            year: "2024",
+            status: "active",
+            tags: ["Python", "Linux", "Bash"],
+            github: "https://github.com/tu-usuario/server-monitor"
+        },
+        {
+            title: "Calculadora Optimizada C++",
+            description: "Calculadora implementada en C++ con optimizaciones de rendimiento. Incluye operaciones básicas y avanzadas con manejo de errores.",
+            image: "logo.webp",
+            emoji: "🌐",
+            year: "2024",
+            status: "wip",
+            tags: ["C++"],
+            github: "https://github.com/davidtenerife04/Calculadora-C-Ultra-Optimized"
+        },
+        {
+            title: "Backup Automático NAS",
+            description: "Herramienta de línea de comandos para automatizar copias de seguridad en TrueNAS Core via rsync y ZFS snapshots con rotación configurable.",
+            image: "",
+            emoji: "💾",
+            year: "2023",
+            status: "archived",
+            tags: ["Bash", "Linux", "ZFS"],
+            github: "https://github.com/tu-usuario/nas-backup"
+        }
+    ];
+    // ============================================================
+
+    const statusLabel = { active: "Activo", wip: "En progreso", archived: "Archivado" };
+    const statusClass = { active: "status-active", wip: "status-wip", archived: "status-archived" };
+
+    function renderCards(filter) {
+        const grid = document.getElementById('projects-grid');
+        const filtered = filter === 'all'
+            ? projects
+            : projects.filter(p => p.tags.some(t => t === filter));
+
+        grid.innerHTML = '';
+
+        if (filtered.length === 0) {
+            grid.innerHTML = `<div class="empty-state" style="display:block">
+                <div class="icon">🔍</div>
+                <p>No hay proyectos con ese filtro aún.</p>
+            </div>`;
+            return;
+        }
+
+        filtered.forEach((p, i) => {
+            const card = document.createElement('a');
+            card.className = 'project-card reveal-card';
+            card.href = p.github;
+            card.target = '_blank';
+            card.rel = 'noopener noreferrer';
+            card.style.animationDelay = `${i * 0.08}s`;
+
+            const imageContent = p.image
+                ? `<img src="${p.image}" alt="${p.title}" loading="lazy">`
+                : `<div class="card-image-placeholder">${p.emoji}</div>`;
+
+            card.innerHTML = `
+                <div class="card-image">
+                    ${imageContent}
+                    <div class="card-overlay">
+                        <div class="overlay-btn">
+                            <svg class="gh-icon" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                                <path d="M12 .297c-6.63 0-12 5.373-12 12 0 5.303 3.438 9.8 8.205 11.385.6.113.82-.258.82-.577 0-.285-.01-1.04-.015-2.04-3.338.724-4.042-1.61-4.042-1.61C4.422 18.07 3.633 17.7 3.633 17.7c-1.087-.744.084-.729.084-.729 1.205.084 1.838 1.236 1.838 1.236 1.07 1.835 2.809 1.305 3.495.998.108-.776.417-1.305.76-1.605-2.665-.3-5.466-1.332-5.466-5.93 0-1.31.465-2.38 1.235-3.22-.135-.303-.54-1.523.105-3.176 0 0 1.005-.322 3.3 1.23.96-.267 1.98-.399 3-.405 1.02.006 2.04.138 3 .405 2.28-1.552 3.285-1.23 3.285-1.23.645 1.653.24 2.873.12 3.176.765.84 1.23 1.91 1.23 3.22 0 4.61-2.805 5.625-5.475 5.92.42.36.81 1.096.81 2.22 0 1.606-.015 2.896-.015 3.286 0 .315.21.69.825.57C20.565 22.092 24 17.592 24 12.297c0-6.627-5.373-12-12-12"/>
+                            </svg>
+                            Ver en GitHub
+                        </div>
+                    </div>
+                </div>
+                <div class="card-body">
+                    <div class="card-meta">
+                        <span class="card-year">${p.year}</span>
+                        <span class="card-status ${statusClass[p.status]}">${statusLabel[p.status]}</span>
+                    </div>
+                    <div class="card-title">${p.title}</div>
+                    <div class="card-desc">${p.description}</div>
+                    <div class="card-tags">
+                        ${p.tags.map(t => `<span class="tag">${t}</span>`).join('')}
+                    </div>
+                </div>
+            `;
+            grid.appendChild(card);
+        });
+
+        document.getElementById('total-count').textContent = filtered.length;
+
+        ScrollReveal().reveal('.reveal-card', {
+            duration: 700,
+            distance: '24px',
+            origin: 'bottom',
+            interval: 100,
+            opacity: 0,
+            reset: false
+        });
+    }
+
+    // Filtros
+    document.querySelectorAll('.filter-btn').forEach(btn => {
+        btn.addEventListener('click', () => {
+            document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
+            btn.classList.add('active');
+            renderCards(btn.dataset.filter);
+        });
+    });
+
+    // Init
+    renderCards('all');
+
+    ScrollReveal().reveal('.reveal-top', {
+        duration: 900,
+        distance: '28px',
+        origin: 'top',
+        opacity: 0,
+        interval: 150
+    });
+</script>
+
+</body>
+</html>
