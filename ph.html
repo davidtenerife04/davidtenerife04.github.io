@@ -1,0 +1,303 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>En Proceso | José David Morales</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --bg-color: #0f172a;
+            --card-bg: #1e293b;
+            --text-main: #f1f5f9;
+            --text-muted: #94a3b8;
+            --accent: #38bdf8;
+            --accent-glow: rgba(56, 189, 248, 0.2);
+            --border: #334155;
+        }
+
+        *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: var(--bg-color);
+            color: var(--text-main);
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            overflow: hidden;
+            background-image:
+                radial-gradient(circle at 20% 50%, rgba(56, 189, 248, 0.06) 0%, transparent 50%),
+                radial-gradient(circle at 80% 20%, rgba(56, 189, 248, 0.04) 0%, transparent 40%);
+        }
+
+        nav {
+            padding: 22px 40px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-bottom: 1px solid var(--border);
+        }
+
+        .nav-logo {
+            font-size: 0.85rem;
+            font-weight: 600;
+            color: var(--text-muted);
+            letter-spacing: 0.05em;
+        }
+
+        .back-link {
+            color: var(--accent);
+            text-decoration: none;
+            font-weight: 500;
+            font-size: 0.85rem;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            transition: gap 0.3s ease;
+        }
+        .back-link:hover { gap: 10px; }
+
+        .scene {
+            flex: 1;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 40px;
+            position: relative;
+        }
+
+        .grid-lines {
+            position: absolute;
+            inset: 0;
+            background-image:
+                linear-gradient(var(--border) 1px, transparent 1px),
+                linear-gradient(90deg, var(--border) 1px, transparent 1px);
+            background-size: 60px 60px;
+            opacity: 0.18;
+            mask-image: radial-gradient(ellipse 70% 70% at 50% 50%, black 0%, transparent 100%);
+        }
+
+        .big-number {
+            position: absolute;
+            font-size: clamp(180px, 30vw, 320px);
+            font-weight: 800;
+            color: transparent;
+            -webkit-text-stroke: 1px var(--border);
+            user-select: none;
+            pointer-events: none;
+            letter-spacing: -10px;
+            line-height: 1;
+            opacity: 0.5;
+        }
+
+        .content {
+            position: relative;
+            z-index: 2;
+            text-align: center;
+            max-width: 520px;
+        }
+
+        .label {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            background: var(--accent-glow);
+            border: 1px solid var(--accent);
+            color: var(--accent);
+            padding: 6px 16px;
+            border-radius: 50px;
+            font-size: 0.75rem;
+            font-weight: 700;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+            margin-bottom: 28px;
+            animation: fadeIn 0.6s ease both;
+        }
+
+        .dot-live {
+            width: 7px;
+            height: 7px;
+            border-radius: 50%;
+            background: var(--accent);
+            animation: blink 1.5s ease-in-out infinite;
+        }
+
+        @keyframes blink {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.3; }
+        }
+
+        h1 {
+            font-size: clamp(2.8rem, 7vw, 4.5rem);
+            font-weight: 800;
+            letter-spacing: -2px;
+            line-height: 1.05;
+            margin-bottom: 20px;
+            background: linear-gradient(to bottom right, #fff 30%, var(--accent));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            animation: slideUp 0.7s cubic-bezier(0.22, 1, 0.36, 1) 0.1s both;
+        }
+
+        p {
+            color: var(--text-muted);
+            font-size: 1.05rem;
+            line-height: 1.7;
+            font-weight: 400;
+            margin-bottom: 40px;
+            animation: slideUp 0.7s cubic-bezier(0.22, 1, 0.36, 1) 0.2s both;
+        }
+
+        .steps {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0;
+            margin-bottom: 40px;
+            animation: slideUp 0.7s cubic-bezier(0.22, 1, 0.36, 1) 0.3s both;
+        }
+
+        .step {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .step-circle {
+            width: 36px;
+            height: 36px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 0.75rem;
+            font-weight: 700;
+        }
+
+        .step.done .step-circle {
+            background: var(--accent-glow);
+            border: 1px solid var(--accent);
+            color: var(--accent);
+        }
+
+        .step.active .step-circle {
+            background: var(--accent);
+            color: var(--bg-color);
+            animation: pulse 2s ease-in-out infinite;
+        }
+
+        .step.pending .step-circle {
+            background: transparent;
+            border: 1px solid var(--border);
+            color: var(--text-muted);
+        }
+
+        @keyframes pulse {
+            0%, 100% { box-shadow: 0 0 10px var(--accent-glow); }
+            50% { box-shadow: 0 0 25px rgba(56, 189, 248, 0.5); }
+        }
+
+        .step-label {
+            font-size: 0.65rem;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            font-weight: 600;
+        }
+
+        .step.done .step-label { color: var(--accent); }
+        .step.active .step-label { color: var(--text-main); }
+        .step.pending .step-label { color: var(--border); }
+
+        .step-connector {
+            width: 50px;
+            height: 1px;
+            margin: 0 4px;
+            margin-bottom: 30px;
+        }
+
+        .step-connector.done { background: var(--accent); opacity: 0.6; }
+        .step-connector.pending { background: var(--border); }
+
+        .btn-back {
+            display: inline-block;
+            padding: 13px 30px;
+            background: #fff;
+            color: var(--bg-color);
+            text-decoration: none;
+            border-radius: 50px;
+            font-weight: 700;
+            font-size: 0.85rem;
+            transition: all 0.3s ease;
+            animation: slideUp 0.7s cubic-bezier(0.22, 1, 0.36, 1) 0.4s both;
+        }
+
+        .btn-back:hover {
+            background: var(--accent);
+            color: #fff;
+            transform: translateY(-3px);
+            box-shadow: 0 10px 30px var(--accent-glow);
+        }
+
+        @keyframes slideUp {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+
+        @media (max-width: 600px) {
+            nav { padding: 16px 20px; }
+            .scene { padding: 24px; }
+            .step-connector { width: 28px; }
+        }
+    </style>
+</head>
+<body>
+
+    <nav>
+        <span class="nav-logo">José David Morales</span>
+        <a href="index.html" class="back-link">← Dashboard</a>
+    </nav>
+
+    <div class="scene">
+        <div class="grid-lines"></div>
+        <div class="big-number">///</div>
+
+        <div class="content">
+            <div class="label">
+                <div class="dot-live"></div>
+                En desarrollo
+            </div>
+
+            <h1>Próximamente</h1>
+
+            <p>Esta sección está siendo construida con cuidado.<br>Vuelve pronto para ver el resultado.</p>
+
+            <div class="steps">
+                <div class="step done">
+                    <div class="step-circle">✓</div>
+                    <span class="step-label">Diseño</span>
+                </div>
+                <div class="step-connector done"></div>
+                <div class="step active">
+                    <div class="step-circle">⚙</div>
+                    <span class="step-label">Dev</span>
+                </div>
+                <div class="step-connector pending"></div>
+                <div class="step pending">
+                    <div class="step-circle">3</div>
+                    <span class="step-label">Lanzar</span>
+                </div>
+            </div>
+
+            <a href="index.html" class="btn-back">Ir al Dashboard</a>
+        </div>
+    </div>
+
+</body>
+</html>
