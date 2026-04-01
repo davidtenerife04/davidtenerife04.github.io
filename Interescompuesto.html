@@ -6,6 +6,7 @@
     <title>Simulador de Interés Compuesto | José David Morales</title>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;800&display=swap" rel="stylesheet">
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <a href="index.html" class="back-link">← Volver al Dashboard</a>
     <style>
         :root {
             --bg-color: #0f172a;
@@ -58,6 +59,19 @@
             height: fit-content;
         }
 
+        .back-link {
+            color: var(--accent);
+            text-decoration: none;
+            font-weight: 500;
+            font-size: 0.9rem;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            transition: gap 0.3s ease;
+        }
+
+        .back-link:hover { gap: 10px; }
+        
         .control-group { margin-bottom: 25px; }
 
         .control-group label {
