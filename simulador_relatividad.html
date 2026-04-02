@@ -315,11 +315,744 @@
   }
   input:checked + .slider-tog { background: rgba(0,200,255,0.4); }
   input:checked + .slider-tog::before { transform: translateX(15px); background: var(--accent); }
+
+  /* ── Theory button (top-right) ── */
+  #btn-teoria {
+    position: fixed;
+    top: 16px; right: 16px;
+    z-index: 200;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding: 10px 18px;
+    background: rgba(6,12,28,0.92);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    backdrop-filter: blur(16px);
+    color: var(--accent);
+    font-family: var(--mono);
+    font-size: 12px;
+    letter-spacing: 0.08em;
+    cursor: pointer;
+    transition: all 0.2s;
+    text-transform: uppercase;
+  }
+  #btn-teoria:hover {
+    background: rgba(0,200,255,0.12);
+    border-color: var(--accent);
+    box-shadow: 0 0 20px rgba(0,200,255,0.15);
+  }
+  #btn-teoria .btn-icon {
+    width: 18px; height: 18px;
+    border: 1.5px solid var(--accent);
+    border-radius: 50%;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 11px; font-weight: 700;
+  }
+
+  /* ── Modal overlay ── */
+  #modal-overlay {
+    position: fixed; inset: 0;
+    background: rgba(0,0,0,0.75);
+    backdrop-filter: blur(6px);
+    z-index: 300;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 0.3s;
+  }
+  #modal-overlay.open {
+    opacity: 1;
+    pointer-events: all;
+  }
+
+  /* ── Modal box ── */
+  #modal {
+    width: min(760px, 92vw);
+    max-height: 82vh;
+    background: rgba(6, 12, 28, 0.97);
+    border: 1px solid var(--border);
+    border-radius: 16px;
+    display: flex;
+    flex-direction: column;
+    transform: translateY(20px) scale(0.97);
+    transition: transform 0.3s;
+    overflow: hidden;
+  }
+  #modal-overlay.open #modal {
+    transform: translateY(0) scale(1);
+  }
+
+  .modal-header {
+    padding: 20px 24px 16px;
+    border-bottom: 1px solid var(--border);
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    flex-shrink: 0;
+  }
+  .modal-header-left { flex: 1; }
+  .modal-eyebrow {
+    font-family: var(--mono);
+    font-size: 10px;
+    letter-spacing: 0.15em;
+    color: var(--accent);
+    text-transform: uppercase;
+    margin-bottom: 4px;
+  }
+  .modal-title {
+    font-family: var(--mono);
+    font-size: 20px;
+    font-weight: 700;
+    color: var(--text);
+    line-height: 1.2;
+  }
+  .modal-close {
+    width: 30px; height: 30px;
+    border: 1px solid var(--border);
+    border-radius: 50%;
+    background: transparent;
+    color: var(--muted);
+    font-size: 16px;
+    cursor: pointer;
+    display: flex; align-items: center; justify-content: center;
+    transition: all 0.18s;
+    flex-shrink: 0;
+    margin-left: 12px;
+    margin-top: 2px;
+  }
+  .modal-close:hover { border-color: var(--danger); color: var(--danger); }
+
+  /* ── Modal tabs ── */
+  .modal-tabs {
+    display: flex;
+    gap: 0;
+    padding: 0 24px;
+    border-bottom: 1px solid var(--border);
+    flex-shrink: 0;
+    overflow-x: auto;
+    scrollbar-width: none;
+  }
+  .modal-tabs::-webkit-scrollbar { display: none; }
+  .modal-tab {
+    padding: 12px 16px;
+    font-family: var(--mono);
+    font-size: 11px;
+    letter-spacing: 0.06em;
+    color: var(--muted);
+    cursor: pointer;
+    border-bottom: 2px solid transparent;
+    transition: all 0.18s;
+    white-space: nowrap;
+    text-transform: uppercase;
+    background: none;
+    border-top: none; border-left: none; border-right: none;
+  }
+  .modal-tab:hover { color: var(--text); }
+  .modal-tab.active { color: var(--accent); border-bottom-color: var(--accent); }
+
+  /* ── Modal body ── */
+  .modal-body {
+    flex: 1;
+    overflow-y: auto;
+    padding: 24px;
+    scrollbar-width: thin;
+    scrollbar-color: var(--border) transparent;
+  }
+  .modal-body::-webkit-scrollbar { width: 4px; }
+  .modal-body::-webkit-scrollbar-thumb { background: var(--border); border-radius: 2px; }
+
+  /* ── Tab panels ── */
+  .tab-panel { display: none; }
+  .tab-panel.active { display: block; }
+
+  /* ── Theory content styles ── */
+  .theo-section {
+    margin-bottom: 32px;
+    padding-bottom: 32px;
+    border-bottom: 1px solid rgba(255,255,255,0.05);
+  }
+  .theo-section:last-child { border-bottom: none; margin-bottom: 0; }
+
+  .theo-tag {
+    display: inline-block;
+    font-family: var(--mono);
+    font-size: 9px;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    color: var(--accent);
+    background: rgba(0,200,255,0.08);
+    border: 1px solid rgba(0,200,255,0.2);
+    border-radius: 4px;
+    padding: 3px 8px;
+    margin-bottom: 10px;
+  }
+  .theo-h2 {
+    font-family: var(--mono);
+    font-size: 17px;
+    font-weight: 700;
+    color: var(--text);
+    margin-bottom: 12px;
+    line-height: 1.3;
+  }
+  .theo-p {
+    font-size: 13.5px;
+    line-height: 1.75;
+    color: rgba(208,232,255,0.8);
+    margin-bottom: 12px;
+  }
+  .theo-p:last-child { margin-bottom: 0; }
+
+  /* ── Formula block ── */
+  .formula-block {
+    background: rgba(0,0,0,0.4);
+    border: 1px solid rgba(0,200,255,0.15);
+    border-left: 3px solid var(--accent);
+    border-radius: 0 8px 8px 0;
+    padding: 18px 20px;
+    margin: 18px 0;
+    text-align: center;
+  }
+  .formula-label {
+    font-family: var(--mono);
+    font-size: 9px;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--muted);
+    margin-bottom: 10px;
+    text-align: left;
+  }
+  .formula-tex {
+    font-size: 15px;
+    color: var(--text);
+    margin-bottom: 12px;
+    overflow-x: auto;
+  }
+  .formula-desc {
+    font-size: 12px;
+    color: var(--muted);
+    line-height: 1.6;
+    text-align: left;
+    padding-top: 10px;
+    border-top: 1px solid rgba(255,255,255,0.05);
+  }
+  .formula-desc code {
+    font-family: var(--mono);
+    font-size: 11px;
+    color: var(--accent);
+    background: rgba(0,200,255,0.08);
+    padding: 1px 5px;
+    border-radius: 3px;
+  }
+
+  /* ── Quote block ── */
+  .theo-quote {
+    border-left: 3px solid var(--accent2);
+    padding: 12px 16px;
+    background: rgba(123,79,255,0.05);
+    border-radius: 0 8px 8px 0;
+    margin: 16px 0;
+    font-style: italic;
+    font-size: 13px;
+    color: rgba(208,232,255,0.7);
+    line-height: 1.7;
+  }
+  .theo-quote cite {
+    display: block;
+    margin-top: 8px;
+    font-style: normal;
+    font-family: var(--mono);
+    font-size: 10px;
+    color: var(--muted);
+    letter-spacing: 0.05em;
+  }
+
+  /* ── Fact grid ── */
+  .fact-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 10px;
+    margin: 16px 0;
+  }
+  .fact-card {
+    background: rgba(0,200,255,0.04);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    padding: 12px 14px;
+  }
+  .fact-card-label {
+    font-family: var(--mono);
+    font-size: 9px;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--muted);
+    margin-bottom: 5px;
+  }
+  .fact-card-val {
+    font-family: var(--mono);
+    font-size: 13px;
+    color: var(--accent);
+    font-weight: 700;
+  }
+  .fact-card-sub {
+    font-size: 11px;
+    color: rgba(208,232,255,0.5);
+    margin-top: 3px;
+    line-height: 1.4;
+  }
+
+  /* ── Timeline ── */
+  .timeline { margin: 16px 0; }
+  .tl-item {
+    display: flex;
+    gap: 14px;
+    margin-bottom: 16px;
+    align-items: flex-start;
+  }
+  .tl-year {
+    font-family: var(--mono);
+    font-size: 11px;
+    color: var(--accent);
+    min-width: 40px;
+    padding-top: 1px;
+    font-weight: 700;
+  }
+  .tl-line {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding-top: 5px;
+  }
+  .tl-dot {
+    width: 7px; height: 7px;
+    border-radius: 50%;
+    background: var(--accent);
+    flex-shrink: 0;
+  }
+  .tl-connector {
+    width: 1px;
+    flex: 1;
+    min-height: 20px;
+    background: var(--border);
+    margin-top: 4px;
+  }
+  .tl-content { flex: 1; }
+  .tl-title {
+    font-size: 13px;
+    font-weight: 500;
+    color: var(--text);
+    margin-bottom: 3px;
+  }
+  .tl-desc { font-size: 12px; color: var(--muted); line-height: 1.5; }
+
+  /* ── Comparison table ── */
+  .comp-table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 12px;
+    margin: 16px 0;
+  }
+  .comp-table th {
+    font-family: var(--mono);
+    font-size: 10px;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--accent);
+    padding: 8px 12px;
+    border-bottom: 1px solid var(--border);
+    text-align: left;
+  }
+  .comp-table td {
+    padding: 9px 12px;
+    border-bottom: 1px solid rgba(255,255,255,0.04);
+    color: rgba(208,232,255,0.75);
+    line-height: 1.4;
+  }
+  .comp-table tr:hover td { background: rgba(0,200,255,0.03); }
 </style>
 </head>
 <body>
 
 <div id="canvas-container"></div>
+
+<!-- ── Theory button ── -->
+<button id="btn-teoria">
+  <span class="btn-icon">i</span>
+  Teoría
+</button>
+
+<!-- ── Theory modal ── -->
+<div id="modal-overlay">
+  <div id="modal">
+
+    <div class="modal-header">
+      <div class="modal-header-left">
+        <div class="modal-eyebrow">Base teórica</div>
+        <div class="modal-title">Relatividad General</div>
+      </div>
+      <button class="modal-close" id="modal-close-btn">✕</button>
+    </div>
+
+    <div class="modal-tabs">
+      <button class="modal-tab active" data-tab="einstein">Einstein</button>
+      <button class="modal-tab" data-tab="relatividad">Relatividad</button>
+      <button class="modal-tab" data-tab="masa-tiempo">Masa y tiempo</button>
+      <button class="modal-tab" data-tab="velocidad">Velocidad</button>
+      <button class="modal-tab" data-tab="ecuaciones">Ecuaciones</button>
+      <!-- AÑADIR MÁS PESTAÑAS AQUÍ — duplica un <button class="modal-tab" data-tab="id">Nombre</button> -->
+    </div>
+
+    <div class="modal-body">
+
+      <!-- ══ TAB: EINSTEIN ══════════════════════════════════════════════════ -->
+      <div class="tab-panel active" id="tab-einstein">
+
+        <div class="theo-section">
+          <div class="theo-tag">Biografía</div>
+          <h2 class="theo-h2">Albert Einstein (1879 – 1955)</h2>
+          <p class="theo-p">Nacido el 14 de marzo de 1879 en Ulm, Alemania, Albert Einstein es considerado el físico teórico más influyente del siglo XX. Desarrolló la teoría de la relatividad especial (1905) y la relatividad general (1915), transformando radicalmente la comprensión humana del espacio, el tiempo, la gravedad y el universo.</p>
+          <p class="theo-p">Contrariamente a la imagen popular, Einstein no era mal estudiante: dominaba las matemáticas y la física desde niño. Sin embargo, chocaba con la enseñanza memorística y autoritaria, lo que lo llevó a desarrollar un estilo de pensamiento profundamente visual e intuitivo, basado en lo que él llamaba <em>Gedankenexperimente</em> (experimentos mentales).</p>
+
+          <div class="theo-quote">
+            "La imaginación es más importante que el conocimiento. El conocimiento es limitado, mientras que la imaginación rodea al mundo entero."
+            <cite>— Albert Einstein</cite>
+          </div>
+
+          <div class="fact-grid">
+            <div class="fact-card">
+              <div class="fact-card-label">Nacimiento</div>
+              <div class="fact-card-val">14 Mar 1879</div>
+              <div class="fact-card-sub">Ulm, Reino de Württemberg, Alemania</div>
+            </div>
+            <div class="fact-card">
+              <div class="fact-card-label">Fallecimiento</div>
+              <div class="fact-card-val">18 Abr 1955</div>
+              <div class="fact-card-sub">Princeton, Nueva Jersey, EE.UU.</div>
+            </div>
+            <div class="fact-card">
+              <div class="fact-card-label">Premio Nobel</div>
+              <div class="fact-card-val">1921</div>
+              <div class="fact-card-sub">Efecto fotoeléctrico — no por la relatividad</div>
+            </div>
+            <div class="fact-card">
+              <div class="fact-card-label">Publicaciones clave</div>
+              <div class="fact-card-val">Annus Mirabilis</div>
+              <div class="fact-card-sub">1905: 4 artículos que cambiaron la física</div>
+            </div>
+          </div>
+        </div>
+
+        <div class="theo-section">
+          <div class="theo-tag">Cronología</div>
+          <h2 class="theo-h2">Los grandes hitos</h2>
+          <div class="timeline">
+            <div class="tl-item">
+              <div class="tl-year">1905</div>
+              <div class="tl-line"><div class="tl-dot"></div><div class="tl-connector"></div></div>
+              <div class="tl-content">
+                <div class="tl-title">Annus Mirabilis — El año prodigioso</div>
+                <div class="tl-desc">Publica 4 artículos revolucionarios: relatividad especial, efecto fotoeléctrico, movimiento browniano y la equivalencia masa-energía E=mc².</div>
+              </div>
+            </div>
+            <div class="tl-item">
+              <div class="tl-year">1907</div>
+              <div class="tl-line"><div class="tl-dot"></div><div class="tl-connector"></div></div>
+              <div class="tl-content">
+                <div class="tl-title">El pensamiento más feliz</div>
+                <div class="tl-desc">Einstein concibe el principio de equivalencia: una persona en caída libre no siente su propio peso. Gravedad e inercia son indistinguibles.</div>
+              </div>
+            </div>
+            <div class="tl-item">
+              <div class="tl-year">1915</div>
+              <div class="tl-line"><div class="tl-dot"></div><div class="tl-connector"></div></div>
+              <div class="tl-content">
+                <div class="tl-title">Ecuaciones de campo de Einstein</div>
+                <div class="tl-desc">Tras 10 años de trabajo, publica la Relatividad General. La gravedad no es una fuerza: es la curvatura del espacio-tiempo causada por la masa y la energía.</div>
+              </div>
+            </div>
+            <div class="tl-item">
+              <div class="tl-year">1919</div>
+              <div class="tl-line"><div class="tl-dot"></div><div class="tl-connector"></div></div>
+              <div class="tl-content">
+                <div class="tl-title">Confirmación experimental</div>
+                <div class="tl-desc">Arthur Eddington mide la desviación de la luz de las estrellas durante un eclipse solar. La predicción de Einstein era correcta: la gravedad curva la luz.</div>
+              </div>
+            </div>
+            <div class="tl-item">
+              <div class="tl-year">2016</div>
+              <div class="tl-line"><div class="tl-dot"></div><div class="tl-connector"></div></div>
+              <div class="tl-content">
+                <div class="tl-title">Detección de ondas gravitacionales (LIGO)</div>
+                <div class="tl-desc">Se detectan por primera vez las ondas gravitacionales predichas por Einstein en 1916. La señal provino de la fusión de dos agujeros negros a 1300 millones de años luz.</div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+      </div><!-- /tab-einstein -->
+
+      <!-- ══ TAB: RELATIVIDAD ════════════════════════════════════════════════ -->
+      <div class="tab-panel" id="tab-relatividad">
+
+        <div class="theo-section">
+          <div class="theo-tag">Concepto fundamental</div>
+          <h2 class="theo-h2">¿Qué es la Teoría de la Relatividad?</h2>
+          <p class="theo-p">La teoría de la relatividad de Einstein es en realidad dos teorías relacionadas. La <strong style="color:var(--accent)">Relatividad Especial</strong> (1905) describe cómo las leyes de la física son iguales para todos los observadores en movimiento uniforme, y establece que la velocidad de la luz es la misma para todos ellos. La <strong style="color:var(--accent)">Relatividad General</strong> (1915) extiende estos principios a la gravedad, reinterpretándola como curvatura geométrica del espacio-tiempo.</p>
+          <p class="theo-p">Antes de Einstein, Newton describía la gravedad como una fuerza misteriosa que actúa a distancia instantáneamente. Einstein demostró que no existe tal fuerza: los cuerpos masivos curvan el tejido del espacio-tiempo, y otros cuerpos simplemente siguen los caminos más rectos posibles en esa geometría curva.</p>
+
+          <div class="theo-quote">
+            "La materia le dice al espacio-tiempo cómo curvarse, y el espacio-tiempo le dice a la materia cómo moverse."
+            <cite>— John Archibald Wheeler (resumen popular de la RG)</cite>
+          </div>
+        </div>
+
+        <div class="theo-section">
+          <div class="theo-tag">Principios base</div>
+          <h2 class="theo-h2">Los dos pilares</h2>
+          <table class="comp-table">
+            <thead><tr><th>Principio</th><th>Enunciado</th><th>Consecuencia</th></tr></thead>
+            <tbody>
+              <tr><td>Principio de relatividad</td><td>Las leyes de la física son idénticas en todos los marcos de referencia inerciales</td><td>No existe un "reposo absoluto". Solo existen velocidades relativas.</td></tr>
+              <tr><td>Invarianza de c</td><td>La velocidad de la luz en el vacío (≈ 3×10⁸ m/s) es la misma para todos los observadores</td><td>El tiempo y el espacio deben deformarse para mantener c constante.</td></tr>
+              <tr><td>Principio de equivalencia</td><td>La aceleración gravitacional y la aceleración inercial son localmente indistinguibles</td><td>La gravedad y la inercia son la misma cosa vista desde distintos marcos.</td></tr>
+              <tr><td>Covarianza general</td><td>Las leyes de la física deben tener la misma forma matemática en todos los sistemas de referencia</td><td>La geometría del espacio-tiempo debe describirse con tensores.</td></tr>
+            </tbody>
+          </table>
+        </div>
+
+        <div class="theo-section">
+          <div class="theo-tag">El espacio-tiempo</div>
+          <h2 class="theo-h2">Cuatro dimensiones unificadas</h2>
+          <p class="theo-p">Minkowski (1908) demostró que el espacio tridimensional y el tiempo forman una única entidad de 4 dimensiones: el <em>espacio-tiempo</em>. En este marco, los eventos no tienen una posición espacial y un tiempo separados, sino un único "evento" con coordenadas (x, y, z, t).</p>
+          <p class="theo-p">La "distancia" entre eventos en el espacio-tiempo se llama <em>intervalo espacio-temporal</em> y es invariante para todos los observadores, aunque el espacio y el tiempo medidos individualmente varíen.</p>
+
+          <div class="formula-block">
+            <div class="formula-label">Intervalo espacio-temporal (métrica de Minkowski)</div>
+            <div class="formula-tex" id="ftex-minkowski">$$ds^2 = -c^2 dt^2 + dx^2 + dy^2 + dz^2$$</div>
+            <div class="formula-desc">
+              <code>ds</code> es el intervalo (invariante). Si <code>ds² &lt; 0</code>: intervalo tipo tiempo (posible relación causal). Si <code>ds² &gt; 0</code>: intervalo tipo espacio (no puede existir relación causal). Si <code>ds² = 0</code>: intervalo nulo (trayectoria de la luz).
+            </div>
+          </div>
+        </div>
+
+      </div><!-- /tab-relatividad -->
+
+      <!-- ══ TAB: MASA Y TIEMPO ══════════════════════════════════════════════ -->
+      <div class="tab-panel" id="tab-masa-tiempo">
+
+        <div class="theo-section">
+          <div class="theo-tag">Dilatación gravitacional</div>
+          <h2 class="theo-h2">Cómo la masa dilata el tiempo</h2>
+          <p class="theo-p">En la Relatividad General, la masa curva el espacio-tiempo. Una consecuencia directa e inevitable es que el tiempo transcurre <em>más lento</em> en regiones de mayor curvatura gravitacional, es decir, cerca de objetos muy masivos. Este efecto se llama <strong style="color:var(--accent)">dilatación gravitacional del tiempo</strong> y no es solo matemático: ha sido medido experimentalmente con relojes atómicos.</p>
+          <p class="theo-p">El GPS es el ejemplo más cotidiano: los satélites orbitan lejos de la Tierra, donde la gravedad es menor, así que sus relojes van ligeramente más rápido que los terrestres. Sin la corrección relativista (≈ 38 microsegundos por día), el GPS acumularía errores de posición de hasta 10 km al día.</p>
+
+          <div class="formula-block">
+            <div class="formula-label">Dilatación temporal gravitacional (campo de Schwarzschild)</div>
+            <div class="formula-tex" id="ftex-dil-grav">$$\frac{d\tau}{dt} = \sqrt{1 - \frac{r_s}{r}} = \sqrt{1 - \frac{2GM}{rc^2}}$$</div>
+            <div class="formula-desc">
+              <code>dτ</code> tiempo propio (medido por el observador local cerca de la masa) · <code>dt</code> tiempo coordenado (medido por un observador lejano en espacio plano) · <code>r_s = 2GM/c²</code> radio de Schwarzschild · <code>r</code> distancia al centro de masa. Cuando <code>r → r_s</code> el cociente tiende a 0: el tiempo se detiene en el horizonte de eventos.
+            </div>
+          </div>
+
+          <div class="fact-grid">
+            <div class="fact-card">
+              <div class="fact-card-label">En la Tierra (superficie)</div>
+              <div class="fact-card-val">~0.7 ns/día</div>
+              <div class="fact-card-sub">Diferencia temporal entre cima y base de un edificio de 100 m</div>
+            </div>
+            <div class="fact-card">
+              <div class="fact-card-label">GPS (corrección)</div>
+              <div class="fact-card-val">+38 μs/día</div>
+              <div class="fact-card-sub">Los satélites deben compensar o el sistema falla en minutos</div>
+            </div>
+            <div class="fact-card">
+              <div class="fact-card-label">Estrella de neutrones</div>
+              <div class="fact-card-val">τ ≈ 0.76 t</div>
+              <div class="fact-card-sub">El tiempo en su superficie corre un 24% más lento</div>
+            </div>
+            <div class="fact-card">
+              <div class="fact-card-label">Horizonte de eventos</div>
+              <div class="fact-card-val">τ → 0</div>
+              <div class="fact-card-sub">El tiempo se congela visto desde el exterior</div>
+            </div>
+          </div>
+        </div>
+
+        <div class="theo-section">
+          <div class="theo-tag">Radio de Schwarzschild</div>
+          <h2 class="theo-h2">El umbral del agujero negro</h2>
+          <p class="theo-p">Para cada masa existe un radio crítico llamado radio de Schwarzschild. Si toda la masa queda comprimida dentro de ese radio, el escape de la gravedad requiere superar la velocidad de la luz — imposible. Ese límite es el horizonte de eventos de un agujero negro.</p>
+
+          <div class="formula-block">
+            <div class="formula-label">Radio de Schwarzschild</div>
+            <div class="formula-tex" id="ftex-rs">$$r_s = \frac{2GM}{c^2}$$</div>
+            <div class="formula-desc">
+              <code>G = 6.674 × 10⁻¹¹ m³ kg⁻¹ s⁻²</code> constante gravitacional · <code>M</code> masa del cuerpo · <code>c = 3×10⁸ m/s</code> velocidad de la luz. Para el Sol: r_s ≈ 3 km. Para la Tierra: r_s ≈ 9 mm. Para un humano de 70 kg: r_s ≈ 10⁻²⁵ m.
+            </div>
+          </div>
+        </div>
+
+      </div><!-- /tab-masa-tiempo -->
+
+      <!-- ══ TAB: VELOCIDAD ══════════════════════════════════════════════════ -->
+      <div class="tab-panel" id="tab-velocidad">
+
+        <div class="theo-section">
+          <div class="theo-tag">Relatividad especial</div>
+          <h2 class="theo-h2">Cómo la velocidad dilata el tiempo</h2>
+          <p class="theo-p">Incluso sin gravedad, el movimiento relativo entre dos observadores provoca dilatación temporal. Un observador en movimiento rápido envejece más lento que uno en reposo. A velocidades cotidianas el efecto es imperceptible, pero cerca de la velocidad de la luz se vuelve dramático.</p>
+          <p class="theo-p">Esta no es una ilusión óptica ni un efecto de transmisión de señales: es una diferencia real en el tiempo transcurrido. La paradoja del gemelo lo ilustra: un astronauta que viaja a 0.99c durante un año (su tiempo) encontraría a su gemelo terrestre ≈ 7 años más viejo al regresar.</p>
+
+          <div class="formula-block">
+            <div class="formula-label">Dilatación temporal por velocidad — Factor de Lorentz</div>
+            <div class="formula-tex" id="ftex-lorentz">$$\Delta t' = \gamma \, \Delta t \qquad \text{donde} \qquad \gamma = \frac{1}{\sqrt{1 - \dfrac{v^2}{c^2}}}$$</div>
+            <div class="formula-desc">
+              <code>Δt</code> tiempo propio (medido por el observador en movimiento) · <code>Δt'</code> tiempo coordenado (medido por el observador en reposo) · <code>γ</code> factor de Lorentz, siempre ≥ 1 · <code>v</code> velocidad relativa · <code>c</code> velocidad de la luz. A <code>v = 0.87c</code> → γ = 2 (el tiempo pasa a la mitad). A <code>v → c</code> → γ → ∞.
+            </div>
+          </div>
+
+          <div class="fact-grid">
+            <div class="fact-card">
+              <div class="fact-card-label">v = 10% c (30.000 km/s)</div>
+              <div class="fact-card-val">γ ≈ 1.005</div>
+              <div class="fact-card-sub">Dilatación de solo 0.5% — casi imperceptible</div>
+            </div>
+            <div class="fact-card">
+              <div class="fact-card-label">v = 90% c</div>
+              <div class="fact-card-val">γ ≈ 2.29</div>
+              <div class="fact-card-sub">El tiempo pasa 2.3× más lento para el viajero</div>
+            </div>
+            <div class="fact-card">
+              <div class="fact-card-label">v = 99% c</div>
+              <div class="fact-card-val">γ ≈ 7.09</div>
+              <div class="fact-card-sub">1 año del viajero = 7 años terrestres</div>
+            </div>
+            <div class="fact-card">
+              <div class="fact-card-label">v = 99.99% c</div>
+              <div class="fact-card-val">γ ≈ 70.7</div>
+              <div class="fact-card-sub">Usado por muones cósmicos para llegar al suelo</div>
+            </div>
+          </div>
+        </div>
+
+        <div class="theo-section">
+          <div class="theo-tag">Contracción de Lorentz</div>
+          <h2 class="theo-h2">El espacio también se contrae</h2>
+          <p class="theo-p">La dilatación temporal viene acompañada de la <em>contracción de longitud</em>: un objeto en movimiento es más corto en la dirección del movimiento, medido por un observador externo. Ambos efectos son inseparables y necesarios para mantener coherente la física en todos los marcos de referencia.</p>
+
+          <div class="formula-block">
+            <div class="formula-label">Contracción de Lorentz</div>
+            <div class="formula-tex" id="ftex-contrac">$$L = \frac{L_0}{\gamma} = L_0 \sqrt{1 - \frac{v^2}{c^2}}$$</div>
+            <div class="formula-desc">
+              <code>L₀</code> longitud propia (medida en el marco en reposo del objeto) · <code>L</code> longitud medida por el observador externo · <code>γ</code> factor de Lorentz. A mayor velocidad, el objeto aparece más corto. A <code>v = 0.87c</code> un objeto de 1 m aparece de tan solo 0.5 m.
+            </div>
+          </div>
+        </div>
+
+        <div class="theo-section">
+          <div class="theo-tag">Límite fundamental</div>
+          <h2 class="theo-h2">Por qué nada puede superar c</h2>
+          <p class="theo-p">A medida que un objeto acelera hacia la velocidad de la luz, su masa inercial efectiva (energía cinética) aumenta sin límite. Se necesitaría energía infinita para alcanzar c. Esto no es una limitación tecnológica sino una restricción fundamental de la geometría del espacio-tiempo: c es la velocidad de causalidad, el límite a que puede propagarse cualquier influencia física.</p>
+
+          <div class="formula-block">
+            <div class="formula-label">Energía relativista total</div>
+            <div class="formula-tex" id="ftex-erel">$$E = \gamma m c^2 = \frac{mc^2}{\sqrt{1 - v^2/c^2}}$$</div>
+            <div class="formula-desc">
+              En reposo (<code>v=0</code>, <code>γ=1</code>): <code>E = mc²</code> — la célebre ecuación de Einstein. A medida que <code>v → c</code>, <code>E → ∞</code>. Por eso ningún objeto con masa puede alcanzar c: requeriría energía infinita.
+            </div>
+          </div>
+        </div>
+
+      </div><!-- /tab-velocidad -->
+
+      <!-- ══ TAB: ECUACIONES ═════════════════════════════════════════════════ -->
+      <div class="tab-panel" id="tab-ecuaciones">
+
+        <div class="theo-section">
+          <div class="theo-tag">Ecuaciones de campo</div>
+          <h2 class="theo-h2">Las ecuaciones de Einstein</h2>
+          <p class="theo-p">Las ecuaciones de campo de Einstein son el corazón matemático de la Relatividad General. Relacionan la geometría del espacio-tiempo (curvatura) con su contenido energético (masa, energía, momento). Son en realidad 10 ecuaciones diferenciales parciales acopladas y no lineales, escritas de forma compacta con notación tensorial.</p>
+
+          <div class="formula-block">
+            <div class="formula-label">Ecuaciones de campo de Einstein (forma compacta)</div>
+            <div class="formula-tex" id="ftex-campo">$$G_{\mu\nu} + \Lambda g_{\mu\nu} = \frac{8\pi G}{c^4} T_{\mu\nu}$$</div>
+            <div class="formula-desc">
+              <code>G_μν</code> tensor de Einstein — describe la curvatura del espacio-tiempo (geometría) · <code>Λ</code> constante cosmológica (energía oscura) · <code>g_μν</code> tensor métrico — define cómo medir distancias · <code>8πG/c⁴ ≈ 2.07×10⁻⁴³ m/J</code> constante de acoplamiento (la "rigidez" del espacio-tiempo) · <code>T_μν</code> tensor energía-momento — describe la distribución de masa, energía y presión.
+            </div>
+          </div>
+        </div>
+
+        <div class="theo-section">
+          <div class="theo-tag">Descomposición</div>
+          <h2 class="theo-h2">¿Qué significa cada parte?</h2>
+
+          <div class="formula-block">
+            <div class="formula-label">Tensor de Einstein — lado geométrico</div>
+            <div class="formula-tex" id="ftex-einstein-tensor">$$G_{\mu\nu} = R_{\mu\nu} - \frac{1}{2} R \, g_{\mu\nu}$$</div>
+            <div class="formula-desc">
+              <code>R_μν</code> tensor de Ricci — contracción del tensor de curvatura de Riemann, mide cómo los volúmenes se deforman · <code>R</code> escalar de curvatura (traza del tensor de Ricci) · <code>g_μν</code> tensor métrico. La combinación específica garantiza que la ecuación sea covariante (misma forma en todos los marcos) y que la energía-momento se conserve.
+            </div>
+          </div>
+
+          <div class="formula-block">
+            <div class="formula-label">Límite newtoniano — campo débil y velocidades bajas</div>
+            <div class="formula-tex" id="ftex-newton">$$\nabla^2 \Phi = 4\pi G \rho$$</div>
+            <div class="formula-desc">
+              Cuando la curvatura es pequeña y las velocidades son &lt;&lt; c, las ecuaciones de Einstein se reducen a la ecuación de Poisson de la gravedad newtoniana. <code>Φ</code> potencial gravitacional · <code>ρ</code> densidad de masa. Newton es un caso límite de Einstein, no al revés.
+            </div>
+          </div>
+
+          <div class="formula-block">
+            <div class="formula-label">Constante de acoplamiento — la "rigidez" del espacio-tiempo</div>
+            <div class="formula-tex" id="ftex-kappa">$$\kappa = \frac{8\pi G}{c^4} \approx 2.07 \times 10^{-43} \; \frac{\text{m}}{\text{J}}$$</div>
+            <div class="formula-desc">
+              Este número extraordinariamente pequeño explica por qué necesitamos masas estelares para curvar el espacio de forma apreciable. Para comparar: se necesitan ≈ 5×10⁴² julios para curvar el espacio 1 radián por metro. La masa en reposo del Sol es "solo" ≈ 1.8×10⁴⁷ J — suficiente para una curvatura de ~1 parte por millón cerca de su superficie.
+            </div>
+          </div>
+        </div>
+
+        <div class="theo-section">
+          <div class="theo-tag">Métricas exactas</div>
+          <h2 class="theo-h2">Soluciones analíticas conocidas</h2>
+          <p class="theo-p">Las ecuaciones de Einstein son extremadamente difíciles de resolver exactamente. Solo existen unas pocas soluciones analíticas exactas, cada una para una configuración muy específica de masa-energía.</p>
+
+          <div class="formula-block">
+            <div class="formula-label">Métrica de Schwarzschild — agujero negro sin rotación</div>
+            <div class="formula-tex" id="ftex-schwarz-metric">$$ds^2 = -\!\left(1 - \frac{r_s}{r}\right)c^2 dt^2 + \left(1 - \frac{r_s}{r}\right)^{\!-1}\!\! dr^2 + r^2 d\Omega^2$$</div>
+            <div class="formula-desc">
+              La primera solución exacta (Karl Schwarzschild, 1916, desde el frente de guerra). Describe el espacio-tiempo exterior a cualquier masa esférica no rotante. <code>r_s</code> radio de Schwarzschild · <code>dΩ²</code> elemento angular. Cuando <code>r = r_s</code>, el coeficiente de <code>dt²</code> se anula: el tiempo se detiene para un observador externo.
+            </div>
+          </div>
+        </div>
+
+        <!-- AÑADIR MÁS SECCIONES DE ECUACIONES AQUÍ -->
+
+      </div><!-- /tab-ecuaciones -->
+
+      <!-- ══ PLANTILLA PARA NUEVAS PESTAÑAS ══════════════════════════════════
+      Para añadir una nueva pestaña:
+      1. Añade el botón en .modal-tabs:
+         <button class="modal-tab" data-tab="mi-tema">Mi Tema</button>
+      2. Añade el panel aquí:
+         <div class="tab-panel" id="tab-mi-tema">
+           <div class="theo-section">
+             <div class="theo-tag">Categoría</div>
+             <h2 class="theo-h2">Título</h2>
+             <p class="theo-p">Texto...</p>
+             <div class="formula-block">
+               <div class="formula-label">Nombre de la fórmula</div>
+               <div class="formula-tex" id="ftex-mi-formula">$$tu_formula_latex$$</div>
+               <div class="formula-desc">Explicación...</div>
+             </div>
+           </div>
+         </div>
+      ══════════════════════════════════════════════════════════════════════ -->
+
+    </div><!-- /modal-body -->
+  </div><!-- /modal -->
+</div><!-- /modal-overlay -->
 
 <div id="ui-panel">
   <div class="panel-header">
@@ -970,6 +1703,81 @@ window.addEventListener('resize', () => {
 });
 
 animate();
+</script>
+
+<!-- ── MathJax for LaTeX formulas ── -->
+<script>
+  window.MathJax = {
+    tex: {
+      inlineMath: [['$','$']],
+      displayMath: [['$$','$$']],
+      packages: {'[+]': ['ams']}
+    },
+    options: { skipHtmlTags: ['script','noscript','style','textarea'] },
+    startup: { typeset: false }
+  };
+</script>
+<script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml.js" id="MathJax-script" async></script>
+
+<!-- ── Modal logic ── -->
+<script>
+(function() {
+  const overlay   = document.getElementById('modal-overlay');
+  const btnOpen   = document.getElementById('btn-teoria');
+  const btnClose  = document.getElementById('modal-close-btn');
+  const tabs      = document.querySelectorAll('.modal-tab');
+  const panels    = document.querySelectorAll('.tab-panel');
+  let mathjaxDone = false;
+
+  function openModal() {
+    overlay.classList.add('open');
+    document.body.style.overflow = 'hidden';
+    // Typeset formulas once MathJax is loaded
+    if (!mathjaxDone && window.MathJax && MathJax.typesetPromise) {
+      MathJax.typesetPromise([document.getElementById('modal')]).then(() => {
+        mathjaxDone = true;
+      });
+    }
+  }
+
+  function closeModal() {
+    overlay.classList.remove('open');
+    document.body.style.overflow = '';
+  }
+
+  btnOpen.addEventListener('click', openModal);
+  btnClose.addEventListener('click', closeModal);
+
+  // Close on overlay click (outside modal box)
+  overlay.addEventListener('click', e => {
+    if (e.target === overlay) closeModal();
+  });
+
+  // Keyboard: Escape closes
+  document.addEventListener('keydown', e => {
+    if (e.key === 'Escape' && overlay.classList.contains('open')) closeModal();
+  });
+
+  // Tab switching
+  tabs.forEach(tab => {
+    tab.addEventListener('click', () => {
+      const target = tab.dataset.tab;
+      tabs.forEach(t => t.classList.remove('active'));
+      panels.forEach(p => p.classList.remove('active'));
+      tab.classList.add('active');
+      document.getElementById('tab-' + target)?.classList.add('active');
+    });
+  });
+
+  // Re-typeset if MathJax loads after modal was opened
+  document.getElementById('MathJax-script').addEventListener('load', () => {
+    if (overlay.classList.contains('open') && !mathjaxDone && MathJax.typesetPromise) {
+      MathJax.typesetPromise([document.getElementById('modal')]).then(() => {
+        mathjaxDone = true;
+      });
+    }
+  });
+})();
 </script>
 </body>
 </html>
