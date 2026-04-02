@@ -1,0 +1,975 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<title>Simulador de Relatividad General</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Space+Mono:wght@400;700&family=Inter:wght@300;400;500&display=swap');
+
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  :root {
+    --bg: #03050f;
+    --panel: rgba(6, 12, 28, 0.92);
+    --border: rgba(0, 200, 255, 0.18);
+    --accent: #00c8ff;
+    --accent2: #7b4fff;
+    --danger: #ff4560;
+    --text: #d0e8ff;
+    --muted: #5a7a99;
+    --mono: 'Space Mono', monospace;
+    --sans: 'Inter', sans-serif;
+  }
+
+  body {
+    background: var(--bg);
+    overflow: hidden;
+    font-family: var(--sans);
+    color: var(--text);
+    user-select: none;
+  }
+
+  #canvas-container { position: fixed; inset: 0; }
+
+  /* ── Panel ── */
+  #ui-panel {
+    position: fixed;
+    top: 16px; left: 16px;
+    width: 300px;
+    max-height: calc(100vh - 32px);
+    background: var(--panel);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    backdrop-filter: blur(16px);
+    overflow-y: auto;
+    overflow-x: hidden;
+    scrollbar-width: thin;
+    scrollbar-color: var(--border) transparent;
+  }
+  #ui-panel::-webkit-scrollbar { width: 4px; }
+  #ui-panel::-webkit-scrollbar-thumb { background: var(--border); border-radius: 2px; }
+
+  .panel-header {
+    padding: 16px 18px 12px;
+    border-bottom: 1px solid var(--border);
+    position: sticky; top: 0;
+    background: var(--panel);
+    backdrop-filter: blur(16px);
+    z-index: 10;
+  }
+  .panel-title {
+    font-family: var(--mono);
+    font-size: 12px;
+    letter-spacing: 0.12em;
+    color: var(--accent);
+    text-transform: uppercase;
+  }
+  .panel-subtitle { font-size: 11px; color: var(--muted); margin-top: 2px; }
+
+  .panel-body { padding: 14px 18px; }
+
+  /* ── Metrics strip ── */
+  .metrics-strip {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 8px;
+    margin-bottom: 16px;
+  }
+  .metric-box {
+    background: rgba(0,200,255,0.05);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    padding: 8px 10px;
+  }
+  .metric-box.full { grid-column: 1 / -1; }
+  .metric-key {
+    font-size: 9px;
+    letter-spacing: 0.1em;
+    color: var(--muted);
+    text-transform: uppercase;
+    font-family: var(--mono);
+    margin-bottom: 3px;
+  }
+  .metric-val {
+    font-family: var(--mono);
+    font-size: 15px;
+    color: var(--accent);
+    font-weight: 700;
+  }
+  .metric-val.warn { color: #ffb347; }
+  .metric-val.danger { color: var(--danger); }
+
+  /* ── Global controls ── */
+  .section-label {
+    font-size: 10px;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--muted);
+    font-family: var(--mono);
+    margin: 14px 0 8px;
+    padding-bottom: 4px;
+    border-bottom: 1px solid rgba(255,255,255,0.05);
+  }
+
+  .ctrl-row {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    margin-bottom: 10px;
+  }
+  .ctrl-label {
+    font-size: 12px;
+    color: var(--text);
+    flex: 1;
+    display: flex;
+    align-items: center;
+    gap: 5px;
+  }
+  .ctrl-val {
+    font-family: var(--mono);
+    font-size: 11px;
+    color: var(--accent);
+    min-width: 38px;
+    text-align: right;
+  }
+
+  input[type=range] {
+    -webkit-appearance: none;
+    width: 100%;
+    height: 3px;
+    background: rgba(0,200,255,0.15);
+    border-radius: 2px;
+    outline: none;
+    cursor: pointer;
+    margin: 4px 0 10px;
+  }
+  input[type=range]::-webkit-slider-thumb {
+    -webkit-appearance: none;
+    width: 12px; height: 12px;
+    background: var(--accent);
+    border-radius: 50%;
+    cursor: pointer;
+    transition: transform 0.15s;
+  }
+  input[type=range]::-webkit-slider-thumb:hover { transform: scale(1.3); }
+
+  /* ── Buttons ── */
+  .btn-row { display: flex; gap: 8px; margin-bottom: 14px; }
+  .btn {
+    flex: 1;
+    padding: 8px 0;
+    font-size: 12px;
+    font-family: var(--mono);
+    border-radius: 6px;
+    border: 1px solid var(--border);
+    background: rgba(0,200,255,0.06);
+    color: var(--accent);
+    cursor: pointer;
+    transition: all 0.18s;
+    letter-spacing: 0.04em;
+  }
+  .btn:hover { background: rgba(0,200,255,0.15); border-color: var(--accent); }
+  .btn.danger { color: var(--danger); border-color: rgba(255,69,96,0.3); background: rgba(255,69,96,0.05); }
+  .btn.danger:hover { background: rgba(255,69,96,0.15); border-color: var(--danger); }
+  .btn.active { background: rgba(0,200,255,0.2); border-color: var(--accent); }
+
+  /* ── Presets ── */
+  .preset-row { display: flex; gap: 6px; flex-wrap: wrap; margin-bottom: 14px; }
+  .preset-btn {
+    padding: 5px 10px;
+    font-size: 11px;
+    font-family: var(--mono);
+    border-radius: 20px;
+    border: 1px solid rgba(123,79,255,0.35);
+    background: rgba(123,79,255,0.08);
+    color: #9d77ff;
+    cursor: pointer;
+    transition: all 0.18s;
+  }
+  .preset-btn:hover { background: rgba(123,79,255,0.2); border-color: var(--accent2); }
+
+  /* ── Astro cards ── */
+  .astro-card {
+    background: rgba(255,255,255,0.03);
+    border-radius: 8px;
+    border-left: 3px solid #fff;
+    padding: 10px 12px;
+    margin-bottom: 10px;
+  }
+  .astro-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 8px;
+  }
+  .astro-name {
+    font-family: var(--mono);
+    font-size: 12px;
+    font-weight: 700;
+  }
+  .astro-rs {
+    font-size: 10px;
+    font-family: var(--mono);
+    color: var(--muted);
+  }
+  .astro-dil {
+    font-size: 11px;
+    font-family: var(--mono);
+    margin-top: 6px;
+    padding: 4px 8px;
+    background: rgba(0,0,0,0.3);
+    border-radius: 4px;
+    display: flex;
+    justify-content: space-between;
+  }
+
+  /* ── Tooltip ── */
+  .tip {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 14px; height: 14px;
+    border-radius: 50%;
+    background: rgba(0,200,255,0.15);
+    color: var(--accent);
+    font-size: 9px;
+    font-weight: 700;
+    cursor: help;
+    position: relative;
+    flex-shrink: 0;
+  }
+  .tip::after {
+    content: attr(data-tip);
+    position: absolute;
+    bottom: 130%; left: 50%;
+    transform: translateX(-50%);
+    background: #0a1a2e;
+    border: 1px solid var(--border);
+    color: var(--text);
+    padding: 8px 10px;
+    border-radius: 6px;
+    width: 200px;
+    font-size: 11px;
+    font-family: var(--sans);
+    font-weight: 400;
+    line-height: 1.5;
+    white-space: normal;
+    text-align: left;
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 0.2s;
+    z-index: 999;
+  }
+  .tip:hover::after { opacity: 1; }
+
+  /* ── Legend ── */
+  .legend {
+    display: flex;
+    gap: 10px;
+    flex-wrap: wrap;
+    margin-top: 8px;
+    padding-top: 8px;
+    border-top: 1px solid rgba(255,255,255,0.05);
+  }
+  .leg-item {
+    display: flex;
+    align-items: center;
+    gap: 5px;
+    font-size: 10px;
+    color: var(--muted);
+    font-family: var(--mono);
+  }
+  .leg-dot {
+    width: 8px; height: 8px;
+    border-radius: 50%;
+  }
+
+  /* ── Toggle switches ── */
+  .toggle-row {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 8px;
+  }
+  .toggle-label { font-size: 12px; color: var(--text); display: flex; align-items: center; gap: 5px; }
+  .toggle {
+    position: relative;
+    width: 32px; height: 17px;
+  }
+  .toggle input { opacity: 0; width: 0; height: 0; }
+  .slider-tog {
+    position: absolute; inset: 0;
+    background: rgba(255,255,255,0.1);
+    border-radius: 20px;
+    cursor: pointer;
+    transition: 0.2s;
+  }
+  .slider-tog::before {
+    content: '';
+    position: absolute;
+    width: 11px; height: 11px;
+    left: 3px; top: 3px;
+    background: #fff;
+    border-radius: 50%;
+    transition: 0.2s;
+  }
+  input:checked + .slider-tog { background: rgba(0,200,255,0.4); }
+  input:checked + .slider-tog::before { transform: translateX(15px); background: var(--accent); }
+</style>
+</head>
+<body>
+
+<div id="canvas-container"></div>
+
+<div id="ui-panel">
+  <div class="panel-header">
+    <div class="panel-title">Relatividad General</div>
+    <div class="panel-subtitle">Curvatura del espacio-tiempo — Einstein 1915</div>
+  </div>
+
+  <div class="panel-body">
+
+    <!-- Metrics -->
+    <div class="section-label">Métricas globales</div>
+    <div class="metrics-strip">
+      <div class="metric-box">
+        <div class="metric-key">Masa total</div>
+        <div class="metric-val" id="met-masa">—</div>
+      </div>
+      <div class="metric-box">
+        <div class="metric-key">Curvatura máx</div>
+        <div class="metric-val" id="met-curv">—</div>
+      </div>
+      <div class="metric-box full">
+        <div class="metric-key">Dilatación temporal máxima (factor γ)</div>
+        <div class="metric-val" id="met-dil">—</div>
+      </div>
+    </div>
+
+    <!-- Toggles -->
+    <div class="section-label">Efectos visuales</div>
+    <div class="toggle-row">
+      <span class="toggle-label">
+        <span class="tip" data-tip="Colorea la malla según la intensidad gravitacional: azul frío = espacio plano, rojo = gravedad extrema.">i</span>
+        Heatmap gravitacional
+      </span>
+      <label class="toggle"><input type="checkbox" id="tog-heatmap" checked><span class="slider-tog"></span></label>
+    </div>
+    <div class="toggle-row">
+      <span class="toggle-label">
+        <span class="tip" data-tip="Partículas orbitando que se mueven más lento cuanto más cerca están del cuerpo masivo, visualizando la dilatación temporal.">i</span>
+        Partículas orbitales
+      </span>
+      <label class="toggle"><input type="checkbox" id="tog-particles" checked><span class="slider-tog"></span></label>
+    </div>
+    <div class="toggle-row">
+      <span class="toggle-label">
+        <span class="tip" data-tip="Ondas que se propagan cuando la configuración de masa cambia, simulando las ondas gravitacionales predichas por Einstein.">i</span>
+        Ondas gravitacionales
+      </span>
+      <label class="toggle"><input type="checkbox" id="tog-waves" checked><span class="slider-tog"></span></label>
+    </div>
+
+    <!-- Global sliders -->
+    <div class="section-label">Parámetros del tejido</div>
+    <div class="ctrl-row">
+      <span class="ctrl-label">
+        <span class="tip" data-tip="Resistencia del espacio-tiempo a curvarse. Bajo = muy elástico (pozos profundos). Alto = rígido (curvas suaves).">i</span>
+        Elasticidad
+      </span>
+      <span class="ctrl-val" id="v-elast">0.15</span>
+    </div>
+    <input type="range" id="sl-elast" min="0.01" max="0.5" step="0.01" value="0.15">
+
+    <div class="ctrl-row">
+      <span class="ctrl-label">
+        <span class="tip" data-tip="Densidad de la malla del tejido espacio-temporal. Más líneas = más detalle en la deformación.">i</span>
+        Resolución malla
+      </span>
+      <span class="ctrl-val" id="v-res">150</span>
+    </div>
+    <input type="range" id="sl-res" min="40" max="200" step="10" value="150">
+
+    <!-- Presets -->
+    <div class="section-label">Presets</div>
+    <div class="preset-row">
+      <button class="preset-btn" data-preset="solar">Sistema Solar</button>
+      <button class="preset-btn" data-preset="binary">Binaria</button>
+      <button class="preset-btn" data-preset="bh">Agujero Negro</button>
+      <button class="preset-btn" data-preset="merge">Fusión</button>
+    </div>
+
+    <!-- Astro controls -->
+    <div class="section-label">Cuerpos celestes</div>
+    <div class="btn-row">
+      <button class="btn" id="btn-add">+ Añadir</button>
+      <button class="btn danger" id="btn-remove">− Eliminar</button>
+    </div>
+    <div id="astros-container"></div>
+
+    <div class="legend">
+      <div class="leg-item"><div class="leg-dot" style="background:#00c8ff"></div>Espacio plano</div>
+      <div class="leg-item"><div class="leg-dot" style="background:#ffb347"></div>Curvatura media</div>
+      <div class="leg-item"><div class="leg-dot" style="background:#ff4560"></div>Curvatura extrema</div>
+    </div>
+
+  </div>
+</div>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+<script>
+// ─── Constants ───────────────────────────────────────────────────────────────
+const G = 6.674e-11, c_SI = 3e8, Msun = 1.989e30;
+const COLORES = [0xffdd44, 0xff8822, 0xff3355, 0x44ffaa, 0x44ccff, 0xdd44ff, 0xffffff, 0x88ff44];
+
+// ─── Scene setup ─────────────────────────────────────────────────────────────
+const scene = new THREE.Scene();
+const camera = new THREE.PerspectiveCamera(45, innerWidth / innerHeight, 0.1, 2000);
+camera.position.set(0, -70, 50);
+
+const renderer = new THREE.WebGLRenderer({ antialias: true, alpha: false });
+renderer.setSize(innerWidth, innerHeight);
+renderer.setPixelRatio(devicePixelRatio);
+renderer.setClearColor(0x03050f);
+document.getElementById('canvas-container').appendChild(renderer.domElement);
+
+// ─── Stars background ─────────────────────────────────────────────────────────
+{
+  const sg = new THREE.BufferGeometry();
+  const sv = new Float32Array(3000);
+  for (let i = 0; i < 3000; i++) {
+    sv[i] = (Math.random() - 0.5) * 800;
+  }
+  sg.setAttribute('position', new THREE.BufferAttribute(sv, 3));
+  const sm = new THREE.PointsMaterial({ color: 0xffffff, size: 0.4, sizeAttenuation: true, transparent: true, opacity: 0.7 });
+  scene.add(new THREE.Points(sg, sm));
+}
+
+// ─── Orbit controls (manual) ─────────────────────────────────────────────────
+{
+  let dragging = false, prevX = 0, prevY = 0;
+  let theta = -Math.PI / 2.2, phi = Math.PI / 3.5, radius = 90;
+
+  function updateCamera() {
+    camera.position.set(
+      radius * Math.sin(phi) * Math.cos(theta),
+      radius * Math.sin(phi) * Math.sin(theta),
+      radius * Math.cos(phi)
+    );
+    camera.lookAt(0, 0, -8);
+  }
+  updateCamera();
+
+  renderer.domElement.addEventListener('mousedown', e => { if (e.target === renderer.domElement) { dragging = true; prevX = e.clientX; prevY = e.clientY; } });
+  window.addEventListener('mouseup', () => { dragging = false; });
+  window.addEventListener('mousemove', e => {
+    if (!dragging) return;
+    theta -= (e.clientX - prevX) * 0.008;
+    phi   = Math.max(0.2, Math.min(Math.PI * 0.48, phi - (e.clientY - prevY) * 0.008));
+    prevX = e.clientX; prevY = e.clientY;
+    updateCamera();
+  });
+  renderer.domElement.addEventListener('wheel', e => {
+    radius = Math.max(20, Math.min(200, radius + e.deltaY * 0.08));
+    updateCamera();
+  }, { passive: true });
+
+  // Touch
+  let lastTouchDist = 0;
+  renderer.domElement.addEventListener('touchstart', e => {
+    if (e.touches.length === 1) { dragging = true; prevX = e.touches[0].clientX; prevY = e.touches[0].clientY; }
+    if (e.touches.length === 2) { lastTouchDist = Math.hypot(e.touches[0].clientX - e.touches[1].clientX, e.touches[0].clientY - e.touches[1].clientY); }
+  }, { passive: true });
+  renderer.domElement.addEventListener('touchmove', e => {
+    if (e.touches.length === 1 && dragging) {
+      theta -= (e.touches[0].clientX - prevX) * 0.01;
+      phi = Math.max(0.2, Math.min(Math.PI * 0.48, phi - (e.touches[0].clientY - prevY) * 0.01));
+      prevX = e.touches[0].clientX; prevY = e.touches[0].clientY;
+      updateCamera();
+    }
+    if (e.touches.length === 2) {
+      const d = Math.hypot(e.touches[0].clientX - e.touches[1].clientX, e.touches[0].clientY - e.touches[1].clientY);
+      radius = Math.max(20, Math.min(200, radius - (d - lastTouchDist) * 0.2));
+      lastTouchDist = d;
+      updateCamera();
+    }
+  }, { passive: true });
+  renderer.domElement.addEventListener('touchend', () => { dragging = false; });
+}
+
+// ─── Grid mesh ───────────────────────────────────────────────────────────────
+let gridRes = 150;
+let planeGeo, planeMesh;
+let posAttr, colorAttr;
+
+function buildGrid(res) {
+  if (planeMesh) scene.remove(planeMesh);
+  planeGeo = new THREE.PlaneGeometry(100, 100, res, res);
+  // Add vertex colors
+  const count = planeGeo.attributes.position.count;
+  const colors = new Float32Array(count * 3);
+  planeGeo.setAttribute('color', new THREE.BufferAttribute(colors, 3));
+
+  const mat = new THREE.MeshBasicMaterial({
+    vertexColors: true,
+    wireframe: true,
+    transparent: true,
+    opacity: 0.4
+  });
+  planeMesh = new THREE.Mesh(planeGeo, mat);
+  scene.add(planeMesh);
+  posAttr   = planeGeo.attributes.position;
+  colorAttr = planeGeo.attributes.color;
+}
+buildGrid(gridRes);
+
+// ─── Gravitational wave ring system ──────────────────────────────────────────
+const waveRings = [];
+function spawnWave(x, y) {
+  const geo = new THREE.RingGeometry(0.5, 0.8, 64);
+  const mat = new THREE.MeshBasicMaterial({ color: 0x00c8ff, side: THREE.DoubleSide, transparent: true, opacity: 0.6 });
+  const ring = new THREE.Mesh(geo, mat);
+  ring.position.set(x, y, 0.2);
+  ring.userData = { age: 0, x, y };
+  scene.add(ring);
+  waveRings.push(ring);
+}
+
+// ─── Particle system ─────────────────────────────────────────────────────────
+const PARTICLE_COUNT = 320;
+const partGeo = new THREE.BufferGeometry();
+const partPos = new Float32Array(PARTICLE_COUNT * 3);
+const partVel = [];
+const partData = [];
+
+for (let i = 0; i < PARTICLE_COUNT; i++) {
+  const angle  = Math.random() * Math.PI * 2;
+  const r      = 5 + Math.random() * 42;
+  const speed  = 0.4 + Math.random() * 0.6;
+  partPos[i * 3]     = Math.cos(angle) * r;
+  partPos[i * 3 + 1] = Math.sin(angle) * r;
+  partPos[i * 3 + 2] = 0.3 + Math.random() * 1.5;
+  partVel.push(speed / r);
+  partData.push({ angle, r, speed: speed / r, drift: (Math.random() - 0.5) * 0.002 });
+}
+partGeo.setAttribute('position', new THREE.BufferAttribute(partPos, 3));
+const partMat = new THREE.PointsMaterial({ color: 0x88ddff, size: 0.35, transparent: true, opacity: 0.65, sizeAttenuation: true });
+const particles = new THREE.Points(partGeo, partMat);
+scene.add(particles);
+
+// ─── Astros state ─────────────────────────────────────────────────────────────
+const astros = [];
+let astroCounter = 0;
+const astrosContainer = document.getElementById('astros-container');
+
+// Glow sprites
+function makeGlowSprite(color) {
+  const canvas = document.createElement('canvas');
+  canvas.width = canvas.height = 128;
+  const ctx = canvas.getContext('2d');
+  const grad = ctx.createRadialGradient(64,64,0, 64,64,64);
+  grad.addColorStop(0, `rgba(${(color>>16)&255},${(color>>8)&255},${color&255},0.9)`);
+  grad.addColorStop(0.3, `rgba(${(color>>16)&255},${(color>>8)&255},${color&255},0.25)`);
+  grad.addColorStop(1, 'rgba(0,0,0,0)');
+  ctx.fillStyle = grad;
+  ctx.fillRect(0,0,128,128);
+  const tex = new THREE.CanvasTexture(canvas);
+  return new THREE.Sprite(new THREE.SpriteMaterial({ map: tex, transparent: true, blending: THREE.AdditiveBlending }));
+}
+
+function addAstro(opts) {
+  astroCounter++;
+  const id    = astroCounter;
+  const color = opts?.color ?? COLORES[id % COLORES.length];
+  const hexStr = '#' + color.toString(16).padStart(6, '0');
+
+  // 3D sphere
+  const geo  = new THREE.SphereGeometry(1, 32, 32);
+  const mat  = new THREE.MeshBasicMaterial({ color });
+  const mesh = new THREE.Mesh(geo, mat);
+
+  // Glow
+  const glow = makeGlowSprite(color);
+  glow.scale.set(8, 8, 1);
+  mesh.add(glow);
+
+  scene.add(mesh);
+
+  // UI card
+  const card = document.createElement('div');
+  card.className = 'astro-card';
+  card.id = `ui-astro-${id}`;
+  card.style.borderLeftColor = hexStr;
+  card.innerHTML = `
+    <div class="astro-header">
+      <span class="astro-name" style="color:${hexStr}">● Astro ${id}</span>
+      <span class="astro-rs" id="rs-${id}">rs = —</span>
+    </div>
+    <div class="ctrl-row"><span class="ctrl-label"><span class="tip" data-tip="A mayor masa, mayor curvatura del espacio-tiempo y mayor dilatación temporal en su entorno.">i</span>Masa</span><span class="ctrl-val" id="v-m-${id}">${opts?.masa ?? 40}</span></div>
+    <input type="range" id="masa-${id}" min="0" max="150" step="1" value="${opts?.masa ?? 40}">
+    <div class="ctrl-row"><span class="ctrl-label">Posición X</span><span class="ctrl-val" id="v-x-${id}">0</span></div>
+    <input type="range" id="posX-${id}" min="-40" max="40" step="0.5" value="${opts?.x ?? (Math.random()-0.5)*30}">
+    <div class="ctrl-row"><span class="ctrl-label">Posición Y</span><span class="ctrl-val" id="v-y-${id}">0</span></div>
+    <input type="range" id="posY-${id}" min="-40" max="40" step="0.5" value="${opts?.y ?? (Math.random()-0.5)*30}">
+    <div class="astro-dil" id="dil-${id}">
+      <span style="color:var(--muted)">τ/t∞</span><span id="dilval-${id}" style="color:var(--accent);font-family:var(--mono)">—</span>
+    </div>
+  `;
+  astrosContainer.appendChild(card);
+
+  const ui = {
+    masa:  document.getElementById(`masa-${id}`),
+    posX:  document.getElementById(`posX-${id}`),
+    posY:  document.getElementById(`posY-${id}`),
+    vMasa: document.getElementById(`v-m-${id}`),
+    vX:    document.getElementById(`v-x-${id}`),
+    vY:    document.getElementById(`v-y-${id}`),
+    rs:    document.getElementById(`rs-${id}`),
+    dil:   document.getElementById(`dilval-${id}`),
+  };
+
+  const astro = { id, mesh, ui, prevX: 0, prevY: 0, masa: 0 };
+  astros.push(astro);
+
+  // Spawn wave on add
+  spawnWave(opts?.x ?? 0, opts?.y ?? 0);
+  return astro;
+}
+
+function removeAstro() {
+  if (!astros.length) return;
+  const a = astros.pop();
+  scene.remove(a.mesh);
+  document.getElementById(`ui-astro-${a.id}`)?.remove();
+}
+
+document.getElementById('btn-add').addEventListener('click', () => addAstro({}));
+document.getElementById('btn-remove').addEventListener('click', removeAstro);
+
+// ─── Presets ─────────────────────────────────────────────────────────────────
+const PRESETS = {
+  solar: [
+    // Sol — masa dominante, centro
+    { masa: 150, x:  0,   y:  0,  color: 0xffdd00 },
+    // Mercurio — muy pequeño, muy cerca
+    { masa:   2, x:  6,   y:  0,  color: 0xaaaaaa },
+    // Venus — pequeño, cercano
+    { masa:   4, x: 10,   y:  2,  color: 0xffcc88 },
+    // Tierra — referencia
+    { masa:   5, x: 14,   y: -2,  color: 0x4499ff },
+    // Marte — algo más lejos, más pequeño
+    { masa:   3, x: 19,   y:  3,  color: 0xff6633 },
+    // Júpiter — gigante gaseoso, el más masivo
+    { masa:  50, x: 28,   y: -4,  color: 0xffaa66 },
+    // Saturno — casi tan grande como Júpiter
+    { masa:  42, x:-26,   y:  5,  color: 0xeedd88 },
+    // Urano — gigante de hielo
+    { masa:  18, x:-20,   y:-10,  color: 0x88eeff },
+    // Neptuno — gigante de hielo, más lejano
+    { masa:  17, x: 10,   y: 28,  color: 0x4466ff },
+  ],
+  binary: [
+    { masa: 80, x:-15, y: 0, color: 0xffdd44 },
+    { masa: 70, x: 15, y: 0, color: 0xff8844 },
+  ],
+  bh: [
+    { masa: 150, x: 0, y: 0, color: 0xffffff },
+    { masa:  10, x:30, y: 8, color: 0x44ccff },
+  ],
+  merge: [
+    { masa:  90, x:-8, y: 0, color: 0xff4455 },
+    { masa:  85, x: 8, y: 0, color: 0x7744ff },
+  ],
+};
+
+document.querySelectorAll('.preset-btn').forEach(btn => {
+  btn.addEventListener('click', () => {
+    const toRemove = astros.slice();
+    toRemove.forEach(a => {
+      scene.remove(a.mesh);
+      document.getElementById('ui-astro-' + a.id)?.remove();
+    });
+    astros.length = 0;
+    const p = PRESETS[btn.dataset.preset];
+    p.forEach(opts => addAstro(opts));
+  });
+});
+
+// Initialize with 2 astros
+addAstro({ masa: 60, x: -14, y: 0, color: 0xffdd44 });
+addAstro({ masa: 40, x:  14, y: 0, color: 0x44aaff });
+
+// ─── UI bindings ─────────────────────────────────────────────────────────────
+const elast   = document.getElementById('sl-elast');
+const vElast  = document.getElementById('v-elast');
+const slRes   = document.getElementById('sl-res');
+const vRes    = document.getElementById('v-res');
+const togHeat = document.getElementById('tog-heatmap');
+const togPart = document.getElementById('tog-particles');
+const togWave = document.getElementById('tog-waves');
+
+elast.addEventListener('input', () => { vElast.textContent = parseFloat(elast.value).toFixed(2); });
+slRes.addEventListener('change', () => {
+  gridRes = parseInt(slRes.value);
+  vRes.textContent = gridRes;
+  buildGrid(gridRes);
+});
+togPart.addEventListener('change', () => { particles.visible = togPart.checked; });
+
+// ─── Physics helpers ─────────────────────────────────────────────────────────
+function schwarzschild(M_norm) {
+  // M_norm is slider 0-150, map to solar masses 0-50
+  const M_solar = M_norm * 0.33;
+  const M = M_solar * Msun;
+  const rs = (2 * G * M) / (c_SI * c_SI);
+  return rs; // meters
+}
+
+function timeDilation(M_norm, dist_units) {
+  // dist_units: distance in our world units (1 unit ≈ 1000 km)
+  const M_solar = M_norm * 0.33;
+  const M = M_solar * Msun;
+  const rs = (2 * G * M) / (c_SI * c_SI);
+  const r_m = dist_units * 1e6; // convert to meters (rough)
+  if (r_m <= rs || r_m < 1) return 0;
+  return Math.sqrt(Math.max(0, 1 - rs / r_m));
+}
+
+// ─── Color from depth (heatmap) ───────────────────────────────────────────────
+function depthToColor(z, minZ) {
+  const t = Math.min(1, Math.abs(z) / Math.max(0.001, Math.abs(minZ)));
+  // cold (blue) → warm (orange) → hot (red)
+  if (t < 0.5) {
+    const s = t * 2;
+    return [0.1 + s * 0.5, 0.4 + s * 0.3, 0.9 - s * 0.4]; // blue → orange
+  } else {
+    const s = (t - 0.5) * 2;
+    return [0.6 + s * 0.4, 0.7 - s * 0.6, 0.5 - s * 0.5]; // orange → red
+  }
+}
+
+// ─── Main loop ───────────────────────────────────────────────────────────────
+let clock = 0;
+let lastMassHash = '';
+
+function animate() {
+  requestAnimationFrame(animate);
+  clock += 0.016;
+
+  const E = parseFloat(elast.value);
+  const useHeat = togHeat.checked;
+  const useWave = togWave.checked;
+
+  // Update astros from sliders
+  let totalMasa = 0;
+  const massHash = astros.map(a => a.ui.masa.value + a.ui.posX.value + a.ui.posY.value).join('|');
+  const massChanged = massHash !== lastMassHash;
+  lastMassHash = massHash;
+
+  astros.forEach(a => {
+    const m  = parseFloat(a.ui.masa.value);
+    const px = parseFloat(a.ui.posX.value);
+    const py = parseFloat(a.ui.posY.value);
+
+    a.ui.vMasa.textContent = m;
+    a.ui.vX.textContent    = px.toFixed(1);
+    a.ui.vY.textContent    = py.toFixed(1);
+
+    a.mesh.position.x = px;
+    a.mesh.position.y = py;
+    const sc = 0.8 + m / 60;
+    a.mesh.scale.setScalar(sc);
+    a.mesh.children[0].scale.set(Math.max(4, sc * 6), Math.max(4, sc * 6), 1);
+
+    a.masa = m;
+    totalMasa += m;
+
+    // Schwarzschild radius
+    const rs_m = schwarzschild(m);
+    const rs_km = (rs_m / 1000).toFixed(0);
+    a.ui.rs.textContent = `rs ≈ ${Number(rs_km).toLocaleString()} km`;
+
+    // Time dilation at surface (r = scale)
+    const dil = timeDilation(m, sc * 1.5);
+    const dilStr = dil.toFixed(5);
+    a.ui.dil.textContent = dilStr;
+    a.ui.dil.style.color = dil < 0.5 ? '#ff4560' : dil < 0.9 ? '#ffb347' : '#00c8ff';
+
+    // Spawn wave if moved significantly
+    if (massChanged && useWave) {
+      const dx = px - (a.prevX ?? px);
+      const dy = py - (a.prevY ?? py);
+      if (dx * dx + dy * dy > 4) spawnWave(px, py);
+    }
+    a.prevX = px; a.prevY = py;
+  });
+
+  // ── Deform grid ──
+  let minZ = -0.01;
+  for (let i = 0; i < posAttr.count; i++) {
+    const vx = posAttr.getX(i);
+    const vy = posAttr.getY(i);
+    let newZ = 0;
+
+    astros.forEach(a => {
+      const dx = vx - a.mesh.position.x;
+      const dy = vy - a.mesh.position.y;
+      const d2 = dx * dx + dy * dy;
+      // Wave ripple effect
+      let ripple = 0;
+      if (useWave) {
+        waveRings.forEach(wr => {
+          const wdx = vx - wr.userData.x;
+          const wdy = vy - wr.userData.y;
+          const wd  = Math.sqrt(wdx * wdx + wdy * wdy);
+          const waveFront = wr.userData.age * 6;
+          const diff = Math.abs(wd - waveFront);
+          if (diff < 3) ripple += (1 - diff / 3) * 0.8 * Math.exp(-wr.userData.age * 0.3);
+        });
+      }
+      newZ -= a.masa / (d2 * E + 2);
+      newZ -= ripple * 0.3;
+    });
+
+    posAttr.setZ(i, newZ);
+    if (newZ < minZ) minZ = newZ;
+  }
+  posAttr.needsUpdate = true;
+
+  // ── Heatmap colors ──
+  if (useHeat) {
+    for (let i = 0; i < posAttr.count; i++) {
+      const z = posAttr.getZ(i);
+      const [r, g, b] = depthToColor(z, minZ);
+      colorAttr.setXYZ(i, r, g, b);
+    }
+    colorAttr.needsUpdate = true;
+    planeMesh.material.vertexColors = true;
+  } else {
+    if (planeMesh.material.vertexColors) {
+      for (let i = 0; i < colorAttr.count; i++) colorAttr.setXYZ(i, 0.53, 0.8, 1.0);
+      colorAttr.needsUpdate = true;
+    }
+  }
+
+  // ── Sink astros to grid depth ──
+  // Uses IDENTICAL formula to the grid deformation so astros sit exactly on the mesh surface.
+  astros.forEach(a => {
+    const ax = a.mesh.position.x;
+    const ay = a.mesh.position.y;
+    let z = 0;
+    astros.forEach(o => {
+      const dx = ax - o.mesh.position.x;
+      const dy = ay - o.mesh.position.y;
+      const d2 = dx * dx + dy * dy;
+      // Same formula as grid: mass / (d2 * E + 2)
+      // Self-contribution: d2=0 → mass/(0*E+2) = mass/2 (matches grid vertex exactly on top of astro)
+      z -= o.masa / (d2 * E + 2);
+    });
+    // Raise slightly above the mesh surface so the sphere sits ON it, not through it
+    const sc = a.mesh.scale.x;
+    a.mesh.position.z = z + sc * 0.5;
+  });
+
+  // ── Animate wave rings ──
+  for (let i = waveRings.length - 1; i >= 0; i--) {
+    const wr = waveRings[i];
+    wr.userData.age += 0.025;
+    const s = 1 + wr.userData.age * 6;
+    wr.scale.set(s, s, 1);
+    wr.material.opacity = Math.max(0, 0.6 - wr.userData.age * 0.55);
+    if (wr.userData.age > 1.2) {
+      scene.remove(wr);
+      waveRings.splice(i, 1);
+    }
+  }
+
+  // ── Animate particles (time-dilation aware) ──
+  const partPosArr = partGeo.attributes.position.array;
+  for (let i = 0; i < PARTICLE_COUNT; i++) {
+    const pd = partData[i];
+
+    // Compute gravitational factor at particle position
+    const px = partPosArr[i * 3];
+    const py = partPosArr[i * 3 + 1];
+    let gravFactor = 1;
+    astros.forEach(a => {
+      const dx = px - a.mesh.position.x;
+      const dy = py - a.mesh.position.y;
+      const d  = Math.sqrt(dx * dx + dy * dy) + 0.01;
+      gravFactor *= Math.max(0.05, 1 - a.masa * 0.004 / d);
+    });
+
+    pd.angle += pd.speed * gravFactor;
+
+    // Drift toward nearest astro slightly
+    let cx = 0, cy = 0, totalM = 0;
+    astros.forEach(a => { cx += a.mesh.position.x * a.masa; cy += a.mesh.position.y * a.masa; totalM += a.masa; });
+    if (totalM > 0) { cx /= totalM; cy /= totalM; }
+
+    const bx = cx + Math.cos(pd.angle) * pd.r;
+    const by = cy + Math.sin(pd.angle) * pd.r;
+
+    partPosArr[i * 3]     += (bx - partPosArr[i * 3]) * 0.04;
+    partPosArr[i * 3 + 1] += (by - partPosArr[i * 3 + 1]) * 0.04;
+
+    // Z from grid depth (approximate)
+    let pz = 0.4;
+    astros.forEach(a => {
+      const dx = bx - a.mesh.position.x;
+      const dy = by - a.mesh.position.y;
+      pz -= a.masa / ((dx*dx + dy*dy) * E + 3);
+    });
+    partPosArr[i * 3 + 2] = pz + 0.5 + Math.sin(clock * 2 + i) * 0.2;
+  }
+  partGeo.attributes.position.needsUpdate = true;
+
+  // Color particles by gravity proximity
+  if (!partGeo.attributes.color) {
+    const c = new Float32Array(PARTICLE_COUNT * 3);
+    partGeo.setAttribute('color', new THREE.BufferAttribute(c, 3));
+    partMat.vertexColors = true;
+  }
+  const pCols = partGeo.attributes.color.array;
+  for (let i = 0; i < PARTICLE_COUNT; i++) {
+    const px = partPosArr[i * 3], py = partPosArr[i * 3 + 1];
+    let minDist = 999;
+    astros.forEach(a => {
+      const d = Math.hypot(px - a.mesh.position.x, py - a.mesh.position.y);
+      if (d < minDist) minDist = d;
+    });
+    const t = Math.max(0, 1 - minDist / 25);
+    pCols[i * 3]     = 0.13 + t * 0.87;
+    pCols[i * 3 + 1] = 0.53 - t * 0.3;
+    pCols[i * 3 + 2] = 1.0 - t * 0.6;
+  }
+  partGeo.attributes.color.needsUpdate = true;
+
+  // ── Update global metrics ──
+  const maxCurv = Math.abs(minZ).toFixed(2);
+  document.getElementById('met-masa').textContent = totalMasa.toFixed(0) + ' M';
+  document.getElementById('met-curv').textContent = maxCurv;
+
+  // Global time dilation: at distance 5 units from heaviest body
+  const heaviest = astros.reduce((a, b) => b.masa > a.masa ? b : a, { masa: 0 });
+  if (heaviest.masa > 0) {
+    const dil = timeDilation(heaviest.masa, 5);
+    const pct = ((1 - dil) * 100).toFixed(3);
+    const el = document.getElementById('met-dil');
+    el.textContent = `γ=${( 1/Math.max(dil,0.0001)).toFixed(3)}  (−${pct}% a 5u)`;
+    el.className = 'metric-val' + (dil < 0.3 ? ' danger' : dil < 0.7 ? ' warn' : '');
+  }
+
+  renderer.render(scene, camera);
+}
+
+window.addEventListener('resize', () => {
+  camera.aspect = innerWidth / innerHeight;
+  camera.updateProjectionMatrix();
+  renderer.setSize(innerWidth, innerHeight);
+});
+
+animate();
+</script>
+</body>
+</html>
