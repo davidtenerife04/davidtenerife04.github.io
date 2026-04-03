@@ -316,11 +316,16 @@
   input:checked + .slider-tog { background: rgba(0,200,255,0.4); }
   input:checked + .slider-tog::before { transform: translateX(15px); background: var(--accent); }
 
-  /* ── Theory button (top-right) ── */
-  #btn-teoria {
+  /* ── Top-right: theory + language ── */
+  #top-actions-bar {
     position: fixed;
     top: 16px; right: 16px;
     z-index: 200;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+  #btn-teoria, #btn-lang {
     display: flex;
     align-items: center;
     gap: 8px;
@@ -337,10 +342,20 @@
     transition: all 0.2s;
     text-transform: uppercase;
   }
-  #btn-teoria:hover {
+  #btn-lang {
+    color: #9d77ff;
+    border-color: rgba(123,79,255,0.35);
+    padding: 10px 14px;
+  }
+  #btn-teoria:hover, #btn-lang:hover {
     background: rgba(0,200,255,0.12);
     border-color: var(--accent);
     box-shadow: 0 0 20px rgba(0,200,255,0.15);
+  }
+  #btn-lang:hover {
+    background: rgba(123,79,255,0.15);
+    border-color: var(--accent2);
+    box-shadow: 0 0 20px rgba(123,79,255,0.12);
   }
   #btn-teoria .btn-icon {
     width: 18px; height: 18px;
@@ -677,11 +692,14 @@
 
 <div id="canvas-container"></div>
 
-<!-- ── Theory button ── -->
-<button id="btn-teoria">
-  <span class="btn-icon">i</span>
-  Teoría
-</button>
+<!-- ── Top actions: theory + English ── -->
+<div id="top-actions-bar">
+  <button type="button" id="btn-teoria">
+    <span class="btn-icon">i</span>
+    <span data-i18n-es="Teoría" data-i18n-en="Theory">Teoría</span>
+  </button>
+  <button type="button" id="btn-lang" title="English / Español">EN</button>
+</div>
 
 <!-- ── Theory modal ── -->
 <div id="modal-overlay">
@@ -689,18 +707,18 @@
 
     <div class="modal-header">
       <div class="modal-header-left">
-        <div class="modal-eyebrow">Base teórica</div>
-        <div class="modal-title">Relatividad General</div>
+        <div class="modal-eyebrow" data-i18n-es="Base teórica" data-i18n-en="Theoretical basis">Base teórica</div>
+        <div class="modal-title" data-i18n-es="Relatividad General" data-i18n-en="General Relativity">Relatividad General</div>
       </div>
       <button class="modal-close" id="modal-close-btn">✕</button>
     </div>
 
     <div class="modal-tabs">
       <button class="modal-tab active" data-tab="einstein">Einstein</button>
-      <button class="modal-tab" data-tab="relatividad">Relatividad</button>
-      <button class="modal-tab" data-tab="masa-tiempo">Masa y tiempo</button>
-      <button class="modal-tab" data-tab="velocidad">Velocidad</button>
-      <button class="modal-tab" data-tab="ecuaciones">Ecuaciones</button>
+      <button class="modal-tab" data-tab="relatividad"><span data-i18n-es="Relatividad" data-i18n-en="Relativity">Relatividad</span></button>
+      <button class="modal-tab" data-tab="masa-tiempo"><span data-i18n-es="Masa y tiempo" data-i18n-en="Mass and time">Masa y tiempo</span></button>
+      <button class="modal-tab" data-tab="velocidad"><span data-i18n-es="Velocidad" data-i18n-en="Velocity">Velocidad</span></button>
+      <button class="modal-tab" data-tab="ecuaciones"><span data-i18n-es="Ecuaciones" data-i18n-en="Equations">Ecuaciones</span></button>
       <!-- AÑADIR MÁS PESTAÑAS AQUÍ — duplica un <button class="modal-tab" data-tab="id">Nombre</button> -->
     </div>
 
@@ -1054,61 +1072,404 @@
   </div><!-- /modal -->
 </div><!-- /modal-overlay -->
 
+<!-- English theory tab bodies (inner HTML only; swapped by language toggle) -->
+<template id="tpl-en-einstein">
+        <div class="theo-section">
+          <div class="theo-tag">Biography</div>
+          <h2 class="theo-h2">Albert Einstein (1879 – 1955)</h2>
+          <p class="theo-p">Born on 14 March 1879 in Ulm, Germany, Albert Einstein is regarded as the most influential theoretical physicist of the 20th century. He developed special relativity (1905) and general relativity (1915), radically changing how we understand space, time, gravity, and the universe.</p>
+          <p class="theo-p">Unlike the popular myth, Einstein was not a poor student: he mastered mathematics and physics from childhood. He clashed with rote, authoritarian teaching, which pushed him toward a deeply visual, intuitive style of thinking based on what he called <em>Gedankenexperimente</em> (thought experiments).</p>
+          <div class="theo-quote">
+            "Imagination is more important than knowledge. Knowledge is limited, whereas imagination embraces the entire world."
+            <cite>— Albert Einstein</cite>
+          </div>
+          <div class="fact-grid">
+            <div class="fact-card">
+              <div class="fact-card-label">Birth</div>
+              <div class="fact-card-val">14 Mar 1879</div>
+              <div class="fact-card-sub">Ulm, Kingdom of Württemberg, Germany</div>
+            </div>
+            <div class="fact-card">
+              <div class="fact-card-label">Death</div>
+              <div class="fact-card-val">18 Apr 1955</div>
+              <div class="fact-card-sub">Princeton, New Jersey, USA</div>
+            </div>
+            <div class="fact-card">
+              <div class="fact-card-label">Nobel Prize</div>
+              <div class="fact-card-val">1921</div>
+              <div class="fact-card-sub">Photoelectric effect — not for relativity</div>
+            </div>
+            <div class="fact-card">
+              <div class="fact-card-label">Key publications</div>
+              <div class="fact-card-val">Annus Mirabilis</div>
+              <div class="fact-card-sub">1905: four papers that changed physics</div>
+            </div>
+          </div>
+        </div>
+        <div class="theo-section">
+          <div class="theo-tag">Timeline</div>
+          <h2 class="theo-h2">Major milestones</h2>
+          <div class="timeline">
+            <div class="tl-item">
+              <div class="tl-year">1905</div>
+              <div class="tl-line"><div class="tl-dot"></div><div class="tl-connector"></div></div>
+              <div class="tl-content">
+                <div class="tl-title">Annus Mirabilis — the miracle year</div>
+                <div class="tl-desc">He publishes four revolutionary papers: special relativity, the photoelectric effect, Brownian motion, and mass–energy equivalence E=mc².</div>
+              </div>
+            </div>
+            <div class="tl-item">
+              <div class="tl-year">1907</div>
+              <div class="tl-line"><div class="tl-dot"></div><div class="tl-connector"></div></div>
+              <div class="tl-content">
+                <div class="tl-title">The happiest thought</div>
+                <div class="tl-desc">Einstein formulates the equivalence principle: a person in free fall does not feel their own weight. Gravity and inertia are locally indistinguishable.</div>
+              </div>
+            </div>
+            <div class="tl-item">
+              <div class="tl-year">1915</div>
+              <div class="tl-line"><div class="tl-dot"></div><div class="tl-connector"></div></div>
+              <div class="tl-content">
+                <div class="tl-title">Einstein field equations</div>
+                <div class="tl-desc">After ten years of work, he publishes General Relativity. Gravity is not a force: it is spacetime curvature caused by mass and energy.</div>
+              </div>
+            </div>
+            <div class="tl-item">
+              <div class="tl-year">1919</div>
+              <div class="tl-line"><div class="tl-dot"></div><div class="tl-connector"></div></div>
+              <div class="tl-content">
+                <div class="tl-title">Experimental confirmation</div>
+                <div class="tl-desc">Arthur Eddington measures starlight bending during a solar eclipse. Einstein’s prediction was right: gravity bends light.</div>
+              </div>
+            </div>
+            <div class="tl-item">
+              <div class="tl-year">2016</div>
+              <div class="tl-line"><div class="tl-dot"></div><div class="tl-connector"></div></div>
+              <div class="tl-content">
+                <div class="tl-title">Gravitational-wave detection (LIGO)</div>
+                <div class="tl-desc">Gravitational waves predicted by Einstein in 1916 are detected for the first time. The signal came from merging black holes 1.3 billion light-years away.</div>
+              </div>
+            </div>
+          </div>
+        </div>
+</template>
+
+<template id="tpl-en-relatividad">
+        <div class="theo-section">
+          <div class="theo-tag">Core idea</div>
+          <h2 class="theo-h2">What is the theory of relativity?</h2>
+          <p class="theo-p">Einstein’s relativity is really two related theories. <strong style="color:var(--accent)">Special Relativity</strong> (1905) says the laws of physics are the same for all inertial observers and that the speed of light is the same for everyone. <strong style="color:var(--accent)">General Relativity</strong> (1915) extends this to gravity, reinterpreting it as the geometric curvature of spacetime.</p>
+          <p class="theo-p">Before Einstein, Newton described gravity as a mysterious force acting instantaneously at a distance. Einstein showed there is no such force: massive bodies curve the fabric of spacetime, and other bodies simply follow the straightest possible paths in that curved geometry.</p>
+          <div class="theo-quote">
+            "Matter tells spacetime how to curve, and spacetime tells matter how to move."
+            <cite>— John Archibald Wheeler (popular summary of GR)</cite>
+          </div>
+        </div>
+        <div class="theo-section">
+          <div class="theo-tag">Foundations</div>
+          <h2 class="theo-h2">The two pillars</h2>
+          <table class="comp-table">
+            <thead><tr><th>Principle</th><th>Statement</th><th>Consequence</th></tr></thead>
+            <tbody>
+              <tr><td>Principle of relativity</td><td>The laws of physics are identical in all inertial frames</td><td>There is no absolute rest—only relative velocities.</td></tr>
+              <tr><td>Invariance of c</td><td>The speed of light in vacuum (≈ 3×10⁸ m/s) is the same for all observers</td><td>Time and space must deform to keep c constant.</td></tr>
+              <tr><td>Equivalence principle</td><td>Gravitational acceleration and inertial acceleration are locally indistinguishable</td><td>Gravity and inertia are the same phenomenon in different frames.</td></tr>
+              <tr><td>General covariance</td><td>Physical laws keep the same mathematical form in all coordinate systems</td><td>Spacetime geometry must be described with tensors.</td></tr>
+            </tbody>
+          </table>
+        </div>
+        <div class="theo-section">
+          <div class="theo-tag">Spacetime</div>
+          <h2 class="theo-h2">Four unified dimensions</h2>
+          <p class="theo-p">Minkowski (1908) showed that three-dimensional space and time form one four-dimensional entity: <em>spacetime</em>. Events are not split into separate space and time; each has coordinates (x, y, z, t).</p>
+          <p class="theo-p">The “distance” between events in spacetime is the <em>spacetime interval</em>, invariant for all observers even though space and time separately vary.</p>
+          <div class="formula-block">
+            <div class="formula-label">Spacetime interval (Minkowski metric)</div>
+            <div class="formula-tex" id="ftex-minkowski-en">$$ds^2 = -c^2 dt^2 + dx^2 + dy^2 + dz^2$$</div>
+            <div class="formula-desc">
+              <code>ds</code> is the (invariant) interval. If <code>ds² &lt; 0</code>: timelike (possible causal link). If <code>ds² &gt; 0</code>: spacelike (no causal link). If <code>ds² = 0</code>: null (lightlike path).
+            </div>
+          </div>
+        </div>
+</template>
+
+<template id="tpl-en-masa-tiempo">
+        <div class="theo-section">
+          <div class="theo-tag">Gravitational time dilation</div>
+          <h2 class="theo-h2">How mass stretches time</h2>
+          <p class="theo-p">In General Relativity, mass curves spacetime. A direct consequence is that time runs <em>slower</em> where gravitational curvature is stronger—near very massive objects. This <strong style="color:var(--accent)">gravitational time dilation</strong> is real and has been measured with atomic clocks.</p>
+          <p class="theo-p">GPS is the everyday example: satellites orbit far from Earth where gravity is weaker, so their clocks tick slightly faster than ground clocks. Without relativistic correction (≈ 38 μs per day), GPS position errors would grow to about 10 km per day.</p>
+          <div class="formula-block">
+            <div class="formula-label">Gravitational time dilation (Schwarzschild field)</div>
+            <div class="formula-tex" id="ftex-dil-grav-en">$$\frac{d\tau}{dt} = \sqrt{1 - \frac{r_s}{r}} = \sqrt{1 - \frac{2GM}{rc^2}}$$</div>
+            <div class="formula-desc">
+              <code>dτ</code> proper time (local observer near the mass) · <code>dt</code> coordinate time (distant observer in flat space) · <code>r_s = 2GM/c²</code> Schwarzschild radius · <code>r</code> distance to the center. As <code>r → r_s</code> the ratio goes to 0: time freezes at the horizon as seen from outside.
+            </div>
+          </div>
+          <div class="fact-grid">
+            <div class="fact-card">
+              <div class="fact-card-label">On Earth (surface)</div>
+              <div class="fact-card-val">~0.7 ns/day</div>
+              <div class="fact-card-sub">Time difference between top and bottom of a 100 m building</div>
+            </div>
+            <div class="fact-card">
+              <div class="fact-card-label">GPS (correction)</div>
+              <div class="fact-card-val">+38 μs/day</div>
+              <div class="fact-card-sub">Satellites must compensate or the system fails within minutes</div>
+            </div>
+            <div class="fact-card">
+              <div class="fact-card-label">Neutron star</div>
+              <div class="fact-card-val">τ ≈ 0.76 t</div>
+              <div class="fact-card-sub">Time on the surface runs ~24% slower</div>
+            </div>
+            <div class="fact-card">
+              <div class="fact-card-label">Event horizon</div>
+              <div class="fact-card-val">τ → 0</div>
+              <div class="fact-card-sub">Time appears frozen when viewed from outside</div>
+            </div>
+          </div>
+        </div>
+        <div class="theo-section">
+          <div class="theo-tag">Schwarzschild radius</div>
+          <h2 class="theo-h2">The black-hole threshold</h2>
+          <p class="theo-p">For every mass there is a critical radius called the Schwarzschild radius. If all the mass fits inside it, escaping gravity would require exceeding the speed of light—impossible. That boundary is the event horizon of a black hole.</p>
+          <div class="formula-block">
+            <div class="formula-label">Schwarzschild radius</div>
+            <div class="formula-tex" id="ftex-rs-en">$$r_s = \frac{2GM}{c^2}$$</div>
+            <div class="formula-desc">
+              <code>G = 6.674 × 10⁻¹¹ m³ kg⁻¹ s⁻²</code> gravitational constant · <code>M</code> body mass · <code>c = 3×10⁸ m/s</code> speed of light. For the Sun: r_s ≈ 3 km. For Earth: r_s ≈ 9 mm. For a 70 kg person: r_s ≈ 10⁻²⁵ m.
+            </div>
+          </div>
+        </div>
+</template>
+
+<template id="tpl-en-velocidad">
+        <div class="theo-section">
+          <div class="theo-tag">Special relativity</div>
+          <h2 class="theo-h2">How speed stretches time</h2>
+          <p class="theo-p">Even without gravity, relative motion between observers causes time dilation. A fast-moving observer ages more slowly than one at rest. At everyday speeds the effect is tiny; near the speed of light it becomes dramatic.</p>
+          <p class="theo-p">This is not an optical illusion: it is a real difference in elapsed time. The twin paradox illustrates it—an astronaut at 0.99c for one year (their time) can find an Earth twin ≈7 years older on return.</p>
+          <div class="formula-block">
+            <div class="formula-label">Time dilation — Lorentz factor</div>
+            <div class="formula-tex" id="ftex-lorentz-en">$$\Delta t' = \gamma \, \Delta t \qquad \text{where} \qquad \gamma = \frac{1}{\sqrt{1 - \dfrac{v^2}{c^2}}}$$</div>
+            <div class="formula-desc">
+              <code>Δt</code> proper time (moving observer) · <code>Δt'</code> coordinate time (rest observer) · <code>γ</code> Lorentz factor (≥ 1) · <code>v</code> relative speed · <code>c</code> speed of light. At <code>v = 0.87c</code>, γ = 2. As <code>v → c</code>, γ → ∞.
+            </div>
+          </div>
+          <div class="fact-grid">
+            <div class="fact-card">
+              <div class="fact-card-label">v = 10% c (30,000 km/s)</div>
+              <div class="fact-card-val">γ ≈ 1.005</div>
+              <div class="fact-card-sub">Only ~0.5% dilation—almost imperceptible</div>
+            </div>
+            <div class="fact-card">
+              <div class="fact-card-label">v = 90% c</div>
+              <div class="fact-card-val">γ ≈ 2.29</div>
+              <div class="fact-card-sub">Time runs ~2.3× slower for the traveler</div>
+            </div>
+            <div class="fact-card">
+              <div class="fact-card-label">v = 99% c</div>
+              <div class="fact-card-val">γ ≈ 7.09</div>
+              <div class="fact-card-sub">1 traveler year ≈ 7 Earth years</div>
+            </div>
+            <div class="fact-card">
+              <div class="fact-card-label">v = 99.99% c</div>
+              <div class="fact-card-val">γ ≈ 70.7</div>
+              <div class="fact-card-sub">How cosmic-ray muons reach the ground</div>
+            </div>
+          </div>
+        </div>
+        <div class="theo-section">
+          <div class="theo-tag">Lorentz contraction</div>
+          <h2 class="theo-h2">Space shrinks too</h2>
+          <p class="theo-p">Time dilation comes with <em>length contraction</em>: a moving object is shorter along its motion as measured by an external observer. Both effects are required for consistent physics in all frames.</p>
+          <div class="formula-block">
+            <div class="formula-label">Lorentz contraction</div>
+            <div class="formula-tex" id="ftex-contrac-en">$$L = \frac{L_0}{\gamma} = L_0 \sqrt{1 - \frac{v^2}{c^2}}$$</div>
+            <div class="formula-desc">
+              <code>L₀</code> proper length · <code>L</code> length seen by external observer · <code>γ</code> Lorentz factor. At <code>v = 0.87c</code>, 1 m appears as 0.5 m.
+            </div>
+          </div>
+        </div>
+        <div class="theo-section">
+          <div class="theo-tag">Fundamental limit</div>
+          <h2 class="theo-h2">Why nothing exceeds c</h2>
+          <p class="theo-p">As an object accelerates toward c, its effective inertial mass (kinetic energy) grows without bound. Infinite energy would be needed to reach c. This is not engineering—it is built into spacetime: c is the speed of causality.</p>
+          <div class="formula-block">
+            <div class="formula-label">Total relativistic energy</div>
+            <div class="formula-tex" id="ftex-erel-en">$$E = \gamma m c^2 = \frac{mc^2}{\sqrt{1 - v^2/c^2}}$$</div>
+            <div class="formula-desc">
+              At rest (<code>v=0</code>, <code>γ=1</code>): <code>E = mc²</code>. As <code>v → c</code>, <code>E → ∞</code>, so massive particles cannot reach c.
+            </div>
+          </div>
+        </div>
+</template>
+
+<template id="tpl-en-ecuaciones">
+        <div class="theo-section">
+          <div class="theo-tag">Field equations</div>
+          <h2 class="theo-h2">Einstein’s equations</h2>
+          <p class="theo-p">Einstein’s field equations are the mathematical heart of General Relativity. They link spacetime geometry (curvature) to its energy content (mass, energy, momentum). They are ten coupled nonlinear PDEs, written compactly in tensor notation.</p>
+          <div class="formula-block">
+            <div class="formula-label">Einstein field equations (compact form)</div>
+            <div class="formula-tex" id="ftex-campo-en">$$G_{\mu\nu} + \Lambda g_{\mu\nu} = \frac{8\pi G}{c^4} T_{\mu\nu}$$</div>
+            <div class="formula-desc">
+              <code>G_μν</code> Einstein tensor (geometry) · <code>Λ</code> cosmological constant · <code>g_μν</code> metric tensor · <code>8πG/c⁴ ≈ 2.07×10⁻⁴³ m/J</code> coupling · <code>T_μν</code> stress–energy tensor.
+            </div>
+          </div>
+        </div>
+        <div class="theo-section">
+          <div class="theo-tag">Breakdown</div>
+          <h2 class="theo-h2">What each part means</h2>
+          <div class="formula-block">
+            <div class="formula-label">Einstein tensor — geometric side</div>
+            <div class="formula-tex" id="ftex-einstein-tensor-en">$$G_{\mu\nu} = R_{\mu\nu} - \frac{1}{2} R \, g_{\mu\nu}$$</div>
+            <div class="formula-desc">
+              <code>R_μν</code> Ricci tensor · <code>R</code> Ricci scalar · <code>g_μν</code> metric. This combination enforces covariance and conservation of energy–momentum.
+            </div>
+          </div>
+          <div class="formula-block">
+            <div class="formula-label">Newtonian limit — weak field, slow motion</div>
+            <div class="formula-tex" id="ftex-newton-en">$$\nabla^2 \Phi = 4\pi G \rho$$</div>
+            <div class="formula-desc">
+              For small curvature and speeds ≪ c, Einstein’s equations reduce to Poisson’s equation. <code>Φ</code> gravitational potential · <code>ρ</code> mass density. Newton is a limit of Einstein.
+            </div>
+          </div>
+          <div class="formula-block">
+            <div class="formula-label">Coupling constant — spacetime “stiffness”</div>
+            <div class="formula-tex" id="ftex-kappa-en">$$\kappa = \frac{8\pi G}{c^4} \approx 2.07 \times 10^{-43} \; \frac{\text{m}}{\text{J}}$$</div>
+            <div class="formula-desc">
+              This tiny number is why stellar masses are needed for appreciable curvature.
+            </div>
+          </div>
+        </div>
+        <div class="theo-section">
+          <div class="theo-tag">Exact metrics</div>
+          <h2 class="theo-h2">Known analytic solutions</h2>
+          <p class="theo-p">Einstein’s equations are extremely hard to solve. Only a few exact analytic solutions exist, each for a specific mass–energy configuration.</p>
+          <div class="formula-block">
+            <div class="formula-label">Schwarzschild metric — non-rotating black hole</div>
+            <div class="formula-tex" id="ftex-schwarz-metric-en">$$ds^2 = -\!\left(1 - \frac{r_s}{r}\right)c^2 dt^2 + \left(1 - \frac{r_s}{r}\right)^{\!-1}\!\! dr^2 + r^2 d\Omega^2$$</div>
+            <div class="formula-desc">
+              First exact solution (Karl Schwarzschild, 1916). Exterior spacetime of any non-rotating spherical mass. At <code>r = r_s</code> the <code>dt²</code> coefficient vanishes: time freezes for a distant observer.
+            </div>
+          </div>
+        </div>
+</template>
+
 <div id="ui-panel">
   <div class="panel-header">
-    <div class="panel-title">Relatividad General</div>
-    <div class="panel-subtitle">Curvatura del espacio-tiempo — Einstein 1915</div>
+    <div class="panel-title" data-i18n-es="Relatividad General" data-i18n-en="General Relativity">Relatividad General</div>
+    <div class="panel-subtitle" data-i18n-es="Curvatura del espacio-tiempo — Einstein 1915" data-i18n-en="Spacetime curvature — Einstein 1915">Curvatura del espacio-tiempo — Einstein 1915</div>
   </div>
 
   <div class="panel-body">
 
     <!-- Metrics -->
-    <div class="section-label">Métricas globales</div>
+    <div class="section-label" data-i18n-es="Métricas globales" data-i18n-en="Global metrics">Métricas globales</div>
     <div class="metrics-strip">
       <div class="metric-box">
-        <div class="metric-key">Masa total</div>
+        <div class="metric-key" data-i18n-es="Masa total" data-i18n-en="Total mass">Masa total</div>
         <div class="metric-val" id="met-masa">—</div>
       </div>
       <div class="metric-box">
-        <div class="metric-key">Curvatura máx</div>
+        <div class="metric-key" data-i18n-es="Curvatura máx" data-i18n-en="Max curvature">Curvatura máx</div>
         <div class="metric-val" id="met-curv">—</div>
       </div>
       <div class="metric-box full">
-        <div class="metric-key">Dilatación temporal máxima (factor γ)</div>
+        <div class="metric-key" data-i18n-es="Dilatación temporal máxima (factor γ)" data-i18n-en="Max time dilation (γ factor)">Dilatación temporal máxima (factor γ)</div>
         <div class="metric-val" id="met-dil">—</div>
       </div>
     </div>
 
     <!-- Toggles -->
-    <div class="section-label">Efectos visuales</div>
+    <div class="section-label" data-i18n-es="Efectos visuales" data-i18n-en="Visual effects">Efectos visuales</div>
     <div class="toggle-row">
       <span class="toggle-label">
-        <span class="tip" data-tip="Colorea la malla según la intensidad gravitacional: azul frío = espacio plano, rojo = gravedad extrema.">i</span>
-        Heatmap gravitacional
+        <span class="tip" data-tip="Colorea la malla según la intensidad gravitacional: azul frío = espacio plano, rojo = gravedad extrema." data-i18n-tip-es="Colorea la malla según la intensidad gravitacional: azul frío = espacio plano, rojo = gravedad extrema." data-i18n-tip-en="Color the mesh by gravitational intensity: cool blue = flat space, red = extreme gravity.">i</span>
+        <span data-i18n-es="Heatmap gravitacional" data-i18n-en="Gravitational heatmap">Heatmap gravitacional</span>
       </span>
       <label class="toggle"><input type="checkbox" id="tog-heatmap" checked><span class="slider-tog"></span></label>
     </div>
     <div class="toggle-row">
       <span class="toggle-label">
-        <span class="tip" data-tip="Partículas orbitando que se mueven más lento cuanto más cerca están del cuerpo masivo, visualizando la dilatación temporal.">i</span>
-        Partículas orbitales
+        <span class="tip" data-tip="Partículas orbitando que se mueven más lento cuanto más cerca están del cuerpo masivo, visualizando la dilatación temporal." data-i18n-tip-es="Partículas orbitando que se mueven más lento cuanto más cerca están del cuerpo masivo, visualizando la dilatación temporal." data-i18n-tip-en="Orbiting particles move slower closer to the massive body, illustrating time dilation.">i</span>
+        <span data-i18n-es="Partículas orbitales" data-i18n-en="Orbiting particles">Partículas orbitales</span>
       </span>
       <label class="toggle"><input type="checkbox" id="tog-particles" checked><span class="slider-tog"></span></label>
     </div>
     <div class="toggle-row">
       <span class="toggle-label">
-        <span class="tip" data-tip="Ondas que se propagan cuando la configuración de masa cambia, simulando las ondas gravitacionales predichas por Einstein.">i</span>
-        Ondas gravitacionales
+        <span class="tip" data-tip="Ondas que se propagan cuando la configuración de masa cambia, simulando las ondas gravitacionales predichas por Einstein." data-i18n-tip-es="Ondas que se propagan cuando la configuración de masa cambia, simulando las ondas gravitacionales predichas por Einstein." data-i18n-tip-en="Waves emitted when the mass configuration changes, evoking gravitational waves predicted by Einstein.">i</span>
+        <span data-i18n-es="Ondas gravitacionales" data-i18n-en="Gravitational waves">Ondas gravitacionales</span>
       </span>
       <label class="toggle"><input type="checkbox" id="tog-waves" checked><span class="slider-tog"></span></label>
     </div>
 
-    <!-- Global sliders -->
-    <div class="section-label">Parámetros del tejido</div>
+    <!-- Physics toggle -->
+    <div class="toggle-row">
+      <span class="toggle-label">
+        <span class="tip" data-tip="N-body gravitational physics. Disable to freely position with sliders.">i</span>
+        <span>Orbital physics</span>
+      </span>
+      <label class="toggle"><input type="checkbox" id="tog-physics" checked><span class="slider-tog"></span></label>
+    </div>
+    <div class="toggle-row">
+      <span class="toggle-label">
+        <span class="tip" data-tip="Draw orbital trail behind each body. Shows elliptic, hyperbolic or decaying trajectories.">i</span>
+        <span>Orbital trails</span>
+      </span>
+      <label class="toggle"><input type="checkbox" id="tog-trails" checked><span class="slider-tog"></span></label>
+    </div>
+    <div class="toggle-row">
+      <span class="toggle-label">
+        <span class="tip" data-tip="Show Schwarzschild radius ring when a body's mass exceeds the event horizon threshold.">i</span>
+        <span>Event horizons</span>
+      </span>
+      <label class="toggle"><input type="checkbox" id="tog-horizon" checked><span class="slider-tog"></span></label>
+    </div>
+
+    <!-- Simulation speed -->
     <div class="ctrl-row">
       <span class="ctrl-label">
-        <span class="tip" data-tip="Resistencia del espacio-tiempo a curvarse. Bajo = muy elástico (pozos profundos). Alto = rígido (curvas suaves).">i</span>
-        Elasticidad
+        <span class="tip" data-tip="Simulation speed multiplier. ×0.1 = slow-motion, ×5 = fast-forward.">i</span>
+        <span>Sim speed</span>
+      </span>
+      <span class="ctrl-val" id="v-speed">×1.0</span>
+    </div>
+    <input type="range" id="sl-speed" min="0.05" max="5" step="0.05" value="1">
+
+    <!-- Pause / resume -->
+    <div style="display:flex;gap:8px;margin:4px 0 10px;">
+      <button id="btn-pause" style="
+        flex:1;font-family:var(--mono);font-size:11px;letter-spacing:.06em;
+        padding:7px 10px;border-radius:7px;border:1px solid rgba(0,200,255,.45);
+        background:rgba(0,200,255,.09);color:var(--accent);cursor:pointer;
+        transition:background .18s,border-color .18s;" title="Pause / resume simulation (Space)">
+        ⏸ Pause
+      </button>
+    </div>
+
+    <!-- Energy panel -->
+    <div class="section-label">System energy</div>
+    <div class="metrics-strip">
+      <div class="metric-box">
+        <div class="metric-key">Kinetic (KE)</div>
+        <div class="metric-val" id="met-ke" style="font-size:12px">—</div>
+      </div>
+      <div class="metric-box">
+        <div class="metric-key">Potential (PE)</div>
+        <div class="metric-val" id="met-pe" style="font-size:12px">—</div>
+      </div>
+      <div class="metric-box full">
+        <div class="metric-key">Total energy (KE+PE) — stable if constant</div>
+        <div class="metric-val" id="met-etot" style="font-size:12px">—</div>
+      </div>
+    </div>
+    <div class="ctrl-row">
+      <span class="ctrl-label">
+        <span class="tip" data-tip="Flexibilidad del tejido ante la masa: valores bajos ≈ espacio-tiempo casi rígido (hundimiento mínimo; hace falta mucha masa para notar curvatura). Valores altos = se deforma más con la misma masa." data-i18n-tip-es="Flexibilidad del tejido ante la masa: valores bajos ≈ espacio-tiempo casi rígido (hundimiento mínimo; hace falta mucha masa para notar curvatura). Valores altos = se deforma más con la misma masa." data-i18n-tip-en="Fabric flexibility vs mass: low values ≈ nearly rigid spacetime (very little sag; you need a lot of mass to see curvature). High values = more deformation for the same mass.">i</span>
+        <span data-i18n-es="Elasticidad" data-i18n-en="Elasticity">Elasticidad</span>
       </span>
       <span class="ctrl-val" id="v-elast">0.15</span>
     </div>
@@ -1116,34 +1477,40 @@
 
     <div class="ctrl-row">
       <span class="ctrl-label">
-        <span class="tip" data-tip="Densidad de la malla del tejido espacio-temporal. Más líneas = más detalle en la deformación.">i</span>
-        Resolución malla
+        <span class="tip" data-tip="Densidad de la malla del tejido espacio-temporal. Más líneas = más detalle en la deformación." data-i18n-tip-es="Densidad de la malla del tejido espacio-temporal. Más líneas = más detalle en la deformación." data-i18n-tip-en="Density of the spacetime fabric mesh. More lines = finer deformation detail.">i</span>
+        <span data-i18n-es="Resolución malla" data-i18n-en="Mesh resolution">Resolución malla</span>
       </span>
       <span class="ctrl-val" id="v-res">150</span>
     </div>
     <input type="range" id="sl-res" min="40" max="200" step="10" value="150">
 
     <!-- Presets -->
-    <div class="section-label">Presets</div>
+    <div class="section-label" data-i18n-es="Añadir preset (acumulable)" data-i18n-en="Add preset (stackable)">Añadir preset (acumulable)</div>
     <div class="preset-row">
-      <button class="preset-btn" data-preset="solar">Sistema Solar</button>
-      <button class="preset-btn" data-preset="binary">Binaria</button>
-      <button class="preset-btn" data-preset="bh">Agujero Negro</button>
-      <button class="preset-btn" data-preset="merge">Fusión</button>
+      <button class="preset-btn" data-preset="solar"><span data-i18n-es="Sistema Solar" data-i18n-en="Solar System">Sistema Solar</span></button>
+      <button class="preset-btn" data-preset="binary"><span data-i18n-es="Binaria" data-i18n-en="Binary">Binaria</span></button>
+      <button class="preset-btn" data-preset="bh"><span data-i18n-es="Agujero Negro" data-i18n-en="Black Hole">Agujero Negro</span></button>
+      <button class="preset-btn" data-preset="merge"><span data-i18n-es="Fusión" data-i18n-en="Merger">Fusión</span></button>
+    </div>
+    <div class="btn-row">
+      <button class="btn danger" id="btn-clear-all"><span data-i18n-es="🗑 Limpiar todo" data-i18n-en="🗑 Clear all">🗑 Limpiar todo</span></button>
     </div>
 
     <!-- Astro controls -->
-    <div class="section-label">Cuerpos celestes</div>
-    <div class="btn-row">
-      <button class="btn" id="btn-add">+ Añadir</button>
-      <button class="btn danger" id="btn-remove">− Eliminar</button>
+    <div class="section-label" id="bodies-toggle" data-i18n-es="Cuerpos celestes ▾" data-i18n-en="Celestial bodies ▾"
+         style="cursor:pointer;user-select:none;" title="Click to collapse/expand">Cuerpos celestes ▾</div>
+    <div id="bodies-panel">
+      <div class="btn-row">
+        <button class="btn" id="btn-add"><span data-i18n-es="+ Añadir" data-i18n-en="+ Add">+ Añadir</span></button>
+        <button class="btn danger" id="btn-remove"><span data-i18n-es="− Eliminar" data-i18n-en="− Remove">− Eliminar</span></button>
+      </div>
+      <div id="astros-container"></div>
     </div>
-    <div id="astros-container"></div>
 
     <div class="legend">
-      <div class="leg-item"><div class="leg-dot" style="background:#00c8ff"></div>Espacio plano</div>
-      <div class="leg-item"><div class="leg-dot" style="background:#ffb347"></div>Curvatura media</div>
-      <div class="leg-item"><div class="leg-dot" style="background:#ff4560"></div>Curvatura extrema</div>
+      <div class="leg-item"><div class="leg-dot" style="background:#00c8ff"></div><span data-i18n-es="Espacio plano" data-i18n-en="Flat space">Espacio plano</span></div>
+      <div class="leg-item"><div class="leg-dot" style="background:#ffb347"></div><span data-i18n-es="Curvatura media" data-i18n-en="Medium curvature">Curvatura media</span></div>
+      <div class="leg-item"><div class="leg-dot" style="background:#ff4560"></div><span data-i18n-es="Curvatura extrema" data-i18n-en="Extreme curvature">Curvatura extrema</span></div>
     </div>
 
   </div>
@@ -1151,16 +1518,18 @@
 
 <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
 <script>
+window.SIM_LANG = window.SIM_LANG || 'es';
 // ─── Constants ───────────────────────────────────────────────────────────────
 const G = 6.674e-11, c_SI = 3e8, Msun = 1.989e30;
 const COLORES = [0xffdd44, 0xff8822, 0xff3355, 0x44ffaa, 0x44ccff, 0xdd44ff, 0xffffff, 0x88ff44];
 
 // ─── Scene setup ─────────────────────────────────────────────────────────────
 const scene = new THREE.Scene();
-const camera = new THREE.PerspectiveCamera(45, innerWidth / innerHeight, 0.1, 2000);
+// near/far acotados a la escena real: un ratio enorme (0.1→2000) agota el z-buffer y la malla wireframe muestra “agujeros” rectangulares.
+const camera = new THREE.PerspectiveCamera(45, innerWidth / innerHeight, 0.5, 1200);
 camera.position.set(0, -70, 50);
 
-const renderer = new THREE.WebGLRenderer({ antialias: true, alpha: false });
+const renderer = new THREE.WebGLRenderer({ antialias: true, alpha: false, logarithmicDepthBuffer: true });
 renderer.setSize(innerWidth, innerHeight);
 renderer.setPixelRatio(devicePixelRatio);
 renderer.setClearColor(0x03050f);
@@ -1230,29 +1599,93 @@ document.getElementById('canvas-container').appendChild(renderer.domElement);
   renderer.domElement.addEventListener('touchend', () => { dragging = false; });
 }
 
-// ─── Grid mesh ───────────────────────────────────────────────────────────────
+// ─── Grid mesh ─── GPU vertex-shader deformation ─────────────────────────────
 let gridRes = 150;
 let planeGeo, planeMesh;
-let posAttr, colorAttr;
+// posAttr kept for astro Z-sinking (read-only, not written every frame)
+let posAttr;
+
+const _MAX_B = 16;   // max bodies in shader
+const _MAX_W = 10;   // max wave rings in shader
+
+const GRID_VERT = /* glsl */`
+#define MAX_B 16
+#define MAX_W 10
+uniform vec3  uBodies[MAX_B];   // .xy = world pos,  .z = mass (slider)
+uniform int   uBodyCount;
+uniform float uCurvGain;
+uniform float uCurvSoft2;
+uniform float uFlex;
+uniform float uMaxDeform;
+uniform bool  uUseHeat;
+uniform vec3  uWaves[MAX_W];    // .xy = origin,  .z = age
+uniform int   uWaveCount;
+varying float vHeat;
+void main(){
+  vec3 pos = position;
+  float z = 0.0;
+  for(int i=0;i<MAX_B;i++){
+    if(i>=uBodyCount) break;
+    float dx = pos.x - uBodies[i].x;
+    float dy = pos.y - uBodies[i].y;
+    float d2 = dx*dx + dy*dy;
+    z -= (uCurvGain * uBodies[i].z * uFlex) / (d2 + uCurvSoft2);
+  }
+  float ripple = 0.0;
+  for(int j=0;j<MAX_W;j++){
+    if(j>=uWaveCount) break;
+    float wdx = pos.x - uWaves[j].x;
+    float wdy = pos.y - uWaves[j].y;
+    float wd  = sqrt(wdx*wdx + wdy*wdy);
+    float age = uWaves[j].z;
+    float diff= abs(wd - age*6.0);
+    if(diff<3.0) ripple += (1.0-diff/3.0)*0.8*exp(-age*0.3);
+  }
+  z -= ripple*0.3;
+  pos.z = z;
+  vHeat = clamp(abs(z)/max(0.001,uMaxDeform), 0.0, 1.0);
+  gl_Position = projectionMatrix * modelViewMatrix * vec4(pos,1.0);
+}`;
+
+const GRID_FRAG = /* glsl */`
+uniform bool uUseHeat;
+varying float vHeat;
+void main(){
+  float t = vHeat;
+  vec3 col;
+  if(uUseHeat){
+    if(t<0.5){ float s=t*2.0; col=vec3(0.1+s*0.5, 0.4+s*0.3, 0.9-s*0.4); }
+    else      { float s=(t-0.5)*2.0; col=vec3(0.6+s*0.4, 0.7-s*0.6, 0.5-s*0.5); }
+  } else { col=vec3(0.53,0.8,1.0); }
+  gl_FragColor = vec4(col, 0.4);
+}`;
+
+// Central uniforms object – mutated each frame to drive the GPU
+const gridUniforms = {
+  uBodies:    { value: Array.from({length:_MAX_B}, ()=>new THREE.Vector3()) },
+  uBodyCount: { value: 0 },
+  uCurvGain:  { value: 18.0 },
+  uCurvSoft2: { value: 8.0 },
+  uFlex:      { value: 0.15 },
+  uMaxDeform: { value: 1.0 },
+  uUseHeat:   { value: true },
+  uWaves:     { value: Array.from({length:_MAX_W}, ()=>new THREE.Vector3()) },
+  uWaveCount: { value: 0 },
+};
 
 function buildGrid(res) {
   if (planeMesh) scene.remove(planeMesh);
   planeGeo = new THREE.PlaneGeometry(100, 100, res, res);
-  // Add vertex colors
-  const count = planeGeo.attributes.position.count;
-  const colors = new Float32Array(count * 3);
-  planeGeo.setAttribute('color', new THREE.BufferAttribute(colors, 3));
-
-  const mat = new THREE.MeshBasicMaterial({
-    vertexColors: true,
-    wireframe: true,
+  const mat = new THREE.ShaderMaterial({
+    uniforms: gridUniforms,
+    vertexShader:   GRID_VERT,
+    fragmentShader: GRID_FRAG,
+    wireframe:   true,
     transparent: true,
-    opacity: 0.4
   });
   planeMesh = new THREE.Mesh(planeGeo, mat);
   scene.add(planeMesh);
-  posAttr   = planeGeo.attributes.position;
-  colorAttr = planeGeo.attributes.color;
+  posAttr = planeGeo.attributes.position; // used only for Z-sinking below
 }
 buildGrid(gridRes);
 
@@ -1290,6 +1723,127 @@ const partMat = new THREE.PointsMaterial({ color: 0x88ddff, size: 0.35, transpar
 const particles = new THREE.Points(partGeo, partMat);
 scene.add(particles);
 
+// ─── Orbital trail system ────────────────────────────────────────────────────
+// Short ring-buffer trail with per-vertex color fade (old=black → new=body color).
+// With AdditiveBlending, black = invisible → natural comet-tail fade, zero spider web.
+const TRAIL_LENGTH  = 700;  // long enough to cover a full orbit
+const TRAIL_SAMPLE  = 1;    // every frame for smooth curves
+const trailLines = new Map(); // astro.id → { line, geo, positions, colors, head, count }
+
+function getOrCreateTrail(astro) {
+  if (trailLines.has(astro.id)) return trailLines.get(astro.id);
+
+  // ringBuf  = circular ring buffer (CPU only, never passed to GPU)
+  // geoBuf   = linear ordered buffer (GPU)  ← SEPARATE arrays, fixes corruption bug
+  const ringBuf = new Float32Array(TRAIL_LENGTH * 3);
+  const geoBuf  = new Float32Array(TRAIL_LENGTH * 3);
+  const colBuf  = new Float32Array(TRAIL_LENGTH * 3);
+
+  // pre-fill ring at spawn position
+  for (let k = 0; k < TRAIL_LENGTH; k++) {
+    ringBuf[k * 3]     = astro.mesh.position.x;
+    ringBuf[k * 3 + 1] = astro.mesh.position.y;
+    ringBuf[k * 3 + 2] = astro.mesh.position.z;
+  }
+
+  const geo = new THREE.BufferGeometry();
+  geo.setAttribute('position', new THREE.BufferAttribute(geoBuf, 3));
+  geo.setAttribute('color',    new THREE.BufferAttribute(colBuf,  3));
+  geo.setDrawRange(0, 1);
+
+  const mat = new THREE.LineBasicMaterial({
+    vertexColors: true,
+    transparent:  true,
+    opacity:      1.0,
+    depthWrite:   false,
+    blending:     THREE.AdditiveBlending,
+  });
+
+  const line = new THREE.Line(geo, mat);
+  scene.add(line);
+  // store ringBuf separately from geo buffer
+  const trail = { line, geo, ringBuf, head: 0, count: 0 };
+  trailLines.set(astro.id, trail);
+  return trail;
+}
+
+function removeTrail(id) {
+  if (!trailLines.has(id)) return;
+  const t = trailLines.get(id);
+  scene.remove(t.line);
+  trailLines.delete(id);
+}
+
+function updateTrail(astro) {
+  const t = getOrCreateTrail(astro);
+
+  // 1. Write new position into ring buffer (pure circular, no GPU involvement)
+  const h3 = t.head * 3;
+  t.ringBuf[h3]     = astro.mesh.position.x;
+  t.ringBuf[h3 + 1] = astro.mesh.position.y;
+  t.ringBuf[h3 + 2] = astro.mesh.position.z;
+  t.head  = (t.head + 1) % TRAIL_LENGTH;
+  t.count = Math.min(t.count + 1, TRAIL_LENGTH);
+
+  // 2. Unroll ring buffer oldest→newest into the SEPARATE GPU buffers
+  const posDst = t.geo.attributes.position.array;  // geoBuf — different array!
+  const colDst = t.geo.attributes.color.array;
+  const c = astro.mesh.material.color;
+  const n = t.count;
+
+  for (let k = 0; k < n; k++) {
+    const src = ((t.head - n + k + TRAIL_LENGTH) % TRAIL_LENGTH) * 3;
+    const dst = k * 3;
+    posDst[dst]     = t.ringBuf[src];      // safe: ringBuf ≠ geoBuf
+    posDst[dst + 1] = t.ringBuf[src + 1];
+    posDst[dst + 2] = t.ringBuf[src + 2];
+    const fade   = k / (n - 1 || 1);       // 0=oldest  1=newest
+    // Near-flat brightness: minimum 25% so even old points are visible.
+    // Only the last 15% of the tail fades to zero → orbit looks "drawn".
+    const bright = fade < 0.15 ? (fade / 0.15) * 0.25 : 0.55;
+    colDst[dst]     = c.r * bright;
+    colDst[dst + 1] = c.g * bright;
+    colDst[dst + 2] = c.b * bright;
+  }
+
+  t.geo.attributes.position.needsUpdate = true;
+  t.geo.attributes.color.needsUpdate    = true;
+  t.geo.setDrawRange(0, n);
+}
+
+// ─── Event horizon rings ──────────────────────────────────────────────────────
+const horizonRings = new Map(); // astro.id → mesh
+const HORIZON_MASS_THRESHOLD = 40; // slider units — above this show ring
+
+function updateHorizonRing(astro, show) {
+  if (!show || astro.masa < HORIZON_MASS_THRESHOLD) {
+    if (horizonRings.has(astro.id)) {
+      scene.remove(horizonRings.get(astro.id));
+      horizonRings.delete(astro.id);
+    }
+    return;
+  }
+  // Schwarzschild ring radius scales with mass (visual)
+  const rs_vis = 0.3 + astro.masa * 0.025;
+  if (!horizonRings.has(astro.id)) {
+    const geo = new THREE.RingGeometry(rs_vis * 0.85, rs_vis, 64);
+    const mat = new THREE.MeshBasicMaterial({
+      color: 0x000000, side: THREE.DoubleSide,
+      transparent: true, opacity: 0.92,
+      depthWrite: false
+    });
+    const ring = new THREE.Mesh(geo, mat);
+    ring.rotation.x = 0;
+    scene.add(ring);
+    horizonRings.set(astro.id, ring);
+  }
+  const ring = horizonRings.get(astro.id);
+  const newRs = 0.3 + astro.masa * 0.025;
+  ring.geometry.dispose();
+  ring.geometry = new THREE.RingGeometry(newRs * 0.85, newRs, 64);
+  ring.position.set(astro.mesh.position.x, astro.mesh.position.y, astro.mesh.position.z + 0.05);
+}
+
 // ─── Astros state ─────────────────────────────────────────────────────────────
 const astros = [];
 let astroCounter = 0;
@@ -1307,7 +1861,59 @@ function makeGlowSprite(color) {
   ctx.fillStyle = grad;
   ctx.fillRect(0,0,128,128);
   const tex = new THREE.CanvasTexture(canvas);
-  return new THREE.Sprite(new THREE.SpriteMaterial({ map: tex, transparent: true, blending: THREE.AdditiveBlending }));
+  // Evita “cuadrados” por escritura de profundidad en píxeles transparentes.
+  return new THREE.Sprite(new THREE.SpriteMaterial({
+    map: tex,
+    transparent: true,
+    blending: THREE.AdditiveBlending,
+    depthWrite: false,
+    depthTest: true,
+    alphaTest: 0.02
+  }));
+}
+
+// Real solar masses for display (kg)
+const REAL_MASSES = {
+  'Sun':     1.989e30, 'Mercury': 3.285e23, 'Venus':   4.867e24,
+  'Earth':   5.972e24, 'Mars':    6.390e23, 'Jupiter': 1.898e27,
+  'Saturn':  5.683e26, 'Uranus':  8.681e25, 'Neptune': 1.024e26,
+  'Black Hole': null,  'Star':    null,
+};
+function formatRealMass(kg) {
+  if (!kg) return '';
+  const exp = Math.floor(Math.log10(kg));
+  const man = (kg / Math.pow(10, exp)).toFixed(2);
+  return `${man}×10<sup>${exp}</sup> kg`;
+}
+
+// Make a canvas-based text label sprite for the 3D scene
+function makeLabelSprite(name, realMassKg, color) {
+  const canvas = document.createElement('canvas');
+  canvas.width = 256; canvas.height = 64;
+  const ctx = canvas.getContext('2d');
+  ctx.clearRect(0, 0, 256, 64);
+  // Name
+  ctx.font = 'bold 22px Inter, sans-serif';
+  ctx.fillStyle = '#' + color.toString(16).padStart(6, '0');
+  ctx.shadowColor = 'rgba(0,0,0,0.9)';
+  ctx.shadowBlur = 6;
+  ctx.fillText(name, 4, 26);
+  // Real mass
+  if (realMassKg) {
+    const exp = Math.floor(Math.log10(realMassKg));
+    const man = (realMassKg / Math.pow(10, exp)).toFixed(2);
+    ctx.font = '15px Space Mono, monospace';
+    ctx.fillStyle = 'rgba(180,220,255,0.85)';
+    ctx.shadowBlur = 4;
+    ctx.fillText(`${man}·10^${exp} kg`, 4, 50);
+  }
+  const tex = new THREE.CanvasTexture(canvas);
+  const sp = new THREE.Sprite(new THREE.SpriteMaterial({
+    map: tex, transparent: true, depthWrite: false,
+    blending: THREE.AdditiveBlending, alphaTest: 0.01
+  }));
+  sp.scale.set(14, 3.5, 1);
+  return sp;
 }
 
 function addAstro(opts) {
@@ -1315,18 +1921,35 @@ function addAstro(opts) {
   const id    = astroCounter;
   const color = opts?.color ?? COLORES[id % COLORES.length];
   const hexStr = '#' + color.toString(16).padStart(6, '0');
+  const label  = opts?.label ?? null;
+  const realKg = label ? (REAL_MASSES[label] ?? null) : null;
 
   // 3D sphere
   const geo  = new THREE.SphereGeometry(1, 32, 32);
   const mat  = new THREE.MeshBasicMaterial({ color });
   const mesh = new THREE.Mesh(geo, mat);
 
+  const initX = opts?.x ?? (Math.random()-0.5)*30;
+  const initY = opts?.y ?? (Math.random()-0.5)*30;
+  mesh.position.set(initX, initY, 0);
+
   // Glow
   const glow = makeGlowSprite(color);
   glow.scale.set(8, 8, 1);
   mesh.add(glow);
 
+  // 3D label sprite (only if named body)
+  let labelSprite = null;
+  if (label) {
+    labelSprite = makeLabelSprite(label, realKg, color);
+    labelSprite.position.set(0, 3.5, 2);
+    mesh.add(labelSprite);
+  }
+
   scene.add(mesh);
+
+  // Real mass display string for UI
+  const realMassHtml = realKg ? ` <span style="font-size:10px;color:#7ab0cc">${formatRealMass(realKg)}</span>` : '';
 
   // UI card
   const card = document.createElement('div');
@@ -1335,15 +1958,15 @@ function addAstro(opts) {
   card.style.borderLeftColor = hexStr;
   card.innerHTML = `
     <div class="astro-header">
-      <span class="astro-name" style="color:${hexStr}">● Astro ${id}</span>
+      <span class="astro-name" style="color:${hexStr}">● ${label ?? ('Body ' + id)}${realMassHtml}</span>
       <span class="astro-rs" id="rs-${id}">rs = —</span>
     </div>
-    <div class="ctrl-row"><span class="ctrl-label"><span class="tip" data-tip="A mayor masa, mayor curvatura del espacio-tiempo y mayor dilatación temporal en su entorno.">i</span>Masa</span><span class="ctrl-val" id="v-m-${id}">${opts?.masa ?? 40}</span></div>
+    <div class="ctrl-row"><span class="ctrl-label"><span class="tip" data-tip="Slider mass (0-150). Drives curvature and time dilation. Mapped to Schwarzschild radius in real units.">i</span><span>Mass</span></span><span class="ctrl-val" id="v-m-${id}">${opts?.masa ?? 40}</span></div>
     <input type="range" id="masa-${id}" min="0" max="150" step="1" value="${opts?.masa ?? 40}">
-    <div class="ctrl-row"><span class="ctrl-label">Posición X</span><span class="ctrl-val" id="v-x-${id}">0</span></div>
-    <input type="range" id="posX-${id}" min="-40" max="40" step="0.5" value="${opts?.x ?? (Math.random()-0.5)*30}">
-    <div class="ctrl-row"><span class="ctrl-label">Posición Y</span><span class="ctrl-val" id="v-y-${id}">0</span></div>
-    <input type="range" id="posY-${id}" min="-40" max="40" step="0.5" value="${opts?.y ?? (Math.random()-0.5)*30}">
+    <div class="ctrl-row"><span class="ctrl-label">Position X</span><span class="ctrl-val" id="v-x-${id}">${initX.toFixed(1)}</span></div>
+    <input type="range" id="posX-${id}" min="-45" max="45" step="0.5" value="${initX}">
+    <div class="ctrl-row"><span class="ctrl-label">Position Y</span><span class="ctrl-val" id="v-y-${id}">${initY.toFixed(1)}</span></div>
+    <input type="range" id="posY-${id}" min="-45" max="45" step="0.5" value="${initY}">
     <div class="astro-dil" id="dil-${id}">
       <span style="color:var(--muted)">τ/t∞</span><span id="dilval-${id}" style="color:var(--accent);font-family:var(--mono)">—</span>
     </div>
@@ -1361,11 +1984,28 @@ function addAstro(opts) {
     dil:   document.getElementById(`dilval-${id}`),
   };
 
-  const astro = { id, mesh, ui, prevX: 0, prevY: 0, masa: 0 };
+  // When physics OFF, sliders directly control position
+  ui.posX.addEventListener('input', () => {
+    const togPhysics = document.getElementById('tog-physics');
+    if (!togPhysics.checked) {
+      mesh.position.x = parseFloat(ui.posX.value);
+      ui.vX.textContent = parseFloat(ui.posX.value).toFixed(1);
+    }
+  });
+  ui.posY.addEventListener('input', () => {
+    const togPhysics = document.getElementById('tog-physics');
+    if (!togPhysics.checked) {
+      mesh.position.y = parseFloat(ui.posY.value);
+      ui.vY.textContent = parseFloat(ui.posY.value).toFixed(1);
+    }
+  });
+
+  const astro = { id, mesh, ui, labelSprite, masa: opts?.masa ?? 40,
+                  vx: opts?.vx ?? 0, vy: opts?.vy ?? 0, pinned: opts?.pinned ?? false,
+                  _ax: 0, _ay: 0, _ax_old: 0, _ay_old: 0 };
   astros.push(astro);
 
-  // Spawn wave on add
-  spawnWave(opts?.x ?? 0, opts?.y ?? 0);
+  spawnWave(initX, initY);
   return astro;
 }
 
@@ -1374,63 +2014,85 @@ function removeAstro() {
   const a = astros.pop();
   scene.remove(a.mesh);
   document.getElementById(`ui-astro-${a.id}`)?.remove();
+  removeTrail(a.id);
+  if (horizonRings.has(a.id)) { scene.remove(horizonRings.get(a.id)); horizonRings.delete(a.id); }
 }
 
 document.getElementById('btn-add').addEventListener('click', () => addAstro({}));
 document.getElementById('btn-remove').addEventListener('click', removeAstro);
 
-// ─── Presets ─────────────────────────────────────────────────────────────────
+// ─── Orbital velocity helper ──────────────────────────────────────────────────
+// GM_SCALE must match the integrator exactly. Keep both in sync.
+const GM_SCALE = 0.004;
+
+function orbitalVelocity(cx, cy, px, py, centralMass) {
+  const dx = px - cx, dy = py - cy;
+  const r  = Math.sqrt(dx * dx + dy * dy) + 0.001;
+  const v  = Math.sqrt(GM_SCALE * centralMass / r);
+  return { vx: -dy / r * v, vy: dx / r * v };
+}
+
 const PRESETS = {
   solar: [
-    // Sol — masa dominante, centro
-    { masa: 150, x:  0,   y:  0,  color: 0xffdd00 },
-    // Mercurio — muy pequeño, muy cerca
-    { masa:   2, x:  6,   y:  0,  color: 0xaaaaaa },
-    // Venus — pequeño, cercano
-    { masa:   4, x: 10,   y:  2,  color: 0xffcc88 },
-    // Tierra — referencia
-    { masa:   5, x: 14,   y: -2,  color: 0x4499ff },
-    // Marte — algo más lejos, más pequeño
-    { masa:   3, x: 19,   y:  3,  color: 0xff6633 },
-    // Júpiter — gigante gaseoso, el más masivo
-    { masa:  50, x: 28,   y: -4,  color: 0xffaa66 },
-    // Saturno — casi tan grande como Júpiter
-    { masa:  42, x:-26,   y:  5,  color: 0xeedd88 },
-    // Urano — gigante de hielo
-    { masa:  18, x:-20,   y:-10,  color: 0x88eeff },
-    // Neptuno — gigante de hielo, más lejano
-    { masa:  17, x: 10,   y: 28,  color: 0x4466ff },
+    { masa: 150, x:  0,   y:  0,  color: 0xffdd00, label: 'Sun',     vx: 0, vy: 0, pinned: true },
+    { masa:   1, x:  7,   y:  0,  color: 0xaaaaaa, label: 'Mercury', orbitAround: 0 },
+    { masa:   2, x: 12,   y:  0,  color: 0xffcc88, label: 'Venus',   orbitAround: 0 },
+    { masa:   2, x: 16,   y:  0,  color: 0x4499ff, label: 'Earth',   orbitAround: 0 },
+    { masa:   1, x: 21,   y:  0,  color: 0xff6633, label: 'Mars',    orbitAround: 0 },
+    { masa:   8, x: 30,   y:  0,  color: 0xffaa66, label: 'Jupiter', orbitAround: 0 },
+    { masa:   6, x:-32,   y:  0,  color: 0xeedd88, label: 'Saturn',  orbitAround: 0 },
+    { masa:   3, x:-24,   y:  0,  color: 0x88eeff, label: 'Uranus',  orbitAround: 0 },
+    { masa:   3, x: 14,   y: 30,  color: 0x4466ff, label: 'Neptune', orbitAround: 0 },
   ],
   binary: [
-    { masa: 80, x:-15, y: 0, color: 0xffdd44 },
-    { masa: 70, x: 15, y: 0, color: 0xff8844 },
+    { masa: 60, x:-16, y: 0, color: 0xffdd44, vx: 0, vy: -Math.sqrt(GM_SCALE * 60 / 32) },
+    { masa: 60, x: 16, y: 0, color: 0xff8844, vx: 0, vy:  Math.sqrt(GM_SCALE * 60 / 32) },
   ],
   bh: [
-    { masa: 150, x: 0, y: 0, color: 0xffffff },
-    { masa:  10, x:30, y: 8, color: 0x44ccff },
+    { masa: 150, x: 0, y: 0, color: 0xffffff, label: 'Black Hole', vx: 0, vy: 0, pinned: true },
+    // Sub-orbital: ~35% of circular velocity → star spirals inward and gets swallowed
+    { masa: 3, x: 28, y: 4,  color: 0x44ccff, label: 'Star', subOrbital: 0.35, orbitAround: 0 },
+    { masa: 2, x:-22, y: 6,  color: 0xffaa44, label: 'Star', subOrbital: 0.4,  orbitAround: 0 },
   ],
   merge: [
-    { masa:  90, x:-8, y: 0, color: 0xff4455 },
-    { masa:  85, x: 8, y: 0, color: 0x7744ff },
+    { masa: 70, x:-12, y: 3, color: 0xff4455, vx:  0.05, vy: -0.02 },
+    { masa: 70, x: 12, y:-3, color: 0x7744ff, vx: -0.05, vy:  0.02 },
   ],
 };
 
-document.querySelectorAll('.preset-btn').forEach(btn => {
-  btn.addEventListener('click', () => {
-    const toRemove = astros.slice();
-    toRemove.forEach(a => {
-      scene.remove(a.mesh);
-      document.getElementById('ui-astro-' + a.id)?.remove();
-    });
-    astros.length = 0;
-    const p = PRESETS[btn.dataset.preset];
-    p.forEach(opts => addAstro(opts));
+function applyPreset(key) {
+  const p = PRESETS[key];
+  const resolvedBodies = p.map((opts) => {
+    if (opts.orbitAround !== undefined) {
+      const center = p[opts.orbitAround];
+      const ov = orbitalVelocity(center.x, center.y, opts.x, opts.y, center.masa);
+      const factor = opts.subOrbital ?? 1.0; // <1 = sub-orbital → spirals in
+      return { ...opts, vx: (center.vx ?? 0) + ov.vx * factor, vy: (center.vy ?? 0) + ov.vy * factor };
+    }
+    return opts;
   });
+  resolvedBodies.forEach(opts => addAstro(opts));
+}
+
+document.querySelectorAll('.preset-btn').forEach(btn => {
+  btn.addEventListener('click', () => applyPreset(btn.dataset.preset));
 });
 
-// Initialize with 2 astros
-addAstro({ masa: 60, x: -14, y: 0, color: 0xffdd44 });
-addAstro({ masa: 40, x:  14, y: 0, color: 0x44aaff });
+// Clear all button (wired to btn-remove-all)
+document.getElementById('btn-clear-all').addEventListener('click', () => {
+  const toRemove = astros.slice();
+  toRemove.forEach(a => {
+    scene.remove(a.mesh);
+    document.getElementById('ui-astro-' + a.id)?.remove();
+    removeTrail(a.id);
+    if (horizonRings.has(a.id)) { scene.remove(horizonRings.get(a.id)); horizonRings.delete(a.id); }
+  });
+  astros.length = 0;
+});
+
+// Initialize with 2 orbiting bodies (circular orbit around shared center of mass)
+addAstro({ masa: 60, x: -14, y: 0, color: 0xffdd44, vx: 0, vy: -Math.sqrt(GM_SCALE * 60 / 28) });
+addAstro({ masa: 40, x:  14, y: 0, color: 0x44aaff, vx: 0, vy:  Math.sqrt(GM_SCALE * 40 / 28) });
 
 // ─── UI bindings ─────────────────────────────────────────────────────────────
 const elast   = document.getElementById('sl-elast');
@@ -1440,6 +2102,10 @@ const vRes    = document.getElementById('v-res');
 const togHeat = document.getElementById('tog-heatmap');
 const togPart = document.getElementById('tog-particles');
 const togWave = document.getElementById('tog-waves');
+const slSpeed = document.getElementById('sl-speed');
+const vSpeed  = document.getElementById('v-speed');
+const togTrails  = document.getElementById('tog-trails');
+const togHorizon = document.getElementById('tog-horizon');
 
 elast.addEventListener('input', () => { vElast.textContent = parseFloat(elast.value).toFixed(2); });
 slRes.addEventListener('change', () => {
@@ -1447,7 +2113,16 @@ slRes.addEventListener('change', () => {
   vRes.textContent = gridRes;
   buildGrid(gridRes);
 });
+slSpeed.addEventListener('input', () => {
+  vSpeed.textContent = '×' + parseFloat(slSpeed.value).toFixed(2);
+});
 togPart.addEventListener('change', () => { particles.visible = togPart.checked; });
+togTrails.addEventListener('change', () => {
+  trailLines.forEach(t => { t.line.visible = togTrails.checked; });
+});
+togHorizon.addEventListener('change', () => {
+  horizonRings.forEach(r => { r.visible = togHorizon.checked; });
+});
 
 // ─── Physics helpers ─────────────────────────────────────────────────────────
 function schwarzschild(M_norm) {
@@ -1484,51 +2159,148 @@ function depthToColor(z, minZ) {
 // ─── Main loop ───────────────────────────────────────────────────────────────
 let clock = 0;
 let lastMassHash = '';
+let trailTick = 0;
 
 function animate() {
   requestAnimationFrame(animate);
-  clock += 0.016;
+  if (paused) { renderer.render(scene, camera); return; }
+  const simSpeed = parseFloat(slSpeed.value);
+  clock += 0.016 * simSpeed;
+  trailTick++;
 
-  const E = parseFloat(elast.value);
+  const flex = parseFloat(elast.value);
+  const CURV_SOFT2 = 8;
+  const CURV_GAIN = 18;
   const useHeat = togHeat.checked;
   const useWave = togWave.checked;
 
-  // Update astros from sliders
+  // ── Read masa from sliders first (before grid deform and physics) ──
+  // Also: auto-unpin if user manually raises mass of a pinned body above 80%
+  astros.forEach(a => {
+    const newMasa = parseFloat(a.ui.masa.value);
+    // If user is raising mass of a non-sun body significantly, unpin it so gravity takes effect
+    if (a.pinned && newMasa !== a.masa && newMasa < 140) a.pinned = false;
+    a.masa = newMasa;
+  });
+
+  // ── N-body gravitational physics ──
+  const togPhysics = document.getElementById('tog-physics');
+  const physicsOn = togPhysics && togPhysics.checked;
+
+  const dt = 0.016 * simSpeed;
+  const SOFTENING = 4.0;
+
+  if (physicsOn && astros.length > 0) {
+    // ── Velocity Verlet – Step 1: update positions with current v and a ──
+    astros.forEach(a => {
+      if (a.pinned) return;
+      const ax = a._ax, ay = a._ay;
+      a._ax_old = ax; a._ay_old = ay;
+      a.mesh.position.x += a.vx * dt + 0.5 * ax * dt * dt;
+      a.mesh.position.y += a.vy * dt + 0.5 * ay * dt * dt;
+      if (a.mesh.position.x < -45 || a.mesh.position.x > 45) { a.vx *= -0.5; a._ax = 0; a._ax_old = 0; }
+      if (a.mesh.position.y < -45 || a.mesh.position.y > 45) { a.vy *= -0.5; a._ay = 0; a._ay_old = 0; }
+      a.mesh.position.x = Math.max(-45, Math.min(45, a.mesh.position.x));
+      a.mesh.position.y = Math.max(-45, Math.min(45, a.mesh.position.y));
+      a._ax = 0; a._ay = 0; // reset for new force computation
+    });
+
+    // ── Velocity Verlet – Step 2: compute new accelerations ──
+    for (let i = 0; i < astros.length; i++) {
+      for (let j = i + 1; j < astros.length; j++) {
+        const ai = astros[i], aj = astros[j];
+        const dx = aj.mesh.position.x - ai.mesh.position.x;
+        const dy = aj.mesh.position.y - ai.mesh.position.y;
+        const dist2 = dx*dx + dy*dy + SOFTENING*SOFTENING;
+        const dist  = Math.sqrt(dist2);
+        if (!ai.pinned) {
+          const fi = GM_SCALE * aj.masa / dist2;
+          ai._ax += fi * dx / dist; ai._ay += fi * dy / dist;
+        }
+        if (!aj.pinned) {
+          const fj = GM_SCALE * ai.masa / dist2;
+          aj._ax -= fj * dx / dist; aj._ay -= fj * dy / dist;
+        }
+      }
+    }
+
+    // ── Velocity Verlet – Step 3: update velocities with averaged acceleration ──
+    astros.forEach(a => {
+      if (a.pinned) return;
+      a.vx += 0.5 * (a._ax_old + a._ax) * dt;
+      a.vy += 0.5 * (a._ay_old + a._ay) * dt;
+    });
+
+    // ── Absorption: small body eaten by massive body ──
+    const toAbsorb = [];
+    for (let i = 0; i < astros.length; i++) {
+      const small = astros[i];
+      if (small.pinned) continue;
+      for (let j = 0; j < astros.length; j++) {
+        if (i === j) continue;
+        const big = astros[j];
+        if (big.masa <= small.masa * 2) continue; // only absorb if clearly bigger
+        const dx = small.mesh.position.x - big.mesh.position.x;
+        const dy = small.mesh.position.y - big.mesh.position.y;
+        const dist = Math.sqrt(dx*dx + dy*dy);
+        const absorbRadius = 0.4 + big.masa * 0.028; // scales with mass like the horizon ring
+        if (dist < absorbRadius && !toAbsorb.includes(i)) {
+          toAbsorb.push(i);
+          // Flash effect: spawn a bright wave and a burst of particles at absorption point
+          spawnWave(big.mesh.position.x, big.mesh.position.y);
+          spawnWave(big.mesh.position.x, big.mesh.position.y);
+          // Big body gains mass (conservation)
+          const newMasa = Math.min(150, big.masa + small.masa * 0.3);
+          big.ui.masa.value = newMasa;
+          big.masa = newMasa;
+        }
+      }
+    }
+    // Remove absorbed bodies (reverse order to keep indices valid)
+    for (let k = toAbsorb.length - 1; k >= 0; k--) {
+      const idx = toAbsorb[k];
+      const a = astros[idx];
+      scene.remove(a.mesh);
+      document.getElementById(`ui-astro-${a.id}`)?.remove();
+      removeTrail(a.id);
+      if (horizonRings.has(a.id)) { scene.remove(horizonRings.get(a.id)); horizonRings.delete(a.id); }
+      astros.splice(idx, 1);
+    }
+  } else if (!physicsOn) {
+    // Bug fix: clear Verlet state so there is zero residual inertia
+    astros.forEach(a => { a.vx = 0; a.vy = 0; a._ax = 0; a._ay = 0; a._ax_old = 0; a._ay_old = 0; });
+  }
+
+  // Update astros metadata + UI readouts (never write mesh.position here when physics ON)
   let totalMasa = 0;
-  const massHash = astros.map(a => a.ui.masa.value + a.ui.posX.value + a.ui.posY.value).join('|');
+  const massHash = astros.map(a => a.ui.masa.value + a.mesh.position.x.toFixed(1) + a.mesh.position.y.toFixed(1)).join('|');
   const massChanged = massHash !== lastMassHash;
   lastMassHash = massHash;
 
   astros.forEach(a => {
-    const m  = parseFloat(a.ui.masa.value);
-    const px = parseFloat(a.ui.posX.value);
-    const py = parseFloat(a.ui.posY.value);
+    const px = a.mesh.position.x;
+    const py = a.mesh.position.y;
 
-    a.ui.vMasa.textContent = m;
+    a.ui.vMasa.textContent = a.masa;
     a.ui.vX.textContent    = px.toFixed(1);
     a.ui.vY.textContent    = py.toFixed(1);
+    a.ui.posX.value = px;
+    a.ui.posY.value = py;
 
-    a.mesh.position.x = px;
-    a.mesh.position.y = py;
-    const sc = 0.8 + m / 60;
+    const sc = 0.8 + a.masa / 60;
     a.mesh.scale.setScalar(sc);
     a.mesh.children[0].scale.set(Math.max(4, sc * 6), Math.max(4, sc * 6), 1);
 
-    a.masa = m;
-    totalMasa += m;
+    totalMasa += a.masa;
 
-    // Schwarzschild radius
-    const rs_m = schwarzschild(m);
+    const rs_m = schwarzschild(a.masa);
     const rs_km = (rs_m / 1000).toFixed(0);
     a.ui.rs.textContent = `rs ≈ ${Number(rs_km).toLocaleString()} km`;
 
-    // Time dilation at surface (r = scale)
-    const dil = timeDilation(m, sc * 1.5);
-    const dilStr = dil.toFixed(5);
-    a.ui.dil.textContent = dilStr;
+    const dil = timeDilation(a.masa, sc * 1.5);
+    a.ui.dil.textContent = dil.toFixed(5);
     a.ui.dil.style.color = dil < 0.5 ? '#ff4560' : dil < 0.9 ? '#ffb347' : '#00c8ff';
 
-    // Spawn wave if moved significantly
     if (massChanged && useWave) {
       const dx = px - (a.prevX ?? px);
       const dy = py - (a.prevY ?? py);
@@ -1537,53 +2309,74 @@ function animate() {
     a.prevX = px; a.prevY = py;
   });
 
-  // ── Deform grid ──
-  let minZ = -0.01;
-  for (let i = 0; i < posAttr.count; i++) {
-    const vx = posAttr.getX(i);
-    const vy = posAttr.getY(i);
-    let newZ = 0;
+  // ── Orbital trails ──
+  if (togTrails.checked && trailTick % TRAIL_SAMPLE === 0) {
+    astros.forEach(a => updateTrail(a));
+  }
+  // Ensure visibility matches toggle (for newly added bodies)
+  trailLines.forEach(t => { t.line.visible = togTrails.checked; });
 
+  // ── Event horizon rings ──
+  astros.forEach(a => updateHorizonRing(a, togHorizon.checked));
+
+  // ── Energy panel ──
+  {
+    let ke = 0, pe = 0;
     astros.forEach(a => {
-      const dx = vx - a.mesh.position.x;
-      const dy = vy - a.mesh.position.y;
-      const d2 = dx * dx + dy * dy;
-      // Wave ripple effect
-      let ripple = 0;
-      if (useWave) {
-        waveRings.forEach(wr => {
-          const wdx = vx - wr.userData.x;
-          const wdy = vy - wr.userData.y;
-          const wd  = Math.sqrt(wdx * wdx + wdy * wdy);
-          const waveFront = wr.userData.age * 6;
-          const diff = Math.abs(wd - waveFront);
-          if (diff < 3) ripple += (1 - diff / 3) * 0.8 * Math.exp(-wr.userData.age * 0.3);
-        });
-      }
-      newZ -= a.masa / (d2 * E + 2);
-      newZ -= ripple * 0.3;
+      if (!a.pinned) ke += 0.5 * a.masa * (a.vx * a.vx + a.vy * a.vy);
     });
-
-    posAttr.setZ(i, newZ);
-    if (newZ < minZ) minZ = newZ;
-  }
-  posAttr.needsUpdate = true;
-
-  // ── Heatmap colors ──
-  if (useHeat) {
-    for (let i = 0; i < posAttr.count; i++) {
-      const z = posAttr.getZ(i);
-      const [r, g, b] = depthToColor(z, minZ);
-      colorAttr.setXYZ(i, r, g, b);
+    for (let i = 0; i < astros.length; i++) {
+      for (let j = i + 1; j < astros.length; j++) {
+        const ai = astros[i], aj = astros[j];
+        const dx = aj.mesh.position.x - ai.mesh.position.x;
+        const dy = aj.mesh.position.y - ai.mesh.position.y;
+        const r  = Math.sqrt(dx*dx + dy*dy) + 0.001;
+        pe -= GM_SCALE * ai.masa * aj.masa / r;
+      }
     }
-    colorAttr.needsUpdate = true;
-    planeMesh.material.vertexColors = true;
-  } else {
-    if (planeMesh.material.vertexColors) {
-      for (let i = 0; i < colorAttr.count; i++) colorAttr.setXYZ(i, 0.53, 0.8, 1.0);
-      colorAttr.needsUpdate = true;
-    }
+    const etot = ke + pe;
+    const fmt = v => {
+      const a = Math.abs(v);
+      if (a > 1000) return (v/1000).toFixed(1) + 'k';
+      if (a > 0.01) return v.toFixed(2);
+      return v.toExponential(2);
+    };
+    document.getElementById('met-ke').textContent   = fmt(ke);
+    document.getElementById('met-pe').textContent   = fmt(pe);
+    const etEl = document.getElementById('met-etot');
+    etEl.textContent = fmt(etot);
+    etEl.className = 'metric-val' + (etot > 0 ? ' danger' : '');
   }
+
+  // ── Update shader uniforms (replaces O(gridRes²×N) CPU loop) ──
+  gridUniforms.uFlex.value      = flex;
+  gridUniforms.uCurvGain.value  = CURV_GAIN;
+  gridUniforms.uCurvSoft2.value = CURV_SOFT2;
+  gridUniforms.uUseHeat.value   = useHeat;
+  gridUniforms.uBodyCount.value = Math.min(astros.length, _MAX_B);
+  astros.forEach((a, i) => {
+    if (i >= _MAX_B) return;
+    gridUniforms.uBodies.value[i].set(a.mesh.position.x, a.mesh.position.y, a.masa);
+  });
+  // Wave data
+  const activeWaves = useWave ? waveRings.slice(0, _MAX_W) : [];
+  gridUniforms.uWaveCount.value = activeWaves.length;
+  activeWaves.forEach((wr, i) => {
+    gridUniforms.uWaves.value[i].set(wr.userData.x, wr.userData.y, wr.userData.age);
+  });
+
+  // Compute minZ analytically at each body position (O(N²) – tiny cost)
+  let minZ = -0.01;
+  astros.forEach(a => {
+    let z = 0;
+    astros.forEach(o => {
+      const dx = a.mesh.position.x - o.mesh.position.x;
+      const dy = a.mesh.position.y - o.mesh.position.y;
+      z -= (CURV_GAIN * o.masa * flex) / (dx*dx + dy*dy + CURV_SOFT2);
+    });
+    if (z < minZ) minZ = z;
+  });
+  gridUniforms.uMaxDeform.value = Math.max(0.01, Math.abs(minZ));
 
   // ── Sink astros to grid depth ──
   // Uses IDENTICAL formula to the grid deformation so astros sit exactly on the mesh surface.
@@ -1595,9 +2388,8 @@ function animate() {
       const dx = ax - o.mesh.position.x;
       const dy = ay - o.mesh.position.y;
       const d2 = dx * dx + dy * dy;
-      // Same formula as grid: mass / (d2 * E + 2)
-      // Self-contribution: d2=0 → mass/(0*E+2) = mass/2 (matches grid vertex exactly on top of astro)
-      z -= o.masa / (d2 * E + 2);
+      // Misma ley que la malla (superficie bajo los astros)
+      z -= (CURV_GAIN * o.masa * flex) / (d2 + CURV_SOFT2);
     });
     // Raise slightly above the mesh surface so the sphere sits ON it, not through it
     const sc = a.mesh.scale.x;
@@ -1622,16 +2414,17 @@ function animate() {
   for (let i = 0; i < PARTICLE_COUNT; i++) {
     const pd = partData[i];
 
-    // Compute gravitational factor at particle position
+    // Compute gravitational time-dilation factor (additive, stable with N bodies)
     const px = partPosArr[i * 3];
     const py = partPosArr[i * 3 + 1];
-    let gravFactor = 1;
+    let gravSum = 0;
     astros.forEach(a => {
       const dx = px - a.mesh.position.x;
       const dy = py - a.mesh.position.y;
-      const d  = Math.sqrt(dx * dx + dy * dy) + 0.01;
-      gravFactor *= Math.max(0.05, 1 - a.masa * 0.004 / d);
+      const d  = Math.sqrt(dx * dx + dy * dy) + 0.5;
+      gravSum += a.masa * 0.006 / d;
     });
+    const gravFactor = Math.max(0.04, 1.0 / (1.0 + gravSum));
 
     pd.angle += pd.speed * gravFactor;
 
@@ -1651,7 +2444,8 @@ function animate() {
     astros.forEach(a => {
       const dx = bx - a.mesh.position.x;
       const dy = by - a.mesh.position.y;
-      pz -= a.masa / ((dx*dx + dy*dy) * E + 3);
+      const d2p = dx * dx + dy * dy;
+      pz -= (CURV_GAIN * a.masa * flex) / (d2p + CURV_SOFT2);
     });
     partPosArr[i * 3 + 2] = pz + 0.5 + Math.sin(clock * 2 + i) * 0.2;
   }
@@ -1689,7 +2483,8 @@ function animate() {
     const dil = timeDilation(heaviest.masa, 5);
     const pct = ((1 - dil) * 100).toFixed(3);
     const el = document.getElementById('met-dil');
-    el.textContent = `γ=${( 1/Math.max(dil,0.0001)).toFixed(3)}  (−${pct}% a 5u)`;
+    const atU = window.SIM_LANG === 'en' ? 'at 5u' : 'a 5u';
+    el.textContent = `γ=${( 1/Math.max(dil,0.0001)).toFixed(3)}  (−${pct}% ${atU})`;
     el.className = 'metric-val' + (dil < 0.3 ? ' danger' : dil < 0.7 ? ' warn' : '');
   }
 
@@ -1700,6 +2495,49 @@ window.addEventListener('resize', () => {
   camera.aspect = innerWidth / innerHeight;
   camera.updateProjectionMatrix();
   renderer.setSize(innerWidth, innerHeight);
+});
+
+// ─── Pause / resume ──────────────────────────────────────────────────────────
+let paused = false;
+const btnPause = document.getElementById('btn-pause');
+function setPaused(val) {
+  paused = val;
+  btnPause.textContent = paused ? '▶ Resume' : '⏸ Pause';
+  btnPause.style.background = paused ? 'rgba(0,200,255,0.22)' : 'rgba(0,200,255,0.09)';
+}
+btnPause.addEventListener('click', () => setPaused(!paused));
+// Spacebar shortcut
+document.addEventListener('keydown', e => {
+  if (e.code === 'Space' && e.target === document.body) { e.preventDefault(); setPaused(!paused); }
+});
+
+// ─── Collapsible body list ────────────────────────────────────────────────────
+(function() {
+  const toggle = document.getElementById('bodies-toggle');
+  const panel  = document.getElementById('bodies-panel');
+  let open = true;
+  toggle.addEventListener('click', () => {
+    open = !open;
+    panel.style.display = open ? '' : 'none';
+    const label = toggle.getAttribute('data-i18n-es') || toggle.textContent;
+    const arrow = open ? '▾' : '▸';
+    // Update both lang attrs and textContent
+    ['es','en'].forEach(l => {
+      const base = (l==='es') ? 'Cuerpos celestes' : 'Celestial bodies';
+      toggle.setAttribute('data-i18n-'+l, base+' '+arrow);
+    });
+    toggle.textContent = (window.SIM_LANG === 'en' ? 'Celestial bodies' : 'Cuerpos celestes') + ' ' + arrow;
+  });
+})();
+
+// ─── Fix: clear Verlet state when physics toggled off ────────────────────────
+document.getElementById('tog-physics').addEventListener('change', function() {
+  if (!this.checked) {
+    astros.forEach(a => {
+      a.vx = 0; a.vy = 0;
+      a._ax = 0; a._ay = 0; a._ax_old = 0; a._ay_old = 0;
+    });
+  }
 });
 
 animate();
@@ -1728,6 +2566,13 @@ animate();
   const tabs      = document.querySelectorAll('.modal-tab');
   const panels    = document.querySelectorAll('.tab-panel');
   let mathjaxDone = false;
+
+  window.addEventListener('simulator-lang-changed', () => {
+    mathjaxDone = false;
+    if (overlay.classList.contains('open') && window.MathJax && MathJax.typesetPromise) {
+      MathJax.typesetPromise([document.getElementById('modal')]).then(() => { mathjaxDone = true; });
+    }
+  });
 
   function openModal() {
     overlay.classList.add('open');
@@ -1777,6 +2622,67 @@ animate();
       });
     }
   });
+})();
+</script>
+
+<!-- ── English / Spanish language toggle ── -->
+<script>
+(function() {
+  const btnLang = document.getElementById('btn-lang');
+  const TAB_IDS = ['einstein', 'relatividad', 'masa-tiempo', 'velocidad', 'ecuaciones'];
+  const STORAGE_KEY = 'sim-gr-lang';
+
+  function applyTextI18n(root) {
+    const en = window.SIM_LANG === 'en';
+    const scope = root || document;
+    scope.querySelectorAll('[data-i18n-es]').forEach(function(el) {
+      var t = en ? el.getAttribute('data-i18n-en') : el.getAttribute('data-i18n-es');
+      if (t != null) el.textContent = t;
+    });
+    scope.querySelectorAll('.tip[data-i18n-tip-es]').forEach(function(el) {
+      var tip = en ? el.getAttribute('data-i18n-tip-en') : el.getAttribute('data-i18n-tip-es');
+      if (tip != null) el.setAttribute('data-tip', tip);
+    });
+  }
+
+  window.applyI18nToNode = applyTextI18n;
+
+  function swapTheoryTabs(useEn) {
+    TAB_IDS.forEach(function(id) {
+      var panel = document.getElementById('tab-' + id);
+      var tpl = document.getElementById('tpl-en-' + id);
+      if (!panel || !tpl) return;
+      if (useEn) {
+        if (!panel.dataset.backupEsHtml) panel.dataset.backupEsHtml = panel.innerHTML;
+        panel.innerHTML = tpl.innerHTML;
+      } else if (panel.dataset.backupEsHtml) {
+        panel.innerHTML = panel.dataset.backupEsHtml;
+      }
+    });
+  }
+
+  function applyLang(lang) {
+    window.SIM_LANG = lang;
+    try { localStorage.setItem(STORAGE_KEY, lang); } catch (e) {}
+    document.documentElement.lang = lang === 'en' ? 'en' : 'es';
+    document.title = lang === 'en' ? 'General Relativity Simulator' : 'Simulador de Relatividad General';
+    btnLang.textContent = lang === 'en' ? 'ES' : 'EN';
+    btnLang.title = lang === 'en' ? 'Cambiar a español' : 'Switch to English';
+    swapTheoryTabs(lang === 'en');
+    applyTextI18n(document);
+    window.dispatchEvent(new Event('simulator-lang-changed'));
+    if (window.MathJax && MathJax.typesetPromise) {
+      MathJax.typesetPromise([document.getElementById('modal')]).catch(function() {});
+    }
+  }
+
+  btnLang.addEventListener('click', function() {
+    applyLang(window.SIM_LANG === 'es' ? 'en' : 'es');
+  });
+
+  var stored = 'es';
+  try { stored = localStorage.getItem(STORAGE_KEY) || 'es'; } catch (e) {}
+  if (stored === 'en') applyLang('en');
 })();
 </script>
 </body>
