@@ -2,6 +2,7 @@
 <html lang="es">
 <head>
 <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Simulador de Relatividad General</title>
 <style>
   @import url('https://fonts.googleapis.com/css2?family=Space+Mono:wght@400;700&family=Inter:wght@300;400;500&display=swap');
@@ -686,6 +687,28 @@
     line-height: 1.4;
   }
   .comp-table tr:hover td { background: rgba(0,200,255,0.03); }
+
+  /* ── Toast ── */
+  #toast {
+    position: fixed; left: 50%; bottom: 28px;
+    transform: translate(-50%, 20px);
+    background: rgba(6,12,28,0.96);
+    border: 1px solid var(--border);
+    color: var(--text);
+    font-family: var(--mono); font-size: 12px;
+    padding: 10px 16px; border-radius: 10px;
+    opacity: 0; pointer-events: none;
+    transition: opacity .25s, transform .25s;
+    z-index: 400; max-width: 90vw; text-align: center;
+  }
+  #toast.show { opacity: 1; transform: translate(-50%, 0); }
+
+  /* ── Móvil ── */
+  @media (max-width: 700px) {
+    #ui-panel { top: auto; bottom: 8px; left: 8px; right: 8px; width: auto; max-height: 46vh; }
+    #top-actions-bar { top: 8px; right: 8px; }
+    #btn-teoria, #btn-lang { padding: 8px 12px; }
+  }
 </style>
 </head>
 <body>
@@ -828,7 +851,7 @@
 
         <div class="theo-section">
           <div class="theo-tag">Principios base</div>
-          <h2 class="theo-h2">Los dos pilares</h2>
+          <h2 class="theo-h2">Los cuatro principios</h2>
           <table class="comp-table">
             <thead><tr><th>Principio</th><th>Enunciado</th><th>Consecuencia</th></tr></thead>
             <tbody>
@@ -877,7 +900,7 @@
           <div class="fact-grid">
             <div class="fact-card">
               <div class="fact-card-label">En la Tierra (superficie)</div>
-              <div class="fact-card-val">~0.7 ns/día</div>
+              <div class="fact-card-val">~0.9 ns/día</div>
               <div class="fact-card-sub">Diferencia temporal entre cima y base de un edificio de 100 m</div>
             </div>
             <div class="fact-card">
@@ -921,7 +944,7 @@
           <div class="theo-tag">Relatividad especial</div>
           <h2 class="theo-h2">Cómo la velocidad dilata el tiempo</h2>
           <p class="theo-p">Incluso sin gravedad, el movimiento relativo entre dos observadores provoca dilatación temporal. Un observador en movimiento rápido envejece más lento que uno en reposo. A velocidades cotidianas el efecto es imperceptible, pero cerca de la velocidad de la luz se vuelve dramático.</p>
-          <p class="theo-p">Esta no es una ilusión óptica ni un efecto de transmisión de señales: es una diferencia real en el tiempo transcurrido. La paradoja del gemelo lo ilustra: un astronauta que viaja a 0.99c durante un año (su tiempo) encontraría a su gemelo terrestre ≈ 7 años más viejo al regresar.</p>
+          <p class="theo-p">Esta no es una ilusión óptica ni un efecto de transmisión de señales: es una diferencia real en el tiempo transcurrido. La paradoja del gemelo lo ilustra: un astronauta que viaja a 0.99c durante un año (su tiempo) encontraría que en la Tierra han pasado ≈ 7 años al regresar.</p>
 
           <div class="formula-block">
             <div class="formula-label">Dilatación temporal por velocidad — Factor de Lorentz</div>
@@ -972,7 +995,7 @@
         <div class="theo-section">
           <div class="theo-tag">Límite fundamental</div>
           <h2 class="theo-h2">Por qué nada puede superar c</h2>
-          <p class="theo-p">A medida que un objeto acelera hacia la velocidad de la luz, su masa inercial efectiva (energía cinética) aumenta sin límite. Se necesitaría energía infinita para alcanzar c. Esto no es una limitación tecnológica sino una restricción fundamental de la geometría del espacio-tiempo: c es la velocidad de causalidad, el límite a que puede propagarse cualquier influencia física.</p>
+          <p class="theo-p">A medida que un objeto acelera hacia la velocidad de la luz, su energía total (γmc²) crece sin límite. Se necesitaría energía infinita para alcanzar c. Esto no es una limitación tecnológica sino una restricción fundamental de la geometría del espacio-tiempo: c es la velocidad de causalidad, el límite a que puede propagarse cualquier influencia física.</p>
 
           <div class="formula-block">
             <div class="formula-label">Energía relativista total</div>
@@ -1167,7 +1190,7 @@
         </div>
         <div class="theo-section">
           <div class="theo-tag">Foundations</div>
-          <h2 class="theo-h2">The two pillars</h2>
+          <h2 class="theo-h2">The four principles</h2>
           <table class="comp-table">
             <thead><tr><th>Principle</th><th>Statement</th><th>Consequence</th></tr></thead>
             <tbody>
@@ -1209,7 +1232,7 @@
           <div class="fact-grid">
             <div class="fact-card">
               <div class="fact-card-label">On Earth (surface)</div>
-              <div class="fact-card-val">~0.7 ns/day</div>
+              <div class="fact-card-val">~0.9 ns/day</div>
               <div class="fact-card-sub">Time difference between top and bottom of a 100 m building</div>
             </div>
             <div class="fact-card">
@@ -1248,7 +1271,7 @@
           <div class="theo-tag">Special relativity</div>
           <h2 class="theo-h2">How speed stretches time</h2>
           <p class="theo-p">Even without gravity, relative motion between observers causes time dilation. A fast-moving observer ages more slowly than one at rest. At everyday speeds the effect is tiny; near the speed of light it becomes dramatic.</p>
-          <p class="theo-p">This is not an optical illusion: it is a real difference in elapsed time. The twin paradox illustrates it—an astronaut at 0.99c for one year (their time) can find an Earth twin ≈7 years older on return.</p>
+          <p class="theo-p">This is not an optical illusion: it is a real difference in elapsed time. The twin paradox illustrates it—an astronaut at 0.99c for one year (their time) will find that ≈7 years have passed on Earth on return.</p>
           <div class="formula-block">
             <div class="formula-label">Time dilation — Lorentz factor</div>
             <div class="formula-tex" id="ftex-lorentz-en">$$\Delta t' = \gamma \, \Delta t \qquad \text{where} \qquad \gamma = \frac{1}{\sqrt{1 - \dfrac{v^2}{c^2}}}$$</div>
@@ -1294,7 +1317,7 @@
         <div class="theo-section">
           <div class="theo-tag">Fundamental limit</div>
           <h2 class="theo-h2">Why nothing exceeds c</h2>
-          <p class="theo-p">As an object accelerates toward c, its effective inertial mass (kinetic energy) grows without bound. Infinite energy would be needed to reach c. This is not engineering—it is built into spacetime: c is the speed of causality.</p>
+          <p class="theo-p">As an object accelerates toward c, its total energy (γmc²) grows without bound. Infinite energy would be needed to reach c. This is not engineering—it is built into spacetime: c is the speed of causality.</p>
           <div class="formula-block">
             <div class="formula-label">Total relativistic energy</div>
             <div class="formula-tex" id="ftex-erel-en">$$E = \gamma m c^2 = \frac{mc^2}{\sqrt{1 - v^2/c^2}}$$</div>
@@ -1409,22 +1432,22 @@
     <!-- Physics toggle -->
     <div class="toggle-row">
       <span class="toggle-label">
-        <span class="tip" data-tip="N-body gravitational physics. Disable to freely position with sliders.">i</span>
-        <span>Orbital physics</span>
+        <span class="tip" data-tip="Gravitación de N cuerpos. Desactívala para colocarlos libremente con los sliders." data-i18n-tip-es="Gravitación de N cuerpos. Desactívala para colocarlos libremente con los sliders." data-i18n-tip-en="N-body gravitational physics. Disable to freely position with sliders.">i</span>
+        <span data-i18n-es="Física orbital" data-i18n-en="Orbital physics">Física orbital</span>
       </span>
       <label class="toggle"><input type="checkbox" id="tog-physics" checked><span class="slider-tog"></span></label>
     </div>
     <div class="toggle-row">
       <span class="toggle-label">
-        <span class="tip" data-tip="Draw orbital trail behind each body. Shows elliptic, hyperbolic or decaying trajectories.">i</span>
-        <span>Orbital trails</span>
+        <span class="tip" data-tip="Dibuja la trayectoria de cada cuerpo: elíptica, hiperbólica o en caída." data-i18n-tip-es="Dibuja la trayectoria de cada cuerpo: elíptica, hiperbólica o en caída." data-i18n-tip-en="Draw the trail behind each body: elliptic, hyperbolic or decaying trajectories.">i</span>
+        <span data-i18n-es="Estelas orbitales" data-i18n-en="Orbital trails">Estelas orbitales</span>
       </span>
       <label class="toggle"><input type="checkbox" id="tog-trails" checked><span class="slider-tog"></span></label>
     </div>
     <div class="toggle-row">
       <span class="toggle-label">
-        <span class="tip" data-tip="Show Schwarzschild radius ring when a body's mass exceeds the event horizon threshold.">i</span>
-        <span>Event horizons</span>
+        <span class="tip" data-tip="Muestra un anillo de horizonte cuando la masa de un cuerpo supera el umbral (efecto visual)." data-i18n-tip-es="Muestra un anillo de horizonte cuando la masa de un cuerpo supera el umbral (efecto visual)." data-i18n-tip-en="Show a horizon ring when a body mass exceeds the threshold (visual effect).">i</span>
+        <span data-i18n-es="Horizontes de eventos" data-i18n-en="Event horizons">Horizontes de eventos</span>
       </span>
       <label class="toggle"><input type="checkbox" id="tog-horizon" checked><span class="slider-tog"></span></label>
     </div>
@@ -1432,12 +1455,12 @@
     <!-- Simulation speed -->
     <div class="ctrl-row">
       <span class="ctrl-label">
-        <span class="tip" data-tip="Simulation speed multiplier. ×0.1 = slow-motion, ×5 = fast-forward.">i</span>
-        <span>Sim speed</span>
+        <span class="tip" data-tip="Multiplicador de velocidad de simulación (independiente de los FPS). ×0.5 = cámara lenta, ×30 = avance rápido." data-i18n-tip-es="Multiplicador de velocidad de simulación (independiente de los FPS). ×0.5 = cámara lenta, ×30 = avance rápido." data-i18n-tip-en="Simulation speed multiplier (frame-rate independent). ×0.5 = slow-motion, ×30 = fast-forward.">i</span>
+        <span data-i18n-es="Velocidad sim." data-i18n-en="Sim speed">Velocidad sim.</span>
       </span>
-      <span class="ctrl-val" id="v-speed">×1.0</span>
+      <span class="ctrl-val" id="v-speed">×6.0</span>
     </div>
-    <input type="range" id="sl-speed" min="0.05" max="5" step="0.05" value="1">
+    <input type="range" id="sl-speed" min="0.5" max="30" step="0.5" value="6">
 
     <!-- Pause / resume -->
     <div style="display:flex;gap:8px;margin:4px 0 10px;">
@@ -1445,24 +1468,24 @@
         flex:1;font-family:var(--mono);font-size:11px;letter-spacing:.06em;
         padding:7px 10px;border-radius:7px;border:1px solid rgba(0,200,255,.45);
         background:rgba(0,200,255,.09);color:var(--accent);cursor:pointer;
-        transition:background .18s,border-color .18s;" title="Pause / resume simulation (Space)">
-        ⏸ Pause
+        transition:background .18s,border-color .18s;" title="Pausa / reanudar (Espacio)">
+        ⏸ Pausa
       </button>
     </div>
 
     <!-- Energy panel -->
-    <div class="section-label">System energy</div>
+    <div class="section-label" data-i18n-es="Energía del sistema" data-i18n-en="System energy">Energía del sistema</div>
     <div class="metrics-strip">
       <div class="metric-box">
-        <div class="metric-key">Kinetic (KE)</div>
+        <div class="metric-key" data-i18n-es="Cinética (EC)" data-i18n-en="Kinetic (KE)">Cinética (EC)</div>
         <div class="metric-val" id="met-ke" style="font-size:12px">—</div>
       </div>
       <div class="metric-box">
-        <div class="metric-key">Potential (PE)</div>
+        <div class="metric-key" data-i18n-es="Potencial (EP)" data-i18n-en="Potential (PE)">Potencial (EP)</div>
         <div class="metric-val" id="met-pe" style="font-size:12px">—</div>
       </div>
       <div class="metric-box full">
-        <div class="metric-key">Total energy (KE+PE) — stable if constant</div>
+        <div class="metric-key" data-i18n-es="Energía total (EC+EP) — estable si es constante" data-i18n-en="Total energy (KE+PE) — stable if constant">Energía total (EC+EP) — estable si es constante</div>
         <div class="metric-val" id="met-etot" style="font-size:12px">—</div>
       </div>
     </div>
@@ -1493,6 +1516,7 @@
       <button class="preset-btn" data-preset="merge"><span data-i18n-es="Fusión" data-i18n-en="Merger">Fusión</span></button>
     </div>
     <div class="btn-row">
+      <button class="btn" id="btn-reset"><span data-i18n-es="↺ Reiniciar" data-i18n-en="↺ Reset">↺ Reiniciar</span></button>
       <button class="btn danger" id="btn-clear-all"><span data-i18n-es="🗑 Limpiar todo" data-i18n-en="🗑 Clear all">🗑 Limpiar todo</span></button>
     </div>
 
@@ -1519,38 +1543,65 @@
 <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
 <script>
 window.SIM_LANG = window.SIM_LANG || 'es';
+const T = (es, en) => (window.SIM_LANG === 'en' ? en : es);
+
 // ─── Constants ───────────────────────────────────────────────────────────────
 const G = 6.674e-11, c_SI = 3e8, Msun = 1.989e30;
 const COLORES = [0xffdd44, 0xff8822, 0xff3355, 0x44ffaa, 0x44ccff, 0xdd44ff, 0xffffff, 0x88ff44];
+const WORLD_HALF  = 45;     // paredes invisibles de la simulación
+const MAX_MASS    = 150;    // máximo del slider de masa
+const MAX_BODIES  = 16;     // límite del shader (uBodies)
+const GM_SCALE    = 0.004;  // constante gravitatoria "de juguete"
+const SOFTENING   = 4.0;    // suavizado Plummer: integrador, velocidades orbitales y energía lo comparten
+const CURV_GAIN   = 18.0, CURV_SOFT2 = 8.0;
+const UNIT_M      = 1e6;    // 1 unidad de mundo ≈ 1000 km
+const MASS_TO_MSUN = 0.33;  // slider 0-150 → 0-49.5 M☉
 
 // ─── Scene setup ─────────────────────────────────────────────────────────────
 const scene = new THREE.Scene();
-// near/far acotados a la escena real: un ratio enorme (0.1→2000) agota el z-buffer y la malla wireframe muestra “agujeros” rectangulares.
-const camera = new THREE.PerspectiveCamera(45, innerWidth / innerHeight, 0.5, 1200);
+// Sin logarithmicDepthBuffer: el ShaderMaterial de la malla no escribe profundidad logarítmica,
+// y mezclar ambos modos rompe la oclusión entre malla, esferas y anillos.
+const camera = new THREE.PerspectiveCamera(45, innerWidth / innerHeight, 1, 1500);
+camera.up.set(0, 0, 1);   // el plano de simulación es XY; sin esto la cámara "rueda" al orbitar
 camera.position.set(0, -70, 50);
 
-const renderer = new THREE.WebGLRenderer({ antialias: true, alpha: false, logarithmicDepthBuffer: true });
+const renderer = new THREE.WebGLRenderer({ antialias: true, alpha: false });
 renderer.setSize(innerWidth, innerHeight);
-renderer.setPixelRatio(devicePixelRatio);
+renderer.setPixelRatio(Math.min(devicePixelRatio || 1, 2));
 renderer.setClearColor(0x03050f);
 document.getElementById('canvas-container').appendChild(renderer.domElement);
 
-// ─── Stars background ─────────────────────────────────────────────────────────
+// ─── Toast ───────────────────────────────────────────────────────────────────
+let toastTimer = 0;
+function showToast(msg) {
+  let el = document.getElementById('toast');
+  if (!el) { el = document.createElement('div'); el.id = 'toast'; document.body.appendChild(el); }
+  el.textContent = msg;
+  el.classList.add('show');
+  clearTimeout(toastTimer);
+  toastTimer = setTimeout(() => el.classList.remove('show'), 2800);
+}
+
+// ─── Stars background (cáscara esférica lejana: ninguna estrella queda cerca de la cámara) ───
 {
-  const sg = new THREE.BufferGeometry();
-  const sv = new Float32Array(3000);
-  for (let i = 0; i < 3000; i++) {
-    sv[i] = (Math.random() - 0.5) * 800;
+  const N = 1800, sv = new Float32Array(N * 3);
+  for (let i = 0; i < N; i++) {
+    const u = Math.random() * 2 - 1, th = Math.random() * Math.PI * 2;
+    const s = Math.sqrt(1 - u * u), R = 350 + Math.random() * 350;
+    sv[i * 3] = R * s * Math.cos(th); sv[i * 3 + 1] = R * s * Math.sin(th); sv[i * 3 + 2] = R * u;
   }
+  const sg = new THREE.BufferGeometry();
   sg.setAttribute('position', new THREE.BufferAttribute(sv, 3));
-  const sm = new THREE.PointsMaterial({ color: 0xffffff, size: 0.4, sizeAttenuation: true, transparent: true, opacity: 0.7 });
-  scene.add(new THREE.Points(sg, sm));
+  const stars = new THREE.Points(sg, new THREE.PointsMaterial({ color: 0xffffff, size: 0.9, sizeAttenuation: true, transparent: true, opacity: 0.7, depthWrite: false }));
+  stars.frustumCulled = false;
+  scene.add(stars);
 }
 
 // ─── Orbit controls (manual) ─────────────────────────────────────────────────
 {
   let dragging = false, prevX = 0, prevY = 0;
   let theta = -Math.PI / 2.2, phi = Math.PI / 3.5, radius = 90;
+  const view0 = { theta, phi, radius };
 
   function updateCamera() {
     camera.position.set(
@@ -1562,27 +1613,29 @@ document.getElementById('canvas-container').appendChild(renderer.domElement);
   }
   updateCamera();
 
-  renderer.domElement.addEventListener('mousedown', e => { if (e.target === renderer.domElement) { dragging = true; prevX = e.clientX; prevY = e.clientY; } });
+  const cv = renderer.domElement;
+  cv.addEventListener('mousedown', e => { dragging = true; prevX = e.clientX; prevY = e.clientY; });
   window.addEventListener('mouseup', () => { dragging = false; });
   window.addEventListener('mousemove', e => {
     if (!dragging) return;
     theta -= (e.clientX - prevX) * 0.008;
-    phi   = Math.max(0.2, Math.min(Math.PI * 0.48, phi - (e.clientY - prevY) * 0.008));
+    phi = Math.max(0.2, Math.min(Math.PI * 0.48, phi - (e.clientY - prevY) * 0.008));
     prevX = e.clientX; prevY = e.clientY;
     updateCamera();
   });
-  renderer.domElement.addEventListener('wheel', e => {
+  cv.addEventListener('wheel', e => {
     radius = Math.max(20, Math.min(200, radius + e.deltaY * 0.08));
     updateCamera();
   }, { passive: true });
+  cv.addEventListener('dblclick', () => { theta = view0.theta; phi = view0.phi; radius = view0.radius; updateCamera(); });
 
   // Touch
   let lastTouchDist = 0;
-  renderer.domElement.addEventListener('touchstart', e => {
+  cv.addEventListener('touchstart', e => {
     if (e.touches.length === 1) { dragging = true; prevX = e.touches[0].clientX; prevY = e.touches[0].clientY; }
-    if (e.touches.length === 2) { lastTouchDist = Math.hypot(e.touches[0].clientX - e.touches[1].clientX, e.touches[0].clientY - e.touches[1].clientY); }
+    if (e.touches.length === 2) { dragging = false; lastTouchDist = Math.hypot(e.touches[0].clientX - e.touches[1].clientX, e.touches[0].clientY - e.touches[1].clientY); }
   }, { passive: true });
-  renderer.domElement.addEventListener('touchmove', e => {
+  cv.addEventListener('touchmove', e => {
     if (e.touches.length === 1 && dragging) {
       theta -= (e.touches[0].clientX - prevX) * 0.01;
       phi = Math.max(0.2, Math.min(Math.PI * 0.48, phi - (e.touches[0].clientY - prevY) * 0.01));
@@ -1596,17 +1649,20 @@ document.getElementById('canvas-container').appendChild(renderer.domElement);
       updateCamera();
     }
   }, { passive: true });
-  renderer.domElement.addEventListener('touchend', () => { dragging = false; });
+  cv.addEventListener('touchend', e => {
+    // si queda un dedo, re-anclar su posición para que no haya salto
+    dragging = e.touches.length === 1;
+    if (dragging) { prevX = e.touches[0].clientX; prevY = e.touches[0].clientY; }
+  });
 }
 
 // ─── Grid mesh ─── GPU vertex-shader deformation ─────────────────────────────
 let gridRes = 150;
-let planeGeo, planeMesh;
-// posAttr kept for astro Z-sinking (read-only, not written every frame)
-let posAttr;
+let gridMesh = null;
 
-const _MAX_B = 16;   // max bodies in shader
-const _MAX_W = 10;   // max wave rings in shader
+const _MAX_B = MAX_BODIES;   // max bodies in shader
+const _MAX_W = 10;           // max wave rings in shader
+const WAVE_SPEED = 6.0;      // unidades de mundo por unidad de "edad" (igual en shader y en el anillo 3D)
 
 const GRID_VERT = /* glsl */`
 #define MAX_B 16
@@ -1617,9 +1673,9 @@ uniform float uCurvGain;
 uniform float uCurvSoft2;
 uniform float uFlex;
 uniform float uMaxDeform;
-uniform bool  uUseHeat;
 uniform vec3  uWaves[MAX_W];    // .xy = origin,  .z = age
 uniform int   uWaveCount;
+uniform float uWaveSpeed;
 varying float vHeat;
 void main(){
   vec3 pos = position;
@@ -1638,7 +1694,7 @@ void main(){
     float wdy = pos.y - uWaves[j].y;
     float wd  = sqrt(wdx*wdx + wdy*wdy);
     float age = uWaves[j].z;
-    float diff= abs(wd - age*6.0);
+    float diff= abs(wd - age*uWaveSpeed);
     if(diff<3.0) ripple += (1.0-diff/3.0)*0.8*exp(-age*0.3);
   }
   z -= ripple*0.3;
@@ -1660,210 +1716,238 @@ void main(){
   gl_FragColor = vec4(col, 0.4);
 }`;
 
-// Central uniforms object – mutated each frame to drive the GPU
 const gridUniforms = {
   uBodies:    { value: Array.from({length:_MAX_B}, ()=>new THREE.Vector3()) },
   uBodyCount: { value: 0 },
-  uCurvGain:  { value: 18.0 },
-  uCurvSoft2: { value: 8.0 },
+  uCurvGain:  { value: CURV_GAIN },
+  uCurvSoft2: { value: CURV_SOFT2 },
   uFlex:      { value: 0.15 },
   uMaxDeform: { value: 1.0 },
   uUseHeat:   { value: true },
   uWaves:     { value: Array.from({length:_MAX_W}, ()=>new THREE.Vector3()) },
   uWaveCount: { value: 0 },
+  uWaveSpeed: { value: WAVE_SPEED },
 };
 
+// Malla de líneas reales (filas + columnas). Antes se usaba wireframe sobre PlaneGeometry,
+// que dibujaba también la diagonal de cada triángulo (aspecto de "telaraña") y el doble de aristas.
 function buildGrid(res) {
-  if (planeMesh) scene.remove(planeMesh);
-  planeGeo = new THREE.PlaneGeometry(100, 100, res, res);
+  if (gridMesh) {
+    scene.remove(gridMesh);
+    gridMesh.geometry.dispose();
+    gridMesh.material.dispose();
+  }
+  const n = res + 1, size = 100, half = size / 2;
+  const pos = new Float32Array(n * n * 3);
+  for (let j = 0; j < n; j++) {
+    for (let i = 0; i < n; i++) {
+      const k = (j * n + i) * 3;
+      pos[k] = -half + i * size / res;
+      pos[k + 1] = -half + j * size / res;
+    }
+  }
+  const idx = new Uint16Array(4 * res * n);   // n ≤ 201 → máx. 40401 vértices (cabe en 16 bits)
+  let p = 0;
+  for (let j = 0; j < n; j++) for (let i = 0; i < res; i++) { idx[p++] = j * n + i; idx[p++] = j * n + i + 1; }
+  for (let i = 0; i < n; i++) for (let j = 0; j < res; j++) { idx[p++] = j * n + i; idx[p++] = (j + 1) * n + i; }
+  const geo = new THREE.BufferGeometry();
+  geo.setAttribute('position', new THREE.BufferAttribute(pos, 3));
+  geo.setIndex(new THREE.BufferAttribute(idx, 1));
   const mat = new THREE.ShaderMaterial({
     uniforms: gridUniforms,
-    vertexShader:   GRID_VERT,
+    vertexShader: GRID_VERT,
     fragmentShader: GRID_FRAG,
-    wireframe:   true,
     transparent: true,
+    depthWrite: false,
   });
-  planeMesh = new THREE.Mesh(planeGeo, mat);
-  scene.add(planeMesh);
-  posAttr = planeGeo.attributes.position; // used only for Z-sinking below
+  gridMesh = new THREE.LineSegments(geo, mat);
+  gridMesh.frustumCulled = false;  // los vértices se desplazan en GPU: el bounding box CPU no es válido
+  scene.add(gridMesh);
 }
 buildGrid(gridRes);
 
+// Misma ley que el shader: se usa para hundir cuerpos y partículas sobre la superficie
+function surfaceZ(x, y, flex) {
+  let z = 0;
+  for (let i = 0; i < astros.length && i < _MAX_B; i++) {
+    const o = astros[i];
+    const dx = x - o.mesh.position.x, dy = y - o.mesh.position.y;
+    z -= (CURV_GAIN * o.masa * flex) / (dx * dx + dy * dy + CURV_SOFT2);
+  }
+  return z;
+}
+
 // ─── Gravitational wave ring system ──────────────────────────────────────────
+const WAVE_LIFE = 2.0, WAVE_RATE = 1.2;   // edad máx. y edad/segundo (tiempo real, independiente de la velocidad de sim)
 const waveRings = [];
+const pendingWaves = [];
+const waveGeo = new THREE.RingGeometry(0.94, 1.0, 96);   // anillo unitario compartido, se escala al radio
+
+function removeWave(i) {
+  const wr = waveRings[i];
+  scene.remove(wr);
+  wr.material.dispose();
+  waveRings.splice(i, 1);
+}
 function spawnWave(x, y) {
-  const geo = new THREE.RingGeometry(0.5, 0.8, 64);
-  const mat = new THREE.MeshBasicMaterial({ color: 0x00c8ff, side: THREE.DoubleSide, transparent: true, opacity: 0.6 });
-  const ring = new THREE.Mesh(geo, mat);
+  if (!document.getElementById('tog-waves').checked) return;
+  if (waveRings.length >= 40) removeWave(0);
+  const mat = new THREE.MeshBasicMaterial({ color: 0x00c8ff, side: THREE.DoubleSide, transparent: true, opacity: 0.6, depthWrite: false });
+  const ring = new THREE.Mesh(waveGeo, mat);
   ring.position.set(x, y, 0.2);
+  ring.scale.set(0.05, 0.05, 1);
   ring.userData = { age: 0, x, y };
   scene.add(ring);
   waveRings.push(ring);
+}
+function spawnWaveBurst(x, y, n) {
+  const t = performance.now();
+  for (let k = 0; k < n; k++) pendingWaves.push({ at: t + k * 260, x, y });
 }
 
 // ─── Particle system ─────────────────────────────────────────────────────────
 const PARTICLE_COUNT = 320;
 const partGeo = new THREE.BufferGeometry();
 const partPos = new Float32Array(PARTICLE_COUNT * 3);
-const partVel = [];
+const partCol = new Float32Array(PARTICLE_COUNT * 3);
 const partData = [];
-
 for (let i = 0; i < PARTICLE_COUNT; i++) {
-  const angle  = Math.random() * Math.PI * 2;
-  const r      = 5 + Math.random() * 42;
-  const speed  = 0.4 + Math.random() * 0.6;
+  const angle = Math.random() * Math.PI * 2;
+  const r     = 5 + Math.random() * 42;
+  const speed = 0.4 + Math.random() * 0.6;
   partPos[i * 3]     = Math.cos(angle) * r;
   partPos[i * 3 + 1] = Math.sin(angle) * r;
   partPos[i * 3 + 2] = 0.3 + Math.random() * 1.5;
-  partVel.push(speed / r);
-  partData.push({ angle, r, speed: speed / r, drift: (Math.random() - 0.5) * 0.002 });
+  partData.push({ angle, r, speed: speed / r });
 }
 partGeo.setAttribute('position', new THREE.BufferAttribute(partPos, 3));
-const partMat = new THREE.PointsMaterial({ color: 0x88ddff, size: 0.35, transparent: true, opacity: 0.65, sizeAttenuation: true });
+partGeo.setAttribute('color', new THREE.BufferAttribute(partCol, 3));
+const partMat = new THREE.PointsMaterial({ size: 0.35, vertexColors: true, transparent: true, opacity: 0.65, sizeAttenuation: true, depthWrite: false });
 const particles = new THREE.Points(partGeo, partMat);
+particles.frustumCulled = false;
 scene.add(particles);
 
 // ─── Orbital trail system ────────────────────────────────────────────────────
-// Short ring-buffer trail with per-vertex color fade (old=black → new=body color).
-// With AdditiveBlending, black = invisible → natural comet-tail fade, zero spider web.
-const TRAIL_LENGTH  = 700;  // long enough to cover a full orbit
-const TRAIL_SAMPLE  = 1;    // every frame for smooth curves
-const trailLines = new Map(); // astro.id → { line, geo, positions, colors, head, count }
+// Muestreo por DISTANCIA (no por frame): la estela cubre ~una órbita completa a cualquier
+// velocidad de simulación y no depende de los FPS. El último vértice sigue al cuerpo en vivo.
+const TRAIL_LENGTH   = 900;
+const TRAIL_MIN_STEP = 0.12;
+const trailLines = new Map(); // astro.id → { line, geo, ringBuf, head, count, lx, ly }
 
 function getOrCreateTrail(astro) {
   if (trailLines.has(astro.id)) return trailLines.get(astro.id);
-
-  // ringBuf  = circular ring buffer (CPU only, never passed to GPU)
-  // geoBuf   = linear ordered buffer (GPU)  ← SEPARATE arrays, fixes corruption bug
-  const ringBuf = new Float32Array(TRAIL_LENGTH * 3);
-  const geoBuf  = new Float32Array(TRAIL_LENGTH * 3);
-  const colBuf  = new Float32Array(TRAIL_LENGTH * 3);
-
-  // pre-fill ring at spawn position
-  for (let k = 0; k < TRAIL_LENGTH; k++) {
-    ringBuf[k * 3]     = astro.mesh.position.x;
-    ringBuf[k * 3 + 1] = astro.mesh.position.y;
-    ringBuf[k * 3 + 2] = astro.mesh.position.z;
-  }
-
   const geo = new THREE.BufferGeometry();
-  geo.setAttribute('position', new THREE.BufferAttribute(geoBuf, 3));
-  geo.setAttribute('color',    new THREE.BufferAttribute(colBuf,  3));
-  geo.setDrawRange(0, 1);
-
-  const mat = new THREE.LineBasicMaterial({
-    vertexColors: true,
-    transparent:  true,
-    opacity:      1.0,
-    depthWrite:   false,
-    blending:     THREE.AdditiveBlending,
-  });
-
+  geo.setAttribute('position', new THREE.BufferAttribute(new Float32Array((TRAIL_LENGTH + 1) * 3), 3));
+  geo.setAttribute('color',    new THREE.BufferAttribute(new Float32Array((TRAIL_LENGTH + 1) * 3), 3));
+  geo.setDrawRange(0, 0);
+  const mat = new THREE.LineBasicMaterial({ vertexColors: true, transparent: true, opacity: 1.0, depthWrite: false, blending: THREE.AdditiveBlending });
   const line = new THREE.Line(geo, mat);
+  line.frustumCulled = false;   // el bounding sphere se calcularía sobre un buffer vacío
   scene.add(line);
-  // store ringBuf separately from geo buffer
-  const trail = { line, geo, ringBuf, head: 0, count: 0 };
+  const trail = { line, geo, ringBuf: new Float32Array(TRAIL_LENGTH * 3), head: 0, count: 0, lx: 0, ly: 0 };
   trailLines.set(astro.id, trail);
   return trail;
 }
-
 function removeTrail(id) {
-  if (!trailLines.has(id)) return;
   const t = trailLines.get(id);
+  if (!t) return;
   scene.remove(t.line);
+  t.geo.dispose();
+  t.line.material.dispose();
   trailLines.delete(id);
 }
-
+function clearTrails() {
+  trailLines.forEach(t => { t.count = 0; t.head = 0; t.geo.setDrawRange(0, 0); });
+}
 function updateTrail(astro) {
   const t = getOrCreateTrail(astro);
+  const p = astro.mesh.position;
+  const ddx = p.x - t.lx, ddy = p.y - t.ly;
+  const d2 = ddx * ddx + ddy * ddy;
+  if (t.count > 0 && d2 > 36) t.count = 0;                  // teletransporte (slider/reset): corta la estela
+  const moved = t.count === 0 || d2 > TRAIL_MIN_STEP * TRAIL_MIN_STEP;
 
-  // 1. Write new position into ring buffer (pure circular, no GPU involvement)
-  const h3 = t.head * 3;
-  t.ringBuf[h3]     = astro.mesh.position.x;
-  t.ringBuf[h3 + 1] = astro.mesh.position.y;
-  t.ringBuf[h3 + 2] = astro.mesh.position.z;
-  t.head  = (t.head + 1) % TRAIL_LENGTH;
-  t.count = Math.min(t.count + 1, TRAIL_LENGTH);
-
-  // 2. Unroll ring buffer oldest→newest into the SEPARATE GPU buffers
-  const posDst = t.geo.attributes.position.array;  // geoBuf — different array!
+  const posDst = t.geo.attributes.position.array;
   const colDst = t.geo.attributes.color.array;
-  const c = astro.mesh.material.color;
-  const n = t.count;
 
-  for (let k = 0; k < n; k++) {
-    const src = ((t.head - n + k + TRAIL_LENGTH) % TRAIL_LENGTH) * 3;
-    const dst = k * 3;
-    posDst[dst]     = t.ringBuf[src];      // safe: ringBuf ≠ geoBuf
-    posDst[dst + 1] = t.ringBuf[src + 1];
-    posDst[dst + 2] = t.ringBuf[src + 2];
-    const fade   = k / (n - 1 || 1);       // 0=oldest  1=newest
-    // Near-flat brightness: minimum 25% so even old points are visible.
-    // Only the last 15% of the tail fades to zero → orbit looks "drawn".
-    const bright = fade < 0.15 ? (fade / 0.15) * 0.25 : 0.55;
-    colDst[dst]     = c.r * bright;
-    colDst[dst + 1] = c.g * bright;
-    colDst[dst + 2] = c.b * bright;
+  if (moved) {
+    const h3 = t.head * 3;
+    t.ringBuf[h3] = p.x; t.ringBuf[h3 + 1] = p.y; t.ringBuf[h3 + 2] = p.z;
+    t.head = (t.head + 1) % TRAIL_LENGTH;
+    t.count = Math.min(t.count + 1, TRAIL_LENGTH);
+    t.lx = p.x; t.ly = p.y;
+
+    const n = t.count, c = astro.mesh.material.color, tot = n + 1;
+    for (let k = 0; k < n; k++) {
+      const src = ((t.head - n + k + TRAIL_LENGTH) % TRAIL_LENGTH) * 3;
+      const dst = k * 3;
+      posDst[dst] = t.ringBuf[src]; posDst[dst + 1] = t.ringBuf[src + 1]; posDst[dst + 2] = t.ringBuf[src + 2];
+      const fade = k / (tot - 1 || 1);                       // 0 = más antiguo, 1 = más nuevo
+      const b = Math.min(1, fade / 0.3) * 0.6;               // el 30 % más viejo se desvanece
+      colDst[dst] = c.r * b; colDst[dst + 1] = c.g * b; colDst[dst + 2] = c.b * b;
+    }
+    const e = n * 3, c2 = astro.mesh.material.color;
+    colDst[e] = c2.r * 0.6; colDst[e + 1] = c2.g * 0.6; colDst[e + 2] = c2.b * 0.6;
+    t.geo.attributes.color.needsUpdate = true;
   }
-
+  // vértice "vivo": siempre en la posición actual del cuerpo
+  const n = t.count, e = n * 3;
+  posDst[e] = p.x; posDst[e + 1] = p.y; posDst[e + 2] = p.z;
   t.geo.attributes.position.needsUpdate = true;
-  t.geo.attributes.color.needsUpdate    = true;
-  t.geo.setDrawRange(0, n);
+  t.geo.setDrawRange(0, n + 1);
 }
 
-// ─── Event horizon rings ──────────────────────────────────────────────────────
+// ─── Event horizon rings ─────────────────────────────────────────────────────
 const horizonRings = new Map(); // astro.id → mesh
 const HORIZON_MASS_THRESHOLD = 40; // slider units — above this show ring
+const horizonGeo = new THREE.RingGeometry(0.9, 1.0, 96);   // anillo unitario compartido
 
+function removeHorizon(id) {
+  const r = horizonRings.get(id);
+  if (!r) return;
+  scene.remove(r);
+  r.material.dispose();
+  horizonRings.delete(id);
+}
 function updateHorizonRing(astro, show) {
-  if (!show || astro.masa < HORIZON_MASS_THRESHOLD) {
-    if (horizonRings.has(astro.id)) {
-      scene.remove(horizonRings.get(astro.id));
-      horizonRings.delete(astro.id);
-    }
-    return;
-  }
-  // Schwarzschild ring radius scales with mass (visual)
-  const rs_vis = 0.3 + astro.masa * 0.025;
-  if (!horizonRings.has(astro.id)) {
-    const geo = new THREE.RingGeometry(rs_vis * 0.85, rs_vis, 64);
-    const mat = new THREE.MeshBasicMaterial({
-      color: 0x000000, side: THREE.DoubleSide,
-      transparent: true, opacity: 0.92,
-      depthWrite: false
-    });
-    const ring = new THREE.Mesh(geo, mat);
-    ring.rotation.x = 0;
+  if (!show || astro.masa < HORIZON_MASS_THRESHOLD) { removeHorizon(astro.id); return; }
+  let ring = horizonRings.get(astro.id);
+  if (!ring) {
+    // Anillo aditivo naranja: el negro puro sobre fondo casi negro era invisible
+    const mat = new THREE.MeshBasicMaterial({ color: 0xff6a3d, side: THREE.DoubleSide, transparent: true, opacity: 0.8, depthWrite: false, blending: THREE.AdditiveBlending });
+    ring = new THREE.Mesh(horizonGeo, mat);
     scene.add(ring);
     horizonRings.set(astro.id, ring);
   }
-  const ring = horizonRings.get(astro.id);
-  const newRs = 0.3 + astro.masa * 0.025;
-  ring.geometry.dispose();
-  ring.geometry = new THREE.RingGeometry(newRs * 0.85, newRs, 64);
+  // Radio visual proporcional a la masa, pero siempre por fuera de la esfera (entre masa 40-60 el anillo quedaba oculto dentro de ella)
+  const sc = astro.mesh.scale.x;
+  const r = Math.max(0.3 + astro.masa * 0.025, sc * 1.25);
+  ring.scale.set(r, r, 1);
+  ring.material.opacity = 0.65 + 0.2 * Math.sin(clock * 3 + astro.id);
   ring.position.set(astro.mesh.position.x, astro.mesh.position.y, astro.mesh.position.z + 0.05);
 }
 
-// ─── Astros state ─────────────────────────────────────────────────────────────
+// ─── Astros state ────────────────────────────────────────────────────────────
 const astros = [];
 let astroCounter = 0;
+let clock = 0;
+let paused = false;
 const astrosContainer = document.getElementById('astros-container');
+const togPhysics = document.getElementById('tog-physics');
 
-// Glow sprites
 function makeGlowSprite(color) {
   const canvas = document.createElement('canvas');
   canvas.width = canvas.height = 128;
   const ctx = canvas.getContext('2d');
   const grad = ctx.createRadialGradient(64,64,0, 64,64,64);
-  grad.addColorStop(0, `rgba(${(color>>16)&255},${(color>>8)&255},${color&255},0.9)`);
-  grad.addColorStop(0.3, `rgba(${(color>>16)&255},${(color>>8)&255},${color&255},0.25)`);
+  const rgb = `${(color>>16)&255},${(color>>8)&255},${color&255}`;
+  grad.addColorStop(0, `rgba(${rgb},0.9)`);
+  grad.addColorStop(0.3, `rgba(${rgb},0.25)`);
   grad.addColorStop(1, 'rgba(0,0,0,0)');
   ctx.fillStyle = grad;
   ctx.fillRect(0,0,128,128);
-  const tex = new THREE.CanvasTexture(canvas);
-  // Evita “cuadrados” por escritura de profundidad en píxeles transparentes.
   return new THREE.Sprite(new THREE.SpriteMaterial({
-    map: tex,
+    map: new THREE.CanvasTexture(canvas),
     transparent: true,
     blending: THREE.AdditiveBlending,
     depthWrite: false,
@@ -1872,13 +1956,19 @@ function makeGlowSprite(color) {
   }));
 }
 
-// Real solar masses for display (kg)
 const REAL_MASSES = {
   'Sun':     1.989e30, 'Mercury': 3.285e23, 'Venus':   4.867e24,
   'Earth':   5.972e24, 'Mars':    6.390e23, 'Jupiter': 1.898e27,
   'Saturn':  5.683e26, 'Uranus':  8.681e25, 'Neptune': 1.024e26,
   'Black Hole': null,  'Star':    null,
 };
+const LABEL_ES = {
+  'Sun': 'Sol', 'Mercury': 'Mercurio', 'Venus': 'Venus', 'Earth': 'Tierra', 'Mars': 'Marte',
+  'Jupiter': 'Júpiter', 'Saturn': 'Saturno', 'Uranus': 'Urano', 'Neptune': 'Neptuno',
+  'Black Hole': 'Agujero negro', 'Star': 'Estrella',
+};
+const labelText = key => T(LABEL_ES[key] ?? key, key);
+
 function formatRealMass(kg) {
   if (!kg) return '';
   const exp = Math.floor(Math.log10(kg));
@@ -1886,19 +1976,16 @@ function formatRealMass(kg) {
   return `${man}×10<sup>${exp}</sup> kg`;
 }
 
-// Make a canvas-based text label sprite for the 3D scene
 function makeLabelSprite(name, realMassKg, color) {
   const canvas = document.createElement('canvas');
   canvas.width = 256; canvas.height = 64;
   const ctx = canvas.getContext('2d');
   ctx.clearRect(0, 0, 256, 64);
-  // Name
   ctx.font = 'bold 22px Inter, sans-serif';
   ctx.fillStyle = '#' + color.toString(16).padStart(6, '0');
   ctx.shadowColor = 'rgba(0,0,0,0.9)';
   ctx.shadowBlur = 6;
   ctx.fillText(name, 4, 26);
-  // Real mass
   if (realMassKg) {
     const exp = Math.floor(Math.log10(realMassKg));
     const man = (realMassKg / Math.pow(10, exp)).toFixed(2);
@@ -1907,66 +1994,76 @@ function makeLabelSprite(name, realMassKg, color) {
     ctx.shadowBlur = 4;
     ctx.fillText(`${man}·10^${exp} kg`, 4, 50);
   }
-  const tex = new THREE.CanvasTexture(canvas);
   const sp = new THREE.Sprite(new THREE.SpriteMaterial({
-    map: tex, transparent: true, depthWrite: false,
+    map: new THREE.CanvasTexture(canvas), transparent: true, depthWrite: false,
     blending: THREE.AdditiveBlending, alphaTest: 0.01
   }));
-  sp.scale.set(14, 3.5, 1);
   return sp;
 }
 
+function disposeSprite(s) {
+  if (!s) return;
+  if (s.material.map) s.material.map.dispose();
+  s.material.dispose();
+}
+function refreshLabel(a) {
+  if (!a.labelKey) return;
+  if (a.labelSprite) { a.mesh.remove(a.labelSprite); disposeSprite(a.labelSprite); }
+  a.labelSprite = makeLabelSprite(labelText(a.labelKey), a.realKg, a.color);
+  a.mesh.add(a.labelSprite);
+}
+function updateCardName(a) {
+  a.ui.nm.textContent = a.labelKey ? labelText(a.labelKey) : T('Cuerpo ', 'Body ') + a.id;
+}
+
 function addAstro(opts) {
+  opts = opts || {};
+  if (astros.length >= MAX_BODIES) {
+    showToast(T(`Máximo ${MAX_BODIES} cuerpos`, `Maximum ${MAX_BODIES} bodies`));
+    return null;
+  }
   astroCounter++;
-  const id    = astroCounter;
-  const color = opts?.color ?? COLORES[id % COLORES.length];
+  const id     = astroCounter;
+  const color  = opts.color ?? COLORES[id % COLORES.length];
   const hexStr = '#' + color.toString(16).padStart(6, '0');
-  const label  = opts?.label ?? null;
-  const realKg = label ? (REAL_MASSES[label] ?? null) : null;
+  const labelKey = opts.label ?? null;
+  const realKg = labelKey ? (REAL_MASSES[labelKey] ?? null) : null;
+  const masa0  = Math.max(0, Math.min(MAX_MASS, opts.masa ?? 40));
 
-  // 3D sphere
-  const geo  = new THREE.SphereGeometry(1, 32, 32);
-  const mat  = new THREE.MeshBasicMaterial({ color });
-  const mesh = new THREE.Mesh(geo, mat);
-
-  const initX = opts?.x ?? (Math.random()-0.5)*30;
-  const initY = opts?.y ?? (Math.random()-0.5)*30;
+  const mesh = new THREE.Mesh(new THREE.SphereGeometry(1, 32, 32), new THREE.MeshBasicMaterial({ color }));
+  const initX = opts.x ?? (Math.random() - 0.5) * 30;
+  const initY = opts.y ?? (Math.random() - 0.5) * 30;
   mesh.position.set(initX, initY, 0);
 
-  // Glow
   const glow = makeGlowSprite(color);
-  glow.scale.set(8, 8, 1);
   mesh.add(glow);
-
-  // 3D label sprite (only if named body)
-  let labelSprite = null;
-  if (label) {
-    labelSprite = makeLabelSprite(label, realKg, color);
-    labelSprite.position.set(0, 3.5, 2);
-    mesh.add(labelSprite);
-  }
-
   scene.add(mesh);
 
-  // Real mass display string for UI
   const realMassHtml = realKg ? ` <span style="font-size:10px;color:#7ab0cc">${formatRealMass(realKg)}</span>` : '';
 
-  // UI card
   const card = document.createElement('div');
   card.className = 'astro-card';
   card.id = `ui-astro-${id}`;
   card.style.borderLeftColor = hexStr;
+  const tipMassEs = 'Masa del slider (0-150). Determina la curvatura y la dilatación temporal; se convierte a radio de Schwarzschild en unidades reales.';
+  const tipMassEn = 'Slider mass (0-150). Drives curvature and time dilation; mapped to Schwarzschild radius in real units.';
+  const tipPinEs  = 'Un cuerpo fijo no se mueve (actúa como ancla gravitatoria), pero sí atrae a los demás.';
+  const tipPinEn  = 'A pinned body does not move (gravitational anchor) but still attracts the others.';
   card.innerHTML = `
     <div class="astro-header">
-      <span class="astro-name" style="color:${hexStr}">● ${label ?? ('Body ' + id)}${realMassHtml}</span>
+      <span class="astro-name" style="color:${hexStr}">● <span class="astro-nm"></span>${realMassHtml}</span>
       <span class="astro-rs" id="rs-${id}">rs = —</span>
     </div>
-    <div class="ctrl-row"><span class="ctrl-label"><span class="tip" data-tip="Slider mass (0-150). Drives curvature and time dilation. Mapped to Schwarzschild radius in real units.">i</span><span>Mass</span></span><span class="ctrl-val" id="v-m-${id}">${opts?.masa ?? 40}</span></div>
-    <input type="range" id="masa-${id}" min="0" max="150" step="1" value="${opts?.masa ?? 40}">
-    <div class="ctrl-row"><span class="ctrl-label">Position X</span><span class="ctrl-val" id="v-x-${id}">${initX.toFixed(1)}</span></div>
-    <input type="range" id="posX-${id}" min="-45" max="45" step="0.5" value="${initX}">
-    <div class="ctrl-row"><span class="ctrl-label">Position Y</span><span class="ctrl-val" id="v-y-${id}">${initY.toFixed(1)}</span></div>
-    <input type="range" id="posY-${id}" min="-45" max="45" step="0.5" value="${initY}">
+    <div class="ctrl-row"><span class="ctrl-label"><span class="tip" data-tip="${tipMassEs}" data-i18n-tip-es="${tipMassEs}" data-i18n-tip-en="${tipMassEn}">i</span><span data-i18n-es="Masa" data-i18n-en="Mass">Masa</span></span><span class="ctrl-val" id="v-m-${id}">${masa0}</span></div>
+    <input type="range" id="masa-${id}" min="0" max="${MAX_MASS}" step="1" value="${masa0}">
+    <div class="ctrl-row"><span class="ctrl-label"><span data-i18n-es="Posición X" data-i18n-en="Position X">Posición X</span></span><span class="ctrl-val" id="v-x-${id}">${initX.toFixed(1)}</span></div>
+    <input type="range" id="posX-${id}" min="-${WORLD_HALF}" max="${WORLD_HALF}" step="0.5" value="${initX}">
+    <div class="ctrl-row"><span class="ctrl-label"><span data-i18n-es="Posición Y" data-i18n-en="Position Y">Posición Y</span></span><span class="ctrl-val" id="v-y-${id}">${initY.toFixed(1)}</span></div>
+    <input type="range" id="posY-${id}" min="-${WORLD_HALF}" max="${WORLD_HALF}" step="0.5" value="${initY}">
+    <div class="toggle-row" style="margin:2px 0 6px">
+      <span class="toggle-label"><span class="tip" data-tip="${tipPinEs}" data-i18n-tip-es="${tipPinEs}" data-i18n-tip-en="${tipPinEn}">i</span><span data-i18n-es="Fijo (ancla)" data-i18n-en="Pinned (anchor)">Fijo (ancla)</span></span>
+      <label class="toggle"><input type="checkbox" id="pin-${id}" ${opts.pinned ? 'checked' : ''}><span class="slider-tog"></span></label>
+    </div>
     <div class="astro-dil" id="dil-${id}">
       <span style="color:var(--muted)">τ/t∞</span><span id="dilval-${id}" style="color:var(--accent);font-family:var(--mono)">—</span>
     </div>
@@ -1974,9 +2071,11 @@ function addAstro(opts) {
   astrosContainer.appendChild(card);
 
   const ui = {
+    nm:    card.querySelector('.astro-nm'),
     masa:  document.getElementById(`masa-${id}`),
     posX:  document.getElementById(`posX-${id}`),
     posY:  document.getElementById(`posY-${id}`),
+    pin:   document.getElementById(`pin-${id}`),
     vMasa: document.getElementById(`v-m-${id}`),
     vX:    document.getElementById(`v-x-${id}`),
     vY:    document.getElementById(`v-y-${id}`),
@@ -1984,56 +2083,72 @@ function addAstro(opts) {
     dil:   document.getElementById(`dilval-${id}`),
   };
 
-  // When physics OFF, sliders directly control position
-  ui.posX.addEventListener('input', () => {
-    const togPhysics = document.getElementById('tog-physics');
-    if (!togPhysics.checked) {
-      mesh.position.x = parseFloat(ui.posX.value);
-      ui.vX.textContent = parseFloat(ui.posX.value).toFixed(1);
-    }
-  });
-  ui.posY.addEventListener('input', () => {
-    const togPhysics = document.getElementById('tog-physics');
-    if (!togPhysics.checked) {
-      mesh.position.y = parseFloat(ui.posY.value);
-      ui.vY.textContent = parseFloat(ui.posY.value).toFixed(1);
-    }
-  });
+  const astro = {
+    id, mesh, glow, color, labelKey, realKg, ui, labelSprite: null,
+    masa: masa0, prevMasa: masa0, lastMassWave: 0,
+    vx: opts.vx ?? 0, vy: opts.vy ?? 0, _ax: 0, _ay: 0,
+    get pinned() { return ui.pin.checked; },
+  };
 
-  const astro = { id, mesh, ui, labelSprite, masa: opts?.masa ?? 40,
-                  vx: opts?.vx ?? 0, vy: opts?.vy ?? 0, pinned: opts?.pinned ?? false,
-                  _ax: 0, _ay: 0, _ax_old: 0, _ay_old: 0 };
+  // Arrastrar los sliders de posición mueve el cuerpo (también con la física activa: lo "agarra" y anula su velocidad)
+  const onPos = () => {
+    mesh.position.x = parseFloat(ui.posX.value);
+    mesh.position.y = parseFloat(ui.posY.value);
+    astro.vx = 0; astro.vy = 0; astro._ax = 0; astro._ay = 0;
+  };
+  ui.posX.addEventListener('input', onPos);
+  ui.posY.addEventListener('input', onPos);
+
   astros.push(astro);
-
+  refreshLabel(astro);
+  updateCardName(astro);
+  if (window.applyI18nToNode) window.applyI18nToNode(card);
   spawnWave(initX, initY);
   return astro;
 }
 
-function removeAstro() {
-  if (!astros.length) return;
-  const a = astros.pop();
+function disposeAstro(a) {
   scene.remove(a.mesh);
+  a.mesh.geometry.dispose();
+  a.mesh.material.dispose();
+  disposeSprite(a.glow);
+  disposeSprite(a.labelSprite);
   document.getElementById(`ui-astro-${a.id}`)?.remove();
   removeTrail(a.id);
-  if (horizonRings.has(a.id)) { scene.remove(horizonRings.get(a.id)); horizonRings.delete(a.id); }
+  removeHorizon(a.id);
+}
+function removeAstro() {
+  if (!astros.length) return;
+  disposeAstro(astros.pop());
+}
+function clearAllAstros() {
+  astros.slice().forEach(disposeAstro);
+  astros.length = 0;
 }
 
 document.getElementById('btn-add').addEventListener('click', () => addAstro({}));
 document.getElementById('btn-remove').addEventListener('click', removeAstro);
 
-// ─── Orbital velocity helper ──────────────────────────────────────────────────
-// GM_SCALE must match the integrator exactly. Keep both in sync.
-const GM_SCALE = 0.004;
-
+// ─── Órbitas circulares CONSISTENTES con el integrador (fuerza con suavizado Plummer) ────────
+// Antes se usaba v = √(GM/r) (Kepler sin suavizado) mientras el integrador usaba ε = 4:
+// las órbitas salían elípticas (Mercurio ≈ +24 % de velocidad) y la binaria no era circular.
 function orbitalVelocity(cx, cy, px, py, centralMass) {
   const dx = px - cx, dy = py - cy;
   const r  = Math.sqrt(dx * dx + dy * dy) + 0.001;
-  const v  = Math.sqrt(GM_SCALE * centralMass / r);
+  const a  = GM_SCALE * centralMass * r / Math.pow(r * r + SOFTENING * SOFTENING, 1.5);
+  const v  = Math.sqrt(a * r);
   return { vx: -dy / r * v, vy: dx / r * v };
+}
+// Binaria circular con el centro de masas en el origen y momento total nulo
+function binaryOrbit(m1, m2, d) {
+  const M = m1 + m2;
+  const acc = GM_SCALE * d / Math.pow(d * d + SOFTENING * SOFTENING, 1.5);
+  const r1 = d * m2 / M, r2 = d * m1 / M;
+  return { x1: -r1, x2: r2, v1: Math.sqrt(acc * m2 * r1), v2: Math.sqrt(acc * m1 * r2) };
 }
 
 const PRESETS = {
-  solar: [
+  solar: () => [
     { masa: 150, x:  0,   y:  0,  color: 0xffdd00, label: 'Sun',     vx: 0, vy: 0, pinned: true },
     { masa:   1, x:  7,   y:  0,  color: 0xaaaaaa, label: 'Mercury', orbitAround: 0 },
     { masa:   2, x: 12,   y:  0,  color: 0xffcc88, label: 'Venus',   orbitAround: 0 },
@@ -2044,55 +2159,61 @@ const PRESETS = {
     { masa:   3, x:-24,   y:  0,  color: 0x88eeff, label: 'Uranus',  orbitAround: 0 },
     { masa:   3, x: 14,   y: 30,  color: 0x4466ff, label: 'Neptune', orbitAround: 0 },
   ],
-  binary: [
-    { masa: 60, x:-16, y: 0, color: 0xffdd44, vx: 0, vy: -Math.sqrt(GM_SCALE * 60 / 32) },
-    { masa: 60, x: 16, y: 0, color: 0xff8844, vx: 0, vy:  Math.sqrt(GM_SCALE * 60 / 32) },
-  ],
-  bh: [
+  binary: () => {
+    const o = binaryOrbit(60, 60, 32);
+    return [
+      { masa: 60, x: o.x1, y: 0, color: 0xffdd44, vx: 0, vy: -o.v1 },
+      { masa: 60, x: o.x2, y: 0, color: 0xff8844, vx: 0, vy:  o.v2 },
+    ];
+  },
+  bh: () => [
     { masa: 150, x: 0, y: 0, color: 0xffffff, label: 'Black Hole', vx: 0, vy: 0, pinned: true },
-    // Sub-orbital: ~35% of circular velocity → star spirals inward and gets swallowed
+    // Sub-orbital: ~35 % de la velocidad circular → la estrella cae en espiral y es tragada
     { masa: 3, x: 28, y: 4,  color: 0x44ccff, label: 'Star', subOrbital: 0.35, orbitAround: 0 },
     { masa: 2, x:-22, y: 6,  color: 0xffaa44, label: 'Star', subOrbital: 0.4,  orbitAround: 0 },
   ],
-  merge: [
-    { masa: 70, x:-12, y: 3, color: 0xff4455, vx:  0.05, vy: -0.02 },
-    { masa: 70, x: 12, y:-3, color: 0x7744ff, vx: -0.05, vy:  0.02 },
+  merge: () => [
+    // Casi frontal (momento angular ≈ 0): los dos cuerpos caen uno hacia el otro y se fusionan
+    { masa: 70, x: -9, y:  0.4, color: 0xff4455, vx: 0, vy: 0 },
+    { masa: 70, x:  9, y: -0.4, color: 0x7744ff, vx: 0, vy: 0 },
   ],
 };
 
 function applyPreset(key) {
-  const p = PRESETS[key];
-  const resolvedBodies = p.map((opts) => {
+  const p = PRESETS[key]();
+  if (astros.length + p.length > MAX_BODIES) {
+    const free = MAX_BODIES - astros.length;
+    showToast(T(`No caben: este preset necesita ${p.length} huecos y quedan ${free} (máx. ${MAX_BODIES}).`,
+                `Not enough room: this preset needs ${p.length} slots, ${free} left (max ${MAX_BODIES}).`));
+    return;
+  }
+  p.forEach(opts => {
     if (opts.orbitAround !== undefined) {
       const center = p[opts.orbitAround];
       const ov = orbitalVelocity(center.x, center.y, opts.x, opts.y, center.masa);
-      const factor = opts.subOrbital ?? 1.0; // <1 = sub-orbital → spirals in
-      return { ...opts, vx: (center.vx ?? 0) + ov.vx * factor, vy: (center.vy ?? 0) + ov.vy * factor };
+      const factor = opts.subOrbital ?? 1.0;
+      opts = { ...opts, vx: (center.vx ?? 0) + ov.vx * factor, vy: (center.vy ?? 0) + ov.vy * factor };
     }
-    return opts;
+    addAstro(opts);
   });
-  resolvedBodies.forEach(opts => addAstro(opts));
 }
-
 document.querySelectorAll('.preset-btn').forEach(btn => {
   btn.addEventListener('click', () => applyPreset(btn.dataset.preset));
 });
 
-// Clear all button (wired to btn-remove-all)
-document.getElementById('btn-clear-all').addEventListener('click', () => {
-  const toRemove = astros.slice();
-  toRemove.forEach(a => {
-    scene.remove(a.mesh);
-    document.getElementById('ui-astro-' + a.id)?.remove();
-    removeTrail(a.id);
-    if (horizonRings.has(a.id)) { scene.remove(horizonRings.get(a.id)); horizonRings.delete(a.id); }
-  });
-  astros.length = 0;
+function initialScene() {
+  const o = binaryOrbit(60, 40, 28);
+  addAstro({ masa: 60, x: o.x1, y: 0, color: 0xffdd44, vx: 0, vy: -o.v1 });
+  addAstro({ masa: 40, x: o.x2, y: 0, color: 0x44aaff, vx: 0, vy:  o.v2 });
+}
+document.getElementById('btn-clear-all').addEventListener('click', () => { clearAllAstros(); clearTrails(); });
+document.getElementById('btn-reset').addEventListener('click', () => {
+  clearAllAstros();
+  while (waveRings.length) removeWave(0);
+  pendingWaves.length = 0;
+  initialScene();
 });
-
-// Initialize with 2 orbiting bodies (circular orbit around shared center of mass)
-addAstro({ masa: 60, x: -14, y: 0, color: 0xffdd44, vx: 0, vy: -Math.sqrt(GM_SCALE * 60 / 28) });
-addAstro({ masa: 40, x:  14, y: 0, color: 0x44aaff, vx: 0, vy:  Math.sqrt(GM_SCALE * 40 / 28) });
+initialScene();
 
 // ─── UI bindings ─────────────────────────────────────────────────────────────
 const elast   = document.getElementById('sl-elast');
@@ -2108,384 +2229,315 @@ const togTrails  = document.getElementById('tog-trails');
 const togHorizon = document.getElementById('tog-horizon');
 
 elast.addEventListener('input', () => { vElast.textContent = parseFloat(elast.value).toFixed(2); });
+slRes.addEventListener('input',  () => { vRes.textContent = slRes.value; });
 slRes.addEventListener('change', () => {
-  gridRes = parseInt(slRes.value);
+  gridRes = parseInt(slRes.value, 10);
   vRes.textContent = gridRes;
   buildGrid(gridRes);
 });
-slSpeed.addEventListener('input', () => {
-  vSpeed.textContent = '×' + parseFloat(slSpeed.value).toFixed(2);
-});
+slSpeed.addEventListener('input', () => { vSpeed.textContent = '×' + parseFloat(slSpeed.value).toFixed(1); });
 togPart.addEventListener('change', () => { particles.visible = togPart.checked; });
 togTrails.addEventListener('change', () => {
   trailLines.forEach(t => { t.line.visible = togTrails.checked; });
+  if (!togTrails.checked) clearTrails();   // al reactivarlas no aparece una línea vieja que salta
 });
 togHorizon.addEventListener('change', () => {
-  horizonRings.forEach(r => { r.visible = togHorizon.checked; });
+  if (!togHorizon.checked) astros.forEach(a => removeHorizon(a.id));
+});
+togPhysics.addEventListener('change', () => {
+  if (!togPhysics.checked) astros.forEach(a => { a.vx = 0; a.vy = 0; a._ax = 0; a._ay = 0; });
 });
 
 // ─── Physics helpers ─────────────────────────────────────────────────────────
-function schwarzschild(M_norm) {
-  // M_norm is slider 0-150, map to solar masses 0-50
-  const M_solar = M_norm * 0.33;
-  const M = M_solar * Msun;
-  const rs = (2 * G * M) / (c_SI * c_SI);
-  return rs; // meters
+function rsMeters(M_norm) {
+  return (2 * G * M_norm * MASS_TO_MSUN * Msun) / (c_SI * c_SI);
+}
+// Dilatación gravitacional dτ/dt en (x,y), superponiendo el potencial de todos los cuerpos
+// (aprox. de campo débil: 1 − Σ rs_i/r_i). Para el propio cuerpo se usa su radio superficial.
+function dilationAt(x, y, self, selfRadiusUnits) {
+  let s = 0;
+  for (const o of astros) {
+    const r = (o === self) ? selfRadiusUnits
+                           : Math.hypot(x - o.mesh.position.x, y - o.mesh.position.y);
+    s += rsMeters(o.masa) / Math.max(r * UNIT_M, 1);
+  }
+  return s >= 1 ? 0 : Math.sqrt(1 - s);
 }
 
-function timeDilation(M_norm, dist_units) {
-  // dist_units: distance in our world units (1 unit ≈ 1000 km)
-  const M_solar = M_norm * 0.33;
-  const M = M_solar * Msun;
-  const rs = (2 * G * M) / (c_SI * c_SI);
-  const r_m = dist_units * 1e6; // convert to meters (rough)
-  if (r_m <= rs || r_m < 1) return 0;
-  return Math.sqrt(Math.max(0, 1 - rs / r_m));
-}
-
-// ─── Color from depth (heatmap) ───────────────────────────────────────────────
-function depthToColor(z, minZ) {
-  const t = Math.min(1, Math.abs(z) / Math.max(0.001, Math.abs(minZ)));
-  // cold (blue) → warm (orange) → hot (red)
-  if (t < 0.5) {
-    const s = t * 2;
-    return [0.1 + s * 0.5, 0.4 + s * 0.3, 0.9 - s * 0.4]; // blue → orange
-  } else {
-    const s = (t - 0.5) * 2;
-    return [0.6 + s * 0.4, 0.7 - s * 0.6, 0.5 - s * 0.5]; // orange → red
+// ─── N-body (leapfrog / velocity Verlet, kick-drift-kick) ────────────────────
+function computeAccelerations() {
+  for (const a of astros) { a._ax = 0; a._ay = 0; }
+  for (let i = 0; i < astros.length; i++) {
+    for (let j = i + 1; j < astros.length; j++) {
+      const ai = astros[i], aj = astros[j];
+      const dx = aj.mesh.position.x - ai.mesh.position.x;
+      const dy = aj.mesh.position.y - ai.mesh.position.y;
+      const dist2 = dx * dx + dy * dy + SOFTENING * SOFTENING;
+      const inv3 = 1 / (dist2 * Math.sqrt(dist2));
+      if (!ai.pinned) { const f = GM_SCALE * aj.masa * inv3; ai._ax += f * dx; ai._ay += f * dy; }
+      if (!aj.pinned) { const f = GM_SCALE * ai.masa * inv3; aj._ax -= f * dx; aj._ay -= f * dy; }
+    }
   }
 }
+
+function mergeBodies(a, b) {
+  // El fijo gana; si no, el más masivo. Conserva momento lineal y masa (hasta el tope del slider).
+  const winner = a.pinned ? a : b.pinned ? b : (a.masa >= b.masa ? a : b);
+  const loser  = winner === a ? b : a;
+  const mw = winner.masa, ml = loser.masa, M = mw + ml;
+  if (!winner.pinned && M > 0) {
+    winner.vx = (mw * winner.vx + ml * loser.vx) / M;
+    winner.vy = (mw * winner.vy + ml * loser.vy) / M;
+    winner.mesh.position.x = (mw * winner.mesh.position.x + ml * loser.mesh.position.x) / M;
+    winner.mesh.position.y = (mw * winner.mesh.position.y + ml * loser.mesh.position.y) / M;
+  }
+  const newMasa = Math.min(MAX_MASS, M);
+  winner.ui.masa.value = newMasa;
+  winner.masa = winner.prevMasa = newMasa;
+  spawnWaveBurst(winner.mesh.position.x, winner.mesh.position.y, 3);   // "chirp" de la fusión
+  disposeAstro(loser);
+  astros.splice(astros.indexOf(loser), 1);
+}
+function findMergePair() {
+  for (let i = 0; i < astros.length; i++) {
+    for (let j = i + 1; j < astros.length; j++) {
+      const a = astros[i], b = astros[j];
+      if (a.pinned && b.pinned) continue;
+      const dx = a.mesh.position.x - b.mesh.position.x;
+      const dy = a.mesh.position.y - b.mesh.position.y;
+      const R = 0.4 + 0.028 * Math.max(a.masa, b.masa);
+      if (dx * dx + dy * dy < R * R) return [a, b];
+    }
+  }
+  return null;
+}
+
+function stepPhysics(h) {
+  for (const a of astros) {
+    if (a.pinned) continue;
+    a.vx += 0.5 * a._ax * h; a.vy += 0.5 * a._ay * h;
+    const p = a.mesh.position;
+    p.x += a.vx * h; p.y += a.vy * h;
+    // Paredes: solo se refleja si el cuerpo va hacia fuera (antes podía quedarse "pegado" oscilando)
+    if (p.x >  WORLD_HALF) { p.x =  WORLD_HALF; if (a.vx > 0) a.vx *= -0.5; }
+    if (p.x < -WORLD_HALF) { p.x = -WORLD_HALF; if (a.vx < 0) a.vx *= -0.5; }
+    if (p.y >  WORLD_HALF) { p.y =  WORLD_HALF; if (a.vy > 0) a.vy *= -0.5; }
+    if (p.y < -WORLD_HALF) { p.y = -WORLD_HALF; if (a.vy < 0) a.vy *= -0.5; }
+  }
+  computeAccelerations();
+  for (const a of astros) {
+    if (a.pinned) continue;
+    a.vx += 0.5 * a._ax * h; a.vy += 0.5 * a._ay * h;
+  }
+  let pair, any = false;
+  while ((pair = findMergePair())) { mergeBodies(pair[0], pair[1]); any = true; }
+  if (any) computeAccelerations();
+}
+
+function computeEnergy() {
+  let ke = 0, pe = 0;
+  for (const a of astros) if (!a.pinned) ke += 0.5 * a.masa * (a.vx * a.vx + a.vy * a.vy);
+  for (let i = 0; i < astros.length; i++) {
+    for (let j = i + 1; j < astros.length; j++) {
+      const ai = astros[i], aj = astros[j];
+      const dx = aj.mesh.position.x - ai.mesh.position.x;
+      const dy = aj.mesh.position.y - ai.mesh.position.y;
+      // Potencial de Plummer: es el que corresponde a la fuerza suavizada del integrador.
+      // Con 1/r puro la energía total "estable si es constante" nunca lo era.
+      pe -= GM_SCALE * ai.masa * aj.masa / Math.sqrt(dx * dx + dy * dy + SOFTENING * SOFTENING);
+    }
+  }
+  return { ke, pe };
+}
+const fmtE = v => {
+  const a = Math.abs(v);
+  if (a > 1000) return (v / 1000).toFixed(1) + 'k';
+  if (a > 0.01) return v.toFixed(2);
+  return v.toExponential(2);
+};
+const setText = (el, s) => { if (el.textContent !== s) el.textContent = s; };
+const elKE = document.getElementById('met-ke'), elPE = document.getElementById('met-pe'), elET = document.getElementById('met-etot');
+const elMasa = document.getElementById('met-masa'), elCurv = document.getElementById('met-curv'), elDil = document.getElementById('met-dil');
 
 // ─── Main loop ───────────────────────────────────────────────────────────────
-let clock = 0;
-let lastMassHash = '';
-let trailTick = 0;
+const SUBSTEP_MAX = 0.03, MAX_SUBSTEPS = 120;
+let lastT = performance.now();
 
-function animate() {
+function animate(now) {
   requestAnimationFrame(animate);
-  if (paused) { renderer.render(scene, camera); return; }
+  now = now || performance.now();
+  // Paso temporal REAL (antes era 0.016 fijo por frame: en pantallas de 120/144 Hz todo iba 2-2.4× más rápido)
+  const realDt = Math.min(0.1, Math.max(0, (now - lastT) / 1000));
+  lastT = now;
   const simSpeed = parseFloat(slSpeed.value);
-  clock += 0.016 * simSpeed;
-  trailTick++;
+  const simDt  = paused ? 0 : realDt * simSpeed;
+  const waveDt = paused ? 0 : realDt;
+  const nowMs  = performance.now();
+  clock += simDt;
 
   const flex = parseFloat(elast.value);
-  const CURV_SOFT2 = 8;
-  const CURV_GAIN = 18;
   const useHeat = togHeat.checked;
   const useWave = togWave.checked;
+  const physicsOn = togPhysics.checked;
 
-  // ── Read masa from sliders first (before grid deform and physics) ──
-  // Also: auto-unpin if user manually raises mass of a pinned body above 80%
-  astros.forEach(a => {
-    const newMasa = parseFloat(a.ui.masa.value);
-    // If user is raising mass of a non-sun body significantly, unpin it so gravity takes effect
-    if (a.pinned && newMasa !== a.masa && newMasa < 140) a.pinned = false;
-    a.masa = newMasa;
-  });
-
-  // ── N-body gravitational physics ──
-  const togPhysics = document.getElementById('tog-physics');
-  const physicsOn = togPhysics && togPhysics.checked;
-
-  const dt = 0.016 * simSpeed;
-  const SOFTENING = 4.0;
-
-  if (physicsOn && astros.length > 0) {
-    // ── Velocity Verlet – Step 1: update positions with current v and a ──
-    astros.forEach(a => {
-      if (a.pinned) return;
-      const ax = a._ax, ay = a._ay;
-      a._ax_old = ax; a._ay_old = ay;
-      a.mesh.position.x += a.vx * dt + 0.5 * ax * dt * dt;
-      a.mesh.position.y += a.vy * dt + 0.5 * ay * dt * dt;
-      if (a.mesh.position.x < -45 || a.mesh.position.x > 45) { a.vx *= -0.5; a._ax = 0; a._ax_old = 0; }
-      if (a.mesh.position.y < -45 || a.mesh.position.y > 45) { a.vy *= -0.5; a._ay = 0; a._ay_old = 0; }
-      a.mesh.position.x = Math.max(-45, Math.min(45, a.mesh.position.x));
-      a.mesh.position.y = Math.max(-45, Math.min(45, a.mesh.position.y));
-      a._ax = 0; a._ay = 0; // reset for new force computation
-    });
-
-    // ── Velocity Verlet – Step 2: compute new accelerations ──
-    for (let i = 0; i < astros.length; i++) {
-      for (let j = i + 1; j < astros.length; j++) {
-        const ai = astros[i], aj = astros[j];
-        const dx = aj.mesh.position.x - ai.mesh.position.x;
-        const dy = aj.mesh.position.y - ai.mesh.position.y;
-        const dist2 = dx*dx + dy*dy + SOFTENING*SOFTENING;
-        const dist  = Math.sqrt(dist2);
-        if (!ai.pinned) {
-          const fi = GM_SCALE * aj.masa / dist2;
-          ai._ax += fi * dx / dist; ai._ay += fi * dy / dist;
-        }
-        if (!aj.pinned) {
-          const fj = GM_SCALE * ai.masa / dist2;
-          aj._ax -= fj * dx / dist; aj._ay -= fj * dy / dist;
-        }
-      }
+  // Ondas diferidas (fusiones)
+  if (!paused) {
+    for (let k = pendingWaves.length - 1; k >= 0; k--) {
+      if (pendingWaves[k].at <= nowMs) { spawnWave(pendingWaves[k].x, pendingWaves[k].y); pendingWaves.splice(k, 1); }
     }
-
-    // ── Velocity Verlet – Step 3: update velocities with averaged acceleration ──
-    astros.forEach(a => {
-      if (a.pinned) return;
-      a.vx += 0.5 * (a._ax_old + a._ax) * dt;
-      a.vy += 0.5 * (a._ay_old + a._ay) * dt;
-    });
-
-    // ── Absorption: small body eaten by massive body ──
-    const toAbsorb = [];
-    for (let i = 0; i < astros.length; i++) {
-      const small = astros[i];
-      if (small.pinned) continue;
-      for (let j = 0; j < astros.length; j++) {
-        if (i === j) continue;
-        const big = astros[j];
-        if (big.masa <= small.masa * 2) continue; // only absorb if clearly bigger
-        const dx = small.mesh.position.x - big.mesh.position.x;
-        const dy = small.mesh.position.y - big.mesh.position.y;
-        const dist = Math.sqrt(dx*dx + dy*dy);
-        const absorbRadius = 0.4 + big.masa * 0.028; // scales with mass like the horizon ring
-        if (dist < absorbRadius && !toAbsorb.includes(i)) {
-          toAbsorb.push(i);
-          // Flash effect: spawn a bright wave and a burst of particles at absorption point
-          spawnWave(big.mesh.position.x, big.mesh.position.y);
-          spawnWave(big.mesh.position.x, big.mesh.position.y);
-          // Big body gains mass (conservation)
-          const newMasa = Math.min(150, big.masa + small.masa * 0.3);
-          big.ui.masa.value = newMasa;
-          big.masa = newMasa;
-        }
-      }
-    }
-    // Remove absorbed bodies (reverse order to keep indices valid)
-    for (let k = toAbsorb.length - 1; k >= 0; k--) {
-      const idx = toAbsorb[k];
-      const a = astros[idx];
-      scene.remove(a.mesh);
-      document.getElementById(`ui-astro-${a.id}`)?.remove();
-      removeTrail(a.id);
-      if (horizonRings.has(a.id)) { scene.remove(horizonRings.get(a.id)); horizonRings.delete(a.id); }
-      astros.splice(idx, 1);
-    }
-  } else if (!physicsOn) {
-    // Bug fix: clear Verlet state so there is zero residual inertia
-    astros.forEach(a => { a.vx = 0; a.vy = 0; a._ax = 0; a._ay = 0; a._ax_old = 0; a._ay_old = 0; });
   }
 
-  // Update astros metadata + UI readouts (never write mesh.position here when physics ON)
+  // Masas desde los sliders (+ onda cuando cambian, con límite de frecuencia)
+  for (const a of astros) {
+    a.masa = parseFloat(a.ui.masa.value);
+    if (Math.abs(a.masa - a.prevMasa) >= 1) {
+      if (!useWave) a.prevMasa = a.masa;
+      else if (nowMs - a.lastMassWave > 300) {
+        spawnWave(a.mesh.position.x, a.mesh.position.y);
+        a.lastMassWave = nowMs; a.prevMasa = a.masa;
+      }
+    }
+  }
+
+  // Física
+  if (physicsOn) {
+    if (simDt > 0 && astros.length > 0) {
+      computeAccelerations();
+      const steps = Math.min(MAX_SUBSTEPS, Math.max(1, Math.ceil(simDt / SUBSTEP_MAX)));
+      const h = simDt / steps;
+      for (let s = 0; s < steps; s++) stepPhysics(h);
+    }
+  } else {
+    for (const a of astros) { a.vx = 0; a.vy = 0; a._ax = 0; a._ay = 0; }
+  }
+
+  // Metadatos + lecturas de UI
   let totalMasa = 0;
-  const massHash = astros.map(a => a.ui.masa.value + a.mesh.position.x.toFixed(1) + a.mesh.position.y.toFixed(1)).join('|');
-  const massChanged = massHash !== lastMassHash;
-  lastMassHash = massHash;
+  for (const a of astros) {
+    const px = a.mesh.position.x, py = a.mesh.position.y;
 
-  astros.forEach(a => {
-    const px = a.mesh.position.x;
-    const py = a.mesh.position.y;
-
-    a.ui.vMasa.textContent = a.masa;
-    a.ui.vX.textContent    = px.toFixed(1);
-    a.ui.vY.textContent    = py.toFixed(1);
-    a.ui.posX.value = px;
-    a.ui.posY.value = py;
+    setText(a.ui.vMasa, String(a.masa));
+    setText(a.ui.vX, px.toFixed(1));
+    setText(a.ui.vY, py.toFixed(1));
+    if (document.activeElement !== a.ui.posX) a.ui.posX.value = px;
+    if (document.activeElement !== a.ui.posY) a.ui.posY.value = py;
 
     const sc = 0.8 + a.masa / 60;
     a.mesh.scale.setScalar(sc);
-    a.mesh.children[0].scale.set(Math.max(4, sc * 6), Math.max(4, sc * 6), 1);
-
+    // Los hijos heredan la escala del padre: se compensa para que brillo y etiqueta tengan tamaño de mundo fijo
+    const g = Math.max(4, sc * 6);
+    a.glow.scale.set(g / sc, g / sc, 1);
+    if (a.labelSprite) {
+      a.labelSprite.scale.set(14 / sc, 3.5 / sc, 1);
+      a.labelSprite.position.set(0, 0, (sc + 2.6) / sc);
+    }
     totalMasa += a.masa;
 
-    const rs_m = schwarzschild(a.masa);
-    const rs_km = (rs_m / 1000).toFixed(0);
-    a.ui.rs.textContent = `rs ≈ ${Number(rs_km).toLocaleString()} km`;
+    const rsKm = rsMeters(a.masa) / 1000;
+    setText(a.ui.rs, `rs ≈ ${rsKm < 10 ? rsKm.toFixed(1) : Math.round(rsKm).toLocaleString()} km`);
 
-    const dil = timeDilation(a.masa, sc * 1.5);
-    a.ui.dil.textContent = dil.toFixed(5);
+    const dil = dilationAt(px, py, a, sc * 1.5);
+    setText(a.ui.dil, dil.toFixed(5));
     a.ui.dil.style.color = dil < 0.5 ? '#ff4560' : dil < 0.9 ? '#ffb347' : '#00c8ff';
-
-    if (massChanged && useWave) {
-      const dx = px - (a.prevX ?? px);
-      const dy = py - (a.prevY ?? py);
-      if (dx * dx + dy * dy > 4) spawnWave(px, py);
-    }
-    a.prevX = px; a.prevY = py;
-  });
-
-  // ── Orbital trails ──
-  if (togTrails.checked && trailTick % TRAIL_SAMPLE === 0) {
-    astros.forEach(a => updateTrail(a));
+    a._dil = dil;
   }
-  // Ensure visibility matches toggle (for newly added bodies)
-  trailLines.forEach(t => { t.line.visible = togTrails.checked; });
 
-  // ── Event horizon rings ──
+  // Trails y horizontes
+  if (togTrails.checked) astros.forEach(updateTrail);
+  trailLines.forEach(t => { t.line.visible = togTrails.checked; });
   astros.forEach(a => updateHorizonRing(a, togHorizon.checked));
 
-  // ── Energy panel ──
+  // Energía
   {
-    let ke = 0, pe = 0;
-    astros.forEach(a => {
-      if (!a.pinned) ke += 0.5 * a.masa * (a.vx * a.vx + a.vy * a.vy);
-    });
-    for (let i = 0; i < astros.length; i++) {
-      for (let j = i + 1; j < astros.length; j++) {
-        const ai = astros[i], aj = astros[j];
-        const dx = aj.mesh.position.x - ai.mesh.position.x;
-        const dy = aj.mesh.position.y - ai.mesh.position.y;
-        const r  = Math.sqrt(dx*dx + dy*dy) + 0.001;
-        pe -= GM_SCALE * ai.masa * aj.masa / r;
-      }
-    }
+    const { ke, pe } = computeEnergy();
     const etot = ke + pe;
-    const fmt = v => {
-      const a = Math.abs(v);
-      if (a > 1000) return (v/1000).toFixed(1) + 'k';
-      if (a > 0.01) return v.toFixed(2);
-      return v.toExponential(2);
-    };
-    document.getElementById('met-ke').textContent   = fmt(ke);
-    document.getElementById('met-pe').textContent   = fmt(pe);
-    const etEl = document.getElementById('met-etot');
-    etEl.textContent = fmt(etot);
-    etEl.className = 'metric-val' + (etot > 0 ? ' danger' : '');
+    setText(elKE, fmtE(ke)); setText(elPE, fmtE(pe)); setText(elET, fmtE(etot));
+    elET.className = 'metric-val' + (etot > 0 ? ' danger' : '');
   }
 
-  // ── Update shader uniforms (replaces O(gridRes²×N) CPU loop) ──
+  // Uniformes del shader
   gridUniforms.uFlex.value      = flex;
-  gridUniforms.uCurvGain.value  = CURV_GAIN;
-  gridUniforms.uCurvSoft2.value = CURV_SOFT2;
   gridUniforms.uUseHeat.value   = useHeat;
   gridUniforms.uBodyCount.value = Math.min(astros.length, _MAX_B);
-  astros.forEach((a, i) => {
-    if (i >= _MAX_B) return;
-    gridUniforms.uBodies.value[i].set(a.mesh.position.x, a.mesh.position.y, a.masa);
-  });
-  // Wave data
-  const activeWaves = useWave ? waveRings.slice(0, _MAX_W) : [];
-  gridUniforms.uWaveCount.value = activeWaves.length;
-  activeWaves.forEach((wr, i) => {
-    gridUniforms.uWaves.value[i].set(wr.userData.x, wr.userData.y, wr.userData.age);
-  });
+  astros.forEach((a, i) => { if (i < _MAX_B) gridUniforms.uBodies.value[i].set(a.mesh.position.x, a.mesh.position.y, a.masa); });
 
-  // Compute minZ analytically at each body position (O(N²) – tiny cost)
+  // Waves (el shader solo admite 10: se usan las MÁS RECIENTES; antes se cogían las más viejas y las nuevas no se veían)
+  const activeWaves = useWave ? waveRings.slice(-_MAX_W) : [];
+  gridUniforms.uWaveCount.value = activeWaves.length;
+  activeWaves.forEach((wr, i) => gridUniforms.uWaves.value[i].set(wr.userData.x, wr.userData.y, wr.userData.age));
+
+  // Profundidad máx. de la malla en los cuerpos (para normalizar el heatmap)
   let minZ = -0.01;
-  astros.forEach(a => {
-    let z = 0;
-    astros.forEach(o => {
-      const dx = a.mesh.position.x - o.mesh.position.x;
-      const dy = a.mesh.position.y - o.mesh.position.y;
-      z -= (CURV_GAIN * o.masa * flex) / (dx*dx + dy*dy + CURV_SOFT2);
-    });
+  for (const a of astros) {
+    const z = surfaceZ(a.mesh.position.x, a.mesh.position.y, flex);
     if (z < minZ) minZ = z;
-  });
+  }
   gridUniforms.uMaxDeform.value = Math.max(0.01, Math.abs(minZ));
 
-  // ── Sink astros to grid depth ──
-  // Uses IDENTICAL formula to the grid deformation so astros sit exactly on the mesh surface.
-  astros.forEach(a => {
-    const ax = a.mesh.position.x;
-    const ay = a.mesh.position.y;
-    let z = 0;
-    astros.forEach(o => {
-      const dx = ax - o.mesh.position.x;
-      const dy = ay - o.mesh.position.y;
-      const d2 = dx * dx + dy * dy;
-      // Misma ley que la malla (superficie bajo los astros)
-      z -= (CURV_GAIN * o.masa * flex) / (d2 + CURV_SOFT2);
-    });
-    // Raise slightly above the mesh surface so the sphere sits ON it, not through it
-    const sc = a.mesh.scale.x;
-    a.mesh.position.z = z + sc * 0.5;
-  });
+  // Hundir cuerpos sobre la superficie (misma fórmula que el shader)
+  for (const a of astros) {
+    const z = surfaceZ(a.mesh.position.x, a.mesh.position.y, flex);
+    a.mesh.position.z = z + a.mesh.scale.x * 0.5;
+  }
 
-  // ── Animate wave rings ──
+  // Anillos de ondas: el radio 3D coincide con el frente de la ondulación del shader (age × WAVE_SPEED)
   for (let i = waveRings.length - 1; i >= 0; i--) {
     const wr = waveRings[i];
-    wr.userData.age += 0.025;
-    const s = 1 + wr.userData.age * 6;
-    wr.scale.set(s, s, 1);
-    wr.material.opacity = Math.max(0, 0.6 - wr.userData.age * 0.55);
-    if (wr.userData.age > 1.2) {
-      scene.remove(wr);
-      waveRings.splice(i, 1);
-    }
+    wr.userData.age += waveDt * WAVE_RATE;
+    const age = wr.userData.age;
+    const r = Math.max(0.05, age * WAVE_SPEED);
+    wr.scale.set(r, r, 1);
+    wr.visible = useWave;
+    wr.material.opacity = Math.max(0, 0.6 * (1 - age / WAVE_LIFE));
+    if (age > WAVE_LIFE) removeWave(i);
   }
 
-  // ── Animate particles (time-dilation aware) ──
-  const partPosArr = partGeo.attributes.position.array;
-  for (let i = 0; i < PARTICLE_COUNT; i++) {
-    const pd = partData[i];
-
-    // Compute gravitational time-dilation factor (additive, stable with N bodies)
-    const px = partPosArr[i * 3];
-    const py = partPosArr[i * 3 + 1];
-    let gravSum = 0;
-    astros.forEach(a => {
-      const dx = px - a.mesh.position.x;
-      const dy = py - a.mesh.position.y;
-      const d  = Math.sqrt(dx * dx + dy * dy) + 0.5;
-      gravSum += a.masa * 0.006 / d;
-    });
-    const gravFactor = Math.max(0.04, 1.0 / (1.0 + gravSum));
-
-    pd.angle += pd.speed * gravFactor;
-
-    // Drift toward nearest astro slightly
+  // Partículas (dilatación temporal gravitacional visual)
+  if (particles.visible) {
     let cx = 0, cy = 0, totalM = 0;
-    astros.forEach(a => { cx += a.mesh.position.x * a.masa; cy += a.mesh.position.y * a.masa; totalM += a.masa; });
-    if (totalM > 0) { cx /= totalM; cy /= totalM; }
-
-    const bx = cx + Math.cos(pd.angle) * pd.r;
-    const by = cy + Math.sin(pd.angle) * pd.r;
-
-    partPosArr[i * 3]     += (bx - partPosArr[i * 3]) * 0.04;
-    partPosArr[i * 3 + 1] += (by - partPosArr[i * 3 + 1]) * 0.04;
-
-    // Z from grid depth (approximate)
-    let pz = 0.4;
-    astros.forEach(a => {
-      const dx = bx - a.mesh.position.x;
-      const dy = by - a.mesh.position.y;
-      const d2p = dx * dx + dy * dy;
-      pz -= (CURV_GAIN * a.masa * flex) / (d2p + CURV_SOFT2);
-    });
-    partPosArr[i * 3 + 2] = pz + 0.5 + Math.sin(clock * 2 + i) * 0.2;
+    for (const a of astros) { cx += a.mesh.position.x * a.masa; cy += a.mesh.position.y * a.masa; totalM += a.masa; }
+    if (totalM > 0) { cx /= totalM; cy /= totalM; } else { cx = 0; cy = 0; }
+    const ease = 1 - Math.exp(-realDt * 2.4);
+    const step = waveDt * 60;
+    for (let i = 0; i < PARTICLE_COUNT; i++) {
+      const pd = partData[i];
+      const px = partPos[i * 3], py = partPos[i * 3 + 1];
+      let gravSum = 0, minDist = 999;
+      for (const a of astros) {
+        const dx = px - a.mesh.position.x, dy = py - a.mesh.position.y;
+        const dd = Math.sqrt(dx * dx + dy * dy);
+        gravSum += a.masa * 0.006 / (dd + 0.5);
+        if (dd < minDist) minDist = dd;
+      }
+      const gravFactor = Math.max(0.04, 1.0 / (1.0 + gravSum));
+      pd.angle += pd.speed * gravFactor * step;
+      const bx = cx + Math.cos(pd.angle) * pd.r;
+      const by = cy + Math.sin(pd.angle) * pd.r;
+      partPos[i * 3]     += (bx - px) * ease;
+      partPos[i * 3 + 1] += (by - py) * ease;
+      partPos[i * 3 + 2]  = surfaceZ(bx, by, flex) + 0.9 + Math.sin(clock * 2 + i) * 0.2;
+      const t = Math.max(0, 1 - minDist / 25);
+      partCol[i * 3]     = 0.13 + t * 0.87;
+      partCol[i * 3 + 1] = 0.53 - t * 0.3;
+      partCol[i * 3 + 2] = 1.0 - t * 0.6;
+    }
+    partGeo.attributes.position.needsUpdate = true;
+    partGeo.attributes.color.needsUpdate = true;
   }
-  partGeo.attributes.position.needsUpdate = true;
 
-  // Color particles by gravity proximity
-  if (!partGeo.attributes.color) {
-    const c = new Float32Array(PARTICLE_COUNT * 3);
-    partGeo.setAttribute('color', new THREE.BufferAttribute(c, 3));
-    partMat.vertexColors = true;
-  }
-  const pCols = partGeo.attributes.color.array;
-  for (let i = 0; i < PARTICLE_COUNT; i++) {
-    const px = partPosArr[i * 3], py = partPosArr[i * 3 + 1];
-    let minDist = 999;
-    astros.forEach(a => {
-      const d = Math.hypot(px - a.mesh.position.x, py - a.mesh.position.y);
-      if (d < minDist) minDist = d;
-    });
-    const t = Math.max(0, 1 - minDist / 25);
-    pCols[i * 3]     = 0.13 + t * 0.87;
-    pCols[i * 3 + 1] = 0.53 - t * 0.3;
-    pCols[i * 3 + 2] = 1.0 - t * 0.6;
-  }
-  partGeo.attributes.color.needsUpdate = true;
-
-  // ── Update global metrics ──
-  const maxCurv = Math.abs(minZ).toFixed(2);
-  document.getElementById('met-masa').textContent = totalMasa.toFixed(0) + ' M';
-  document.getElementById('met-curv').textContent = maxCurv;
-
-  // Global time dilation: at distance 5 units from heaviest body
-  const heaviest = astros.reduce((a, b) => b.masa > a.masa ? b : a, { masa: 0 });
-  if (heaviest.masa > 0) {
-    const dil = timeDilation(heaviest.masa, 5);
-    const pct = ((1 - dil) * 100).toFixed(3);
-    const el = document.getElementById('met-dil');
-    const atU = window.SIM_LANG === 'en' ? 'at 5u' : 'a 5u';
-    el.textContent = `γ=${( 1/Math.max(dil,0.0001)).toFixed(3)}  (−${pct}% ${atU})`;
-    el.className = 'metric-val' + (dil < 0.3 ? ' danger' : dil < 0.7 ? ' warn' : '');
+  // Métricas globales
+  setText(elMasa, totalMasa.toFixed(0) + ' M');
+  setText(elCurv, Math.abs(minZ).toFixed(2));
+  if (astros.length) {
+    // Dilatación MÁXIMA real: la mayor entre las superficies de todos los cuerpos (antes era "a 5u del más pesado")
+    let dMin = 1;
+    for (const a of astros) if (a._dil < dMin) dMin = a._dil;
+    const pct = ((1 - dMin) * 100).toFixed(3);
+    elDil.textContent = `γ=${(1 / Math.max(dMin, 0.0001)).toFixed(3)}  (−${pct}% ${T('en superficie', 'at surface')})`;
+    elDil.className = 'metric-val' + (dMin < 0.3 ? ' danger' : dMin < 0.7 ? ' warn' : '');
+  } else {
+    elDil.textContent = '—';
+    elDil.className = 'metric-val';
   }
 
   renderer.render(scene, camera);
@@ -2494,24 +2546,28 @@ function animate() {
 window.addEventListener('resize', () => {
   camera.aspect = innerWidth / innerHeight;
   camera.updateProjectionMatrix();
+  renderer.setPixelRatio(Math.min(devicePixelRatio || 1, 2));
   renderer.setSize(innerWidth, innerHeight);
 });
 
 // ─── Pause / resume ──────────────────────────────────────────────────────────
-let paused = false;
 const btnPause = document.getElementById('btn-pause');
 function setPaused(val) {
   paused = val;
-  btnPause.textContent = paused ? '▶ Resume' : '⏸ Pause';
+  btnPause.textContent = paused ? T('▶ Reanudar', '▶ Resume') : T('⏸ Pausa', '⏸ Pause');
   btnPause.style.background = paused ? 'rgba(0,200,255,0.22)' : 'rgba(0,200,255,0.09)';
 }
 btnPause.addEventListener('click', () => setPaused(!paused));
-// Spacebar shortcut
 document.addEventListener('keydown', e => {
-  if (e.code === 'Space' && e.target === document.body) { e.preventDefault(); setPaused(!paused); }
+  if (e.code !== 'Space') return;
+  const t = e.target;
+  // Con foco en un botón/checkbox la barra espaciadora ya los activa: no duplicar. Con foco en un slider sí funciona.
+  if (t.tagName === 'BUTTON' || (t.tagName === 'INPUT' && t.type === 'checkbox')) return;
+  e.preventDefault();
+  setPaused(!paused);
 });
 
-// ─── Collapsible body list ────────────────────────────────────────────────────
+// ─── Collapsible body list ───────────────────────────────────────────────────
 (function() {
   const toggle = document.getElementById('bodies-toggle');
   const panel  = document.getElementById('bodies-panel');
@@ -2519,28 +2575,22 @@ document.addEventListener('keydown', e => {
   toggle.addEventListener('click', () => {
     open = !open;
     panel.style.display = open ? '' : 'none';
-    const label = toggle.getAttribute('data-i18n-es') || toggle.textContent;
     const arrow = open ? '▾' : '▸';
-    // Update both lang attrs and textContent
-    ['es','en'].forEach(l => {
-      const base = (l==='es') ? 'Cuerpos celestes' : 'Celestial bodies';
-      toggle.setAttribute('data-i18n-'+l, base+' '+arrow);
-    });
-    toggle.textContent = (window.SIM_LANG === 'en' ? 'Celestial bodies' : 'Cuerpos celestes') + ' ' + arrow;
+    toggle.setAttribute('data-i18n-es', 'Cuerpos celestes ' + arrow);
+    toggle.setAttribute('data-i18n-en', 'Celestial bodies ' + arrow);
+    toggle.textContent = T('Cuerpos celestes', 'Celestial bodies') + ' ' + arrow;
   });
 })();
 
-// ─── Fix: clear Verlet state when physics toggled off ────────────────────────
-document.getElementById('tog-physics').addEventListener('change', function() {
-  if (!this.checked) {
-    astros.forEach(a => {
-      a.vx = 0; a.vy = 0;
-      a._ax = 0; a._ay = 0; a._ax_old = 0; a._ay_old = 0;
-    });
-  }
+// ─── Cambio de idioma: refrescar lo que se genera por JS ─────────────────────
+window.addEventListener('simulator-lang-changed', () => {
+  astros.forEach(a => { refreshLabel(a); updateCardName(a); });
+  setPaused(paused);
 });
+setPaused(false);
 
-animate();
+requestAnimationFrame(animate);
+
 </script>
 
 <!-- ── MathJax for LaTeX formulas ── -->
