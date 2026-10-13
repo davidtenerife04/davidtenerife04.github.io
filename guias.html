@@ -1,0 +1,507 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Guías PDF | Mi Dashboard</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-9609453613680146"
+     crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.min.js"></script>
+    <style>
+        :root {
+            --bg-color: #0f172a;
+            --card-bg: #1e293b;
+            --text-main: #f1f5f9;
+            --text-muted: #94a3b8;
+            --accent: #38bdf8;
+            --accent-glow: rgba(56, 189, 248, 0.15);
+            --border: #334155;
+        }
+
+        * { box-sizing: border-box; }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            margin: 0;
+            min-height: 100vh;
+            background-color: var(--bg-color);
+            color: var(--text-main);
+            background-image: radial-gradient(#1e293b 1px, transparent 1px);
+            background-size: 30px 30px;
+        }
+
+        .main-container {
+            width: 90%;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 40px 20px 80px;
+        }
+
+        .back {
+            display: inline-block;
+            color: var(--text-muted);
+            text-decoration: none;
+            font-size: 0.95rem;
+            margin-bottom: 30px;
+            transition: color 0.2s;
+        }
+        .back:hover { color: var(--accent); }
+
+        header { text-align: center; margin-bottom: 40px; }
+
+        header h1 {
+            font-size: 3rem;
+            font-weight: 800;
+            letter-spacing: -1px;
+            margin: 0 0 10px 0;
+            background: linear-gradient(to right, #ffffff, #94a3b8);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        header p { color: var(--text-muted); font-size: 1.1rem; margin: 0; }
+
+        /* ---------- Barra de búsqueda ---------- */
+        .toolbar {
+            display: flex;
+            gap: 12px;
+            flex-wrap: wrap;
+            margin-bottom: 18px;
+        }
+
+        .search-wrap { position: relative; flex: 1 1 320px; }
+
+        .search-wrap input {
+            width: 100%;
+            padding: 14px 44px 14px 46px;
+            font: inherit;
+            font-size: 1rem;
+            color: var(--text-main);
+            background: var(--card-bg);
+            border: 1px solid var(--border);
+            border-radius: 14px;
+            outline: none;
+            transition: border-color 0.2s, box-shadow 0.2s;
+        }
+        .search-wrap input::placeholder { color: var(--text-muted); }
+        .search-wrap input:focus {
+            border-color: var(--accent);
+            box-shadow: 0 0 0 4px var(--accent-glow);
+        }
+
+        .search-icon {
+            position: absolute; left: 16px; top: 50%;
+            transform: translateY(-50%);
+            width: 20px; height: 20px;
+            stroke: var(--text-muted); fill: none; stroke-width: 2;
+            pointer-events: none;
+        }
+
+        .clear-btn {
+            position: absolute; right: 10px; top: 50%;
+            transform: translateY(-50%);
+            background: none; border: none; cursor: pointer;
+            color: var(--text-muted); font-size: 1.3rem; line-height: 1;
+            padding: 6px 10px; border-radius: 8px;
+            display: none;
+        }
+        .clear-btn:hover { color: var(--text-main); }
+
+        select {
+            font: inherit;
+            padding: 14px 16px;
+            color: var(--text-main);
+            background: var(--card-bg);
+            border: 1px solid var(--border);
+            border-radius: 14px;
+            outline: none;
+            cursor: pointer;
+        }
+        select:focus { border-color: var(--accent); }
+
+        /* ---------- Chips de etiquetas ---------- */
+        .chips { display: flex; flex-wrap: wrap; gap: 8px; margin-bottom: 14px; }
+
+        .chip {
+            font: inherit;
+            font-size: 0.85rem;
+            padding: 6px 14px;
+            color: var(--text-muted);
+            background: transparent;
+            border: 1px solid var(--border);
+            border-radius: 999px;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+        .chip:hover { color: var(--text-main); border-color: var(--accent); }
+        .chip.active {
+            color: #0f172a;
+            background: var(--accent);
+            border-color: var(--accent);
+            font-weight: 600;
+        }
+
+        .count { color: var(--text-muted); font-size: 0.9rem; margin: 0 0 24px 2px; }
+
+        /* ---------- Grid y tarjetas ---------- */
+        .grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(230px, 1fr));
+            gap: 25px;
+        }
+
+        .card {
+            display: flex;
+            flex-direction: column;
+            background: var(--card-bg);
+            border: 1px solid var(--border);
+            border-radius: 16px;
+            overflow: hidden;
+            position: relative;
+            transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+        }
+
+        .card:hover {
+            transform: translateY(-8px) scale(1.02);
+            border-color: var(--accent);
+            box-shadow: 0 20px 40px rgba(0,0,0,0.4), 0 0 15px var(--accent-glow);
+        }
+
+        .preview {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            aspect-ratio: 3 / 4;
+            background: #e2e8f0;
+            overflow: hidden;
+            position: relative;
+            border-bottom: 1px solid var(--border);
+        }
+
+        .preview canvas {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            object-position: top;
+            display: block;
+        }
+
+        /* shimmer mientras carga */
+        .preview.loading::before {
+            content: '';
+            position: absolute; inset: 0;
+            background: linear-gradient(100deg, transparent 20%, rgba(255,255,255,0.55) 50%, transparent 80%);
+            background-size: 200% 100%;
+            animation: shimmer 1.3s infinite;
+        }
+        @keyframes shimmer { from { background-position: 200% 0; } to { background-position: -200% 0; } }
+
+        .preview .fallback {
+            font-weight: 800; font-size: 1.6rem; color: #94a3b8; letter-spacing: 2px;
+        }
+
+        .info { padding: 16px 18px 18px; display: flex; flex-direction: column; gap: 8px; flex: 1; }
+
+        .title {
+            font-size: 1.05rem;
+            font-weight: 700;
+            line-height: 1.3;
+            color: var(--text-main);
+            text-decoration: none;
+            overflow-wrap: anywhere;
+        }
+        .title:hover { color: var(--accent); }
+
+        .tags { display: flex; flex-wrap: wrap; gap: 6px; }
+        .tag {
+            font-size: 0.72rem;
+            color: var(--accent);
+            background: var(--accent-glow);
+            padding: 3px 9px;
+            border-radius: 999px;
+        }
+
+        .meta {
+            margin-top: auto;
+            padding-top: 6px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            font-size: 0.8rem;
+            color: var(--text-muted);
+        }
+        .meta a {
+            color: var(--text-muted);
+            text-decoration: none;
+            padding: 4px 10px;
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            transition: all 0.2s;
+        }
+        .meta a:hover { color: var(--accent); border-color: var(--accent); }
+
+        /* ---------- Estados vacíos ---------- */
+        .empty {
+            grid-column: 1 / -1;
+            text-align: center;
+            padding: 70px 20px;
+            color: var(--text-muted);
+            border: 1px dashed var(--border);
+            border-radius: 16px;
+            line-height: 1.7;
+        }
+        .empty code {
+            background: var(--card-bg);
+            padding: 2px 8px;
+            border-radius: 6px;
+            color: var(--accent);
+        }
+
+        @media (max-width: 600px) {
+            header h1 { font-size: 2.2rem; }
+            .main-container { padding: 20px 10px 60px; }
+            .grid { grid-template-columns: repeat(2, 1fr); gap: 14px; }
+            .info { padding: 12px; }
+            .title { font-size: 0.95rem; }
+        }
+    </style>
+</head>
+<body>
+    <div class="main-container">
+        <a class="back" href="index.html">← Volver al dashboard</a>
+
+        <header>
+            <h1>Guías PDF</h1>
+            <p>Mi biblioteca de guías y documentación</p>
+        </header>
+
+        <div class="toolbar">
+            <div class="search-wrap">
+                <svg class="search-icon" viewBox="0 0 24 24"><circle cx="11" cy="11" r="7"/><path d="M21 21l-4.3-4.3"/></svg>
+                <input id="search" type="search" placeholder="Buscar por nombre o etiqueta…   ( / )" autocomplete="off">
+                <button class="clear-btn" id="clear" aria-label="Limpiar búsqueda">×</button>
+            </div>
+            <select id="sort" aria-label="Ordenar">
+                <option value="recent">Más recientes</option>
+                <option value="name">Nombre (A-Z)</option>
+            </select>
+        </div>
+
+        <div class="chips" id="chips"></div>
+        <p class="count" id="count"></p>
+
+        <div class="grid" id="grid"></div>
+    </div>
+
+    <script>
+        // ================== CONFIG ==================
+        const MANIFEST = 'guias.json';   // lo genera generar_guias.py
+        const THUMB_WIDTH = 480;         // ancho (px) al que se renderiza la miniatura
+
+        pdfjsLib.GlobalWorkerOptions.workerSrc =
+            'https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.worker.min.js';
+
+        // ================== ESTADO ==================
+        let guias = [];
+        let activeTag = null;
+
+        const $grid   = document.getElementById('grid');
+        const $search = document.getElementById('search');
+        const $clear  = document.getElementById('clear');
+        const $sort   = document.getElementById('sort');
+        const $chips  = document.getElementById('chips');
+        const $count  = document.getElementById('count');
+
+        // ================== UTILIDADES ==================
+        const norm = s => (s || '').normalize('NFD').replace(/[\u0300-\u036f]/g, '').toLowerCase();
+
+        function fmtSize(bytes) {
+            if (!bytes) return '';
+            const mb = bytes / 1048576;
+            return mb >= 1 ? mb.toFixed(1) + ' MB' : Math.max(1, Math.round(bytes / 1024)) + ' KB';
+        }
+
+        function fmtDate(iso) {
+            if (!iso) return '';
+            const d = new Date(iso);
+            return isNaN(d) ? '' : d.toLocaleDateString('es-ES', { year: 'numeric', month: 'short', day: 'numeric' });
+        }
+
+        const pdfUrl = g => encodeURI(g.file);
+
+        // ================== MINIATURAS (lazy) ==================
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(e => {
+                if (e.isIntersecting) {
+                    observer.unobserve(e.target);
+                    renderThumb(e.target);
+                }
+            });
+        }, { rootMargin: '200px' });
+
+        async function renderThumb(box) {
+            const url = box.dataset.url;
+            try {
+                const pdf = await pdfjsLib.getDocument(url).promise;
+                const page = await pdf.getPage(1);
+                const base = page.getViewport({ scale: 1 });
+                const viewport = page.getViewport({ scale: THUMB_WIDTH / base.width });
+
+                const canvas = document.createElement('canvas');
+                canvas.width = viewport.width;
+                canvas.height = viewport.height;
+                await page.render({ canvasContext: canvas.getContext('2d'), viewport }).promise;
+
+                box.appendChild(canvas);
+                pdf.destroy();
+            } catch (err) {
+                console.warn('Sin vista previa para', url, err);
+                const f = document.createElement('span');
+                f.className = 'fallback';
+                f.textContent = 'PDF';
+                box.appendChild(f);
+            } finally {
+                box.classList.remove('loading');
+            }
+        }
+
+        // ================== RENDER ==================
+        function buildCard(g) {
+            const card = document.createElement('article');
+            card.className = 'card';
+
+            const prev = document.createElement('a');
+            prev.className = 'preview loading';
+            prev.href = pdfUrl(g);
+            prev.target = '_blank';
+            prev.rel = 'noopener';
+            prev.dataset.url = pdfUrl(g);
+            prev.setAttribute('aria-label', 'Abrir ' + g.title);
+            card.appendChild(prev);
+
+            const info = document.createElement('div');
+            info.className = 'info';
+
+            const title = document.createElement('a');
+            title.className = 'title';
+            title.href = pdfUrl(g);
+            title.target = '_blank';
+            title.rel = 'noopener';
+            title.textContent = g.title;
+            info.appendChild(title);
+
+            if (g.tags && g.tags.length) {
+                const tags = document.createElement('div');
+                tags.className = 'tags';
+                g.tags.forEach(t => {
+                    const s = document.createElement('span');
+                    s.className = 'tag';
+                    s.textContent = t;
+                    tags.appendChild(s);
+                });
+                info.appendChild(tags);
+            }
+
+            const meta = document.createElement('div');
+            meta.className = 'meta';
+            const left = document.createElement('span');
+            left.textContent = [fmtDate(g.date), fmtSize(g.size)].filter(Boolean).join(' · ');
+            const dl = document.createElement('a');
+            dl.href = pdfUrl(g);
+            dl.setAttribute('download', '');
+            dl.textContent = '↓ PDF';
+            meta.append(left, dl);
+            info.appendChild(meta);
+
+            card.appendChild(info);
+            observer.observe(prev);
+            return card;
+        }
+
+        function emptyState(msg) {
+            const d = document.createElement('div');
+            d.className = 'empty';
+            d.innerHTML = msg;
+            return d;
+        }
+
+        function render() {
+            const q = norm($search.value.trim());
+            $clear.style.display = q ? 'block' : 'none';
+
+            let list = guias.filter(g => {
+                if (activeTag && !(g.tags || []).includes(activeTag)) return false;
+                if (!q) return true;
+                const hay = norm([g.title, g.file, ...(g.tags || [])].join(' '));
+                return q.split(/\s+/).every(w => hay.includes(w));
+            });
+
+            list.sort($sort.value === 'name'
+                ? (a, b) => a.title.localeCompare(b.title, 'es', { sensitivity: 'base' })
+                : (a, b) => (b.date || '').localeCompare(a.date || ''));
+
+            $grid.replaceChildren();
+            if (!guias.length) {
+                $grid.appendChild(emptyState(
+                    'Aún no hay guías.<br>Mete tus PDFs en la carpeta <code>guias/</code> y ejecuta <code>python generar_guias.py</code>.'));
+                $count.textContent = '';
+                return;
+            }
+            if (!list.length) {
+                $grid.appendChild(emptyState('Ninguna guía coincide con la búsqueda.'));
+            } else {
+                list.forEach(g => $grid.appendChild(buildCard(g)));
+            }
+            $count.textContent = list.length === guias.length
+                ? `${guias.length} ${guias.length === 1 ? 'guía' : 'guías'}`
+                : `${list.length} de ${guias.length} guías`;
+        }
+
+        function renderChips() {
+            const all = [...new Set(guias.flatMap(g => g.tags || []))].sort((a, b) => a.localeCompare(b, 'es'));
+            $chips.replaceChildren();
+            if (!all.length) return;
+            const mk = (label, tag) => {
+                const b = document.createElement('button');
+                b.className = 'chip' + (activeTag === tag ? ' active' : '');
+                b.textContent = label;
+                b.addEventListener('click', () => {
+                    activeTag = (activeTag === tag) ? null : tag;
+                    renderChips();
+                    render();
+                });
+                return b;
+            };
+            $chips.appendChild(mk('Todas', null));
+            all.forEach(t => $chips.appendChild(mk(t, t)));
+        }
+
+        // ================== EVENTOS ==================
+        $search.addEventListener('input', render);
+        $sort.addEventListener('change', render);
+        $clear.addEventListener('click', () => { $search.value = ''; render(); $search.focus(); });
+
+        document.addEventListener('keydown', e => {
+            if (e.key === '/' && document.activeElement !== $search) {
+                e.preventDefault();
+                $search.focus();
+            } else if (e.key === 'Escape' && document.activeElement === $search) {
+                $search.value = '';
+                render();
+                $search.blur();
+            }
+        });
+
+        // ================== INIT ==================
+        fetch(MANIFEST, { cache: 'no-cache' })
+            .then(r => { if (!r.ok) throw new Error(r.status); return r.json(); })
+            .then(data => { guias = Array.isArray(data) ? data : []; })
+            .catch(err => {
+                console.error('No se pudo cargar', MANIFEST, err);
+                guias = [];
+            })
+            .finally(() => { renderChips(); render(); });
+    </script>
+</body>
+</html>
